@@ -8,5 +8,9 @@
       <user-name>sa</user-name>
       <password>sa</password>
     </security>
+    <pool>
+       <min-pool-size>2</min-pool-size>
+       <max-pool-size>5</max-pool-size>
+    </pool>
   </datasource>
 </datasources>
