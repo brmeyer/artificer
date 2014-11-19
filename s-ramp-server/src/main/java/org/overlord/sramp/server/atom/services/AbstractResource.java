@@ -18,7 +18,7 @@ package org.overlord.sramp.server.atom.services;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
-import org.overlord.sramp.common.SrampUserException;
+import org.overlord.sramp.common.error.SrampUserException;
 import org.slf4j.Logger;
 
 /**

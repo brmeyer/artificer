@@ -24,7 +24,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 import org.overlord.sramp.common.SrampException;
-import org.overlord.sramp.common.SrampServerException;
+import org.overlord.sramp.common.error.SrampServerException;
 import org.overlord.sramp.common.query.xpath.XPathParser;
 import org.overlord.sramp.common.query.xpath.ast.Query;
 import org.overlord.sramp.repository.jcr.ClassificationHelper;

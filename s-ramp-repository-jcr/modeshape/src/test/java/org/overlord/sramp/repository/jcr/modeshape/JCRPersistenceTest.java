@@ -18,8 +18,8 @@ package org.overlord.sramp.repository.jcr.modeshape;
 import org.junit.Assert;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.*;
-import org.overlord.sramp.common.ArtifactAlreadyExistsException;
-import org.overlord.sramp.common.ArtifactNotFoundException;
+import org.overlord.sramp.repository.error.ArtifactConflictException;
+import org.overlord.sramp.common.error.ArtifactNotFoundException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.repository.query.ArtifactSet;
@@ -80,7 +80,7 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         try {
             persistenceManager.persistArtifact(document, pdf);
             Assert.fail("Expected an ArtifactAlreadyExistsException.");
-        } catch (ArtifactAlreadyExistsException e) {
+        } catch (ArtifactConflictException e) {
             // Expected this!
             Assert.assertEquals("Artifact with UUID 12345 already exists.", e.getMessage());
         }
@@ -95,7 +95,7 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         try {
             persistenceManager.persistArtifact(document, pdf);
             Assert.fail("Expected an ArtifactAlreadyExistsException.");
-        } catch (ArtifactAlreadyExistsException e) {
+        } catch (ArtifactConflictException e) {
             // Expected this!
             Assert.assertEquals("Artifact with UUID 12345 already exists.", e.getMessage());
         }

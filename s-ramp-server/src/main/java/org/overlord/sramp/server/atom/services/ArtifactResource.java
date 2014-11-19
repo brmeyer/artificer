@@ -31,13 +31,14 @@ import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.atom.visitors.ArtifactContentTypeVisitor;
 import org.overlord.sramp.atom.visitors.ArtifactToFullAtomEntryVisitor;
 import org.overlord.sramp.common.*;
+import org.overlord.sramp.common.error.*;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.events.EventProducer;
 import org.overlord.sramp.events.EventProducerFactory;
 import org.overlord.sramp.repository.PersistenceFactory;
 import org.overlord.sramp.repository.PersistenceManager;
-import org.overlord.sramp.repository.errors.DerivedArtifactCreateException;
-import org.overlord.sramp.repository.errors.DerivedArtifactDeleteException;
+import org.overlord.sramp.repository.error.DerivedArtifactCreateException;
+import org.overlord.sramp.repository.error.DerivedArtifactDeleteException;
 import org.overlord.sramp.server.i18n.Messages;
 import org.overlord.sramp.server.mime.MimeTypes;
 import org.slf4j.Logger;
@@ -128,7 +129,7 @@ public class ArtifactResource extends AbstractResource {
             // Simply re-throw.  Don't allow the following catch it -- WrongModelException is mapped to a unique
             // HTTP response type.
             throw e;
-        } catch (SrampAlreadyExistsException e) {
+        } catch (SrampConflictException e) {
             // Simply re-throw.  Don't allow the following catch it -- SrampAlreadyExistsException is mapped to a
             // unique HTTP response type.
             throw e;
@@ -277,7 +278,7 @@ public class ArtifactResource extends AbstractResource {
             // Simply re-throw.  Don't allow the following catch it -- WrongModelException is mapped to a unique
             // HTTP response type.
             throw e;
-        } catch (SrampAlreadyExistsException e) {
+        } catch (SrampConflictException e) {
             // Simply re-throw.  Don't allow the following catch it -- SrampAlreadyExistsException is mapped to a
             // unique HTTP response type.
             throw e;

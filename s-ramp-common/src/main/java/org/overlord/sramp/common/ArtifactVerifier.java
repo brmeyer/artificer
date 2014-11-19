@@ -16,6 +16,10 @@
 package org.overlord.sramp.common;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.*;
+import org.overlord.sramp.common.error.DerivedRelationshipCreationException;
+import org.overlord.sramp.common.error.DuplicateNameException;
+import org.overlord.sramp.common.error.ReservedNameException;
+import org.overlord.sramp.common.error.WrongModelException;
 import org.overlord.sramp.common.visitors.HierarchicalArtifactVisitor;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
