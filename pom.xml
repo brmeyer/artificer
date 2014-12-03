@@ -115,6 +115,9 @@
     <version.org.apache.httpcomponents.httpclient>4.2.1</version.org.apache.httpcomponents.httpclient>
     <version.org.apache.httpcomponents.httpcore>4.2.1</version.org.apache.httpcomponents.httpcore>
     <version.org.apache.httpcomponents.httpmime>4.2.1</version.org.apache.httpcomponents.httpmime>
+
+	<version.org.keycloak>1.1.0.Beta2-SNAPSHOT</version.org.keycloak>
+
   </properties>
 
   <build>
@@ -818,6 +821,14 @@
         <groupId>jstl</groupId>
         <artifactId>jstl</artifactId>
         <version>1.2</version>
+      </dependency>
+
+      <!-- KeyCloak zip -->
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-war-dist-all</artifactId>
+        <version>${version.org.keycloak}</version>
+        <type>zip</type>
       </dependency>
 
       <!-- Third party libraries -->
