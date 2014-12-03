@@ -107,6 +107,8 @@
       <property name="overlord-commons.auth.jboss7.file" location="${s-ramp-distro.bindir}/overlord-commons-auth-jboss7-${version.org.overlord.overlord-commons}.jar" />
       <property name="s-ramp.s-ramp-server.war.path" location="${s-ramp-distro.bindir}/s-ramp-server-eap6-${s-ramp.version}.war" />
       <property name="s-ramp.s-ramp-ui.war.path" location="${s-ramp-distro.bindir}/s-ramp-ui-war-eap6-${s-ramp.version}.war" />
+      <property name="s-ramp.keycloak.path" location="${s-ramp-distro.bindir}/keycloak-war-dist-all-${version.org.keycloak}" />
+      <property name="s-ramp.keycloak.adapter" location="${s-ramp-distro.bindir}/keycloak-war-dist-all-${version.org.keycloak}/adapters/keycloak-eap6-adapter-dist-${version.org.keycloak}.zip" />
     </ant>
   </target>
 

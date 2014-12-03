@@ -47,30 +47,7 @@
     <servlet-name>MavenRepository</servlet-name>
   </filter-mapping>
 
-  <filter>
-    <filter-name>AuthFilter</filter-name>
-    <filter-class>org.overlord.commons.auth.filters.SamlBearerTokenAuthFilter</filter-class>
-    <description>This filter provides support for BASIC authentication that works with both standard user/password auth as well as SAML Bearer Token auth.</description>
-    <init-param>
-      <param-name>allowedIssuers</param-name>
-      <param-value>/s-ramp-ui,/dtgov,/dtgov-ui</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <servlet-name>Resteasy</servlet-name>
-  </filter-mapping>
-
-  <filter>
-    <filter-name>MavenAuthFilter</filter-name>
-    <filter-class>org.overlord.sramp.server.filters.MavenRepositoryAuthFilter</filter-class>
-    <description>This filter provides support for BASIC authentication protecting the Maven Repository Facade.  If no user is provided then a read-only user is fabricated and used.</description>
-  </filter>
-  <filter-mapping>
-    <filter-name>MavenAuthFilter</filter-name>
-    <servlet-name>MavenRepository</servlet-name>
-  </filter-mapping> 
-
+<!-- Not sure what to do about this one?
   <filter>
     <filter-name>ServletCredentials</filter-name>
     <filter-class>org.overlord.sramp.repository.jcr.modeshape.filters.ServletCredentialsFilter</filter-class>
@@ -84,17 +61,26 @@
     <filter-name>ServletCredentials</filter-name>
     <servlet-name>MavenRepository</servlet-name>
   </filter-mapping>
+-->
  
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>S-RAMP</web-resource-name>
-      <url-pattern>/dummy/*</url-pattern>
-    </web-resource-collection>
-  </security-constraint>
+    <!-- Security -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>s-ramp-server</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
 
-  <login-config>
-    <auth-method>BASIC</auth-method>
-    <realm-name>OverlordRealm</realm-name>
-  </login-config>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>governance</realm-name>
+    </login-config>
+
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
   
 </web-app>

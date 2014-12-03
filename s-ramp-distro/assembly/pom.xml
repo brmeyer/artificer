@@ -203,6 +203,24 @@
 		<groupId>commons-codec</groupId>
 		<artifactId>commons-codec</artifactId>
 	</dependency>    
+
+    <!-- Keycloak -->
+    <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-war-dist-all</artifactId>
+        <type>zip</type>
+        <exclusions>
+            <exclusion>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-undertow-adapter</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-example-themes-dist</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+
   </dependencies>
 
   <build>
