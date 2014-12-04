@@ -16,19 +16,12 @@
 
 package org.overlord.sramp.devsvr;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.overlord.commons.auth.filters.SamlBearerTokenAuthFilter;
-import org.overlord.commons.auth.filters.SimplePrincipal;
-
 /**
  * A simple basic auth filter that supports username/password authentication.
  *
  * @author eric.wittmann@redhat.com
  */
-public class BasicAuthFilter extends SamlBearerTokenAuthFilter {
+public class BasicAuthFilter /*extends SamlBearerTokenAuthFilter*/ {
     
     /**
      * Constructor.
@@ -36,19 +29,19 @@ public class BasicAuthFilter extends SamlBearerTokenAuthFilter {
     public BasicAuthFilter() {
     }
     
-    /**
-     * @see org.overlord.commons.auth.filters.SamlBearerTokenAuthFilter#doBasicLogin(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
-     */
-    @Override
-    protected SimplePrincipal doBasicLogin(String username, String password, HttpServletRequest request)
-            throws IOException {
-        if (!username.equals(password)) {
-            return null;
-        }
-        SimplePrincipal principal = new SimplePrincipal(username);
-        principal.addRole("overlorduser");
-        principal.addRole("admin.sramp");
-        return principal;
-    }
+//    /**
+//     * @see org.overlord.commons.auth.filters.SamlBearerTokenAuthFilter#doBasicLogin(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+//     */
+//    @Override
+//    protected SimplePrincipal doBasicLogin(String username, String password, HttpServletRequest request)
+//            throws IOException {
+//        if (!username.equals(password)) {
+//            return null;
+//        }
+//        SimplePrincipal principal = new SimplePrincipal(username);
+//        principal.addRole("overlorduser");
+//        principal.addRole("admin.sramp");
+//        return principal;
+//    }
 
 }

@@ -15,50 +15,8 @@
     <!-- Overlord Commons -->
     <dependency>
       <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-installer</artifactId>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-services</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-auth</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-auth-tomcat7</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-auth-jboss7</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-eap6</artifactId>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp</artifactId>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-tomcat7</artifactId>
-      <type>war</type>
-    </dependency>
-    <!--<dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-jetty8</artifactId>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-fuse61</artifactId>
-      <type>war</type>
-    </dependency>-->
     <dependency>
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-dist-eap6</artifactId>
@@ -123,6 +81,54 @@
     <!-- ***************************************** -->
     <profile>
       <id>test-install-eap6</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.modeshape</groupId>
+          <artifactId>modeshape-distribution</artifactId>
+          <type>zip</type>
+          <classifier>jbosseap-dist</classifier>
+        </dependency>
+        <dependency>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-war-dist-all</artifactId>
+          <type>zip</type>
+          <exclusions>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-as7-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-tomcat6-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-tomcat8-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-jetty81-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-jetty91-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-jetty92-adapter-dist</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.keycloak</groupId>
+              <artifactId>keycloak-example-themes-dist</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-eap6-adapter-dist</artifactId>
+          <type>zip</type>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -152,10 +158,7 @@
 
                     <!-- Overlord Commons Installer and Dependencies -->
                     <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>               
-                    <property name="s-ramp.overlord-commons.installer.jar" value="${maven.dependency.org.overlord.overlord-commons-installer.jar.path}" />
-                    <property name="overlord-commons.idp.file" value="${maven.dependency.org.overlord.overlord-commons-idp-eap6.war.path}" />
                     <property name="overlord-commons.eap-dist.file" value="${maven.dependency.org.overlord.overlord-commons-dist-eap6.zip.path}" />
-                    <property name="overlord-commons.auth.jboss7.file" value="${maven.dependency.org.overlord.overlord-commons-auth-jboss7.jar.path}" />
 
                     <!-- S-RAMP WARs -->
                     <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.overlord.sramp.s-ramp-server-eap6.war.path}" />
@@ -173,6 +176,10 @@
 
                     <!-- The commons ant jar location -->
                     <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
+
+                    <unzip src="${maven.dependency.org.keycloak.keycloak-war-dist-all.zip.path}" dest="${project.build.directory}"/>
+                    <property name="s-ramp.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
+                    <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-eap6-adapter-dist.zip.path}" />
                     
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
@@ -188,20 +195,19 @@
           </plugin>
         </plugins>
       </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.modeshape</groupId>
-          <artifactId>modeshape-distribution</artifactId>
-          <type>zip</type>
-          <classifier>jbosseap-dist</classifier>
-        </dependency>
-      </dependencies>
     </profile>
     <!-- ****************************************** -->
     <!-- Profile to *test* installing into Tomcat 7 -->
     <!-- ****************************************** -->
     <profile>
       <id>test-install-tomcat7</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-tomcat7-adapter-dist</artifactId>
+          <type>zip</type>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -230,10 +236,8 @@
                     <property name="s-ramp.appserver.dir" location="${s-ramp.install.dir}/apache-tomcat-7.0.54" />
 
                     <!-- Overlord Commons Installer and Dependencies -->
-                    <property name="s-ramp.overlord-commons.installer.jar" value="${maven.dependency.org.overlord.overlord-commons-installer.jar.path}" />
                     <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
                     <property name="s-ramp-overlord-commons.codec.jar.path" value="${maven.dependency.org.overlord.overlord-commons-codec.jar.path}"/>                         
-                    <property name="overlord-commons.idp.file" value="${maven.dependency.org.overlord.overlord-commons-idp-tomcat7.war.path}" />
 
                     <!-- S-RAMP WARs -->
                     <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.overlord.sramp.s-ramp-server-tomcat7.war.path}" />
@@ -251,6 +255,9 @@
                     <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
                     <property name="overlord-commons.codec.jar" location="${s-ramp-overlord-commons.codec.jar.path}" />                    
                     <property name="commons-codec.jar" location="${maven.dependency.commons-codec.commons-codec.jar.path}" />
+
+                    <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-tomcat7-adapter-dist.zip.path}" />
+
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
                       <target name="install" />
@@ -300,11 +307,9 @@
                     <property name="s-ramp.jetty.download.url" value="http://eclipse.org/downloads/download.php?file=/jetty/8.1.14.v20131031/dist/jetty-distribution-8.1.14.v20131031.zip&amp;r=1" />
                     <property name="s-ramp.jetty.zip" location="${basedir}/jetty-distribution-8.1.14.v20131031.zip" />
 
-                    <property name="s-ramp.overlord-commons.installer.jar" value="${maven.dependency.org.overlord.overlord-commons-installer.jar.path}" />
                     <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
                     <property name="s-ramp-overlord-commons.codec.jar.path" value="${maven.dependency.org.overlord.overlord-commons-codec.jar.path}"/>                         
-                    <property name="overlord-commons.idp.file" value="${maven.dependency.org.overlord.overlord-commons-idp-jetty8.war.path}" />
-                    
+
                     <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.overlord.sramp.s-ramp-server-jetty8.war.path}" />
                     <property name="s-ramp.s-ramp-ui.war.path" value="${maven.dependency.org.overlord.sramp.s-ramp-ui-war-jetty8.war.path}" />
 

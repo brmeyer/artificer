@@ -64,6 +64,19 @@
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>KeycloakBearerTokenFilter</filter-name>
+    <filter-class>org.overlord.sramp.ui.server.filters.KeycloakBearerTokenFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>KeycloakBearerTokenFilter</filter-name>
+    <url-pattern>/app/services/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>KeycloakBearerTokenFilter</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>OverlordHeaderDataJS</servlet-name>
     <servlet-class>org.overlord.commons.ui.header.OverlordHeaderDataJS</servlet-class>
@@ -113,32 +126,32 @@
     <url-pattern>/app/services/ontologyDownload</url-pattern>
   </servlet-mapping>
 
-    <!-- Security -->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>s-ramp-ui</web-resource-name>
-            <url-pattern>/index.html</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>s-ramp-rest</web-resource-name>
-            <url-pattern>/rest/*</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>s-ramp-app</web-resource-name>
-            <url-pattern>/app/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>user</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <!-- Security -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>s-ramp-ui</web-resource-name>
+      <url-pattern>/index.html</url-pattern>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>s-ramp-rest</web-resource-name>
+      <url-pattern>/rest/*</url-pattern>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>s-ramp-app</web-resource-name>
+      <url-pattern>/app/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>user</role-name>
+    </auth-constraint>
+  </security-constraint>
 
-    <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>governance</realm-name>
-    </login-config>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>governance</realm-name>
+  </login-config>
 
-    <security-role>
-        <role-name>user</role-name>
-    </security-role>
+  <security-role>
+    <role-name>user</role-name>
+  </security-role>
 
 </web-app>

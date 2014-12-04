@@ -127,26 +127,39 @@
       <directoryMode>0755</directoryMode>
       <fileMode>0755</fileMode>
     </dependencySet>
-    <!-- KeyCloak Modules -->
+    <!-- Keycloak Modules -->
     <dependencySet>
-        <outputDirectory>bin</outputDirectory>
+      <outputDirectory>bin</outputDirectory>
+      <includes>
+        <include>org.keycloak:keycloak-war-dist-all:zip</include>
+      </includes>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>false</useProjectAttachments>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <useTransitiveFiltering>false</useTransitiveFiltering>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0755</fileMode>
+      <unpack>true</unpack>
+      <unpackOptions>
         <includes>
-          <include>org.keycloak:keycloak-war-dist-all:zip</include>
+          <include>**/configuration/**</include>
+          <include>**/deployments/**</include>
         </includes>
-        <useProjectArtifact>false</useProjectArtifact>
-        <useProjectAttachments>false</useProjectAttachments>
-        <useTransitiveDependencies>false</useTransitiveDependencies>
-        <useTransitiveFiltering>false</useTransitiveFiltering>
-        <directoryMode>0755</directoryMode>
-        <fileMode>0755</fileMode>
-        <unpack>true</unpack>
-        <unpackOptions>
-            <includes>
-                <include>**/configuration/**</include>
-                <include>**/deployments/**</include>
-                <include>**/keycloak-eap6-adapter-dist-*.zip</include>
-            </includes>
-        </unpackOptions>
+      </unpackOptions>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>bin</outputDirectory>
+      <includes>
+        <include>org.keycloak:keycloak-eap6-adapter-dist:zip</include>
+        <include>org.keycloak:keycloak-tomcat7-adapter-dist:zip</include>
+      </includes>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>false</useProjectAttachments>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <useTransitiveFiltering>false</useTransitiveFiltering>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0755</fileMode>
+      <unpack>false</unpack>
     </dependencySet>
     <!-- The S-RAMP demos -->
     <dependencySet>

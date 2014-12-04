@@ -58,35 +58,7 @@
           </xsl:element>
           <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
             <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.provider</xsl:attribute>
-            <xsl:attribute name="value">org.overlord.sramp.ui.server.api.SAMLBearerTokenAuthenticationProvider</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.issuer</xsl:attribute>
-            <xsl:attribute name="value">/s-ramp-ui</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.service</xsl:attribute>
-            <xsl:attribute name="value">/s-ramp-server</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.sign-assertions</xsl:attribute>
-            <xsl:attribute name="value">true</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.keystore</xsl:attribute>
-            <xsl:attribute name="value">${overlord.auth.saml-keystore}</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.keystore-password</xsl:attribute>
-            <xsl:attribute name="value">${overlord.auth.saml-keystore-password}</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.key-alias</xsl:attribute>
-            <xsl:attribute name="value">${overlord.auth.saml-key-alias}</xsl:attribute>
-          </xsl:element>
-          <xsl:element name="property" namespace="urn:jboss:domain:overlord-configuration:1.0">
-            <xsl:attribute name="name">s-ramp-ui.atom-api.authentication.saml.key-password</xsl:attribute>
-            <xsl:attribute name="value">${overlord.auth.saml-key-alias-password}</xsl:attribute>
+            <xsl:attribute name="value">org.overlord.sramp.ui.server.api.KeycloakBearerTokenAuthenticationProvider</xsl:attribute>
           </xsl:element>
         </xsl:element>
       </xsl:element>
