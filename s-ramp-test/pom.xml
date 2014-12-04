@@ -35,13 +35,6 @@
     </dependency>
     
     <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-installer</artifactId>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-api</artifactId>
       <scope>test</scope>
@@ -200,12 +193,6 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-idp-tomcat7</artifactId>
-          <type>war</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
           <groupId>org.overlord.sramp</groupId>
           <artifactId>s-ramp-server-tomcat7</artifactId>
           <type>war</type>
@@ -300,18 +287,6 @@
         </dependency>
         <dependency>
           <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-idp-eap6</artifactId>
-          <type>war</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-auth-jboss7</artifactId>
-          <type>jar</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
           <artifactId>overlord-commons-dist-eap6</artifactId>
           <type>zip</type>
           <scope>test</scope>
@@ -389,18 +364,6 @@
         </dependency>
         <dependency>
           <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-idp-eap6</artifactId>
-          <type>war</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-auth-jboss7</artifactId>
-          <type>jar</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
           <artifactId>overlord-commons-dist-eap6</artifactId>
           <type>zip</type>
           <scope>test</scope>
@@ -474,18 +437,6 @@
           <artifactId>modeshape-distribution</artifactId>
           <type>zip</type>
           <classifier>jbosseap-dist</classifier>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-idp-eap6</artifactId>
-          <type>war</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-auth-jboss7</artifactId>
-          <type>jar</type>
           <scope>test</scope>
         </dependency>
         <dependency>

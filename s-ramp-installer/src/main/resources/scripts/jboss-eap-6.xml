@@ -26,15 +26,15 @@
     <echo>----------------------------------</echo>
     <echo>Installing KeyCloak</echo>
     <echo>----------------------------------</echo>
-	<copy todir="${s-ramp.appserver.dir}/standalone/deployments" >
-		<fileset dir="${s-ramp.keycloak.path}/deployments" />
-	</copy>
-	<copy todir="${s-ramp.appserver.dir}/standalone/configuration" >
-		<fileset dir="${s-ramp.keycloak.path}/configuration" />
-	</copy>
-	<copy todir="${s-ramp.appserver.dir}/standalone/configuration" >
-		<fileset dir="${s-ramp.updates.dir}/configuration" />
-	</copy>
+    <copy todir="${s-ramp.appserver.dir}/standalone/deployments" >
+      <fileset dir="${s-ramp.keycloak.path}/deployments" />
+    </copy>
+    <copy todir="${s-ramp.appserver.dir}/standalone/configuration" >
+      <fileset dir="${s-ramp.keycloak.path}/configuration" />
+    </copy>
+    <copy todir="${s-ramp.appserver.dir}/standalone/configuration" >
+      <fileset dir="${s-ramp.updates.dir}/configuration" />
+    </copy>
 
     <unzip src="${s-ramp.keycloak.adapter}" dest="${s-ramp.appserver.dir}"/>
 

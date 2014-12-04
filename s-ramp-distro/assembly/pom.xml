@@ -14,11 +14,6 @@
     <!-- Overlord Commons -->
     <dependency>
       <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-installer</artifactId>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-dist-eap6</artifactId>
       <type>zip</type>
     </dependency>
@@ -26,25 +21,6 @@
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-ant</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-auth-jboss7</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-eap6</artifactId>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-tomcat7</artifactId>
-      <type>war</type>
-    </dependency>
-    <!--<dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-idp-jetty8</artifactId>
-      <type>war</type>
-    </dependency>-->
     <dependency>
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-codec</artifactId>
@@ -199,26 +175,61 @@
     </dependency>
     
     
-	<dependency>
-		<groupId>commons-codec</groupId>
-		<artifactId>commons-codec</artifactId>
-	</dependency>    
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
 
     <!-- Keycloak -->
     <dependency>
-        <groupId>org.keycloak</groupId>
-        <artifactId>keycloak-war-dist-all</artifactId>
-        <type>zip</type>
-        <exclusions>
-            <exclusion>
-                <groupId>org.keycloak</groupId>
-                <artifactId>keycloak-undertow-adapter</artifactId>
-            </exclusion>
-            <exclusion>
-                <groupId>org.keycloak</groupId>
-                <artifactId>keycloak-example-themes-dist</artifactId>
-            </exclusion>
-        </exclusions>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-war-dist-all</artifactId>
+      <type>zip</type>
+      <exclusions>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-as7-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-tomcat6-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-tomcat8-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-jetty81-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-jetty91-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-jetty92-adapter-dist</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.keycloak</groupId>
+          <artifactId>keycloak-example-themes-dist</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-wildfly-adapter-dist</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-eap6-adapter-dist</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-tomcat7-adapter-dist</artifactId>
+      <type>zip</type>
     </dependency>
 
   </dependencies>
@@ -325,9 +336,6 @@
                 <phase>install</phase>
                 <configuration>
                   <tasks>
-                    <property name="overlord-commons.idp.download.url" value="file:///${maven.dependency.org.overlord.overlord-commons-idp-eap6.war.path}" />
-                    <property name="overlord-commons.auth.download.url" value="file:///${maven.dependency.org.overlord.overlord-commons-auth.jar.path}" />
-
                     <ant dir="${basedir}/src/main/resources/ROOT" antfile="${basedir}/src/main/resources/ROOT/build.xml">
                       <target name="install" />
                     </ant>
@@ -349,19 +357,7 @@
     <profile>
       <id>test-install-tomcat7</id>
       <dependencies>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-auth</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-auth-tomcat7</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-idp-tomcat7</artifactId>
-          <type>war</type>
-        </dependency>
+
       </dependencies>
       <build>
         <plugins>
@@ -384,14 +380,6 @@
                   <tasks>
                     <unzip src="apache-tomcat-7.0.47.zip" dest="${project.build.directory}" overwrite="false" />
                     <property name="appserver.id" value="tomcat-7" />
-                    <property name="overlord-commons.install.dir" value="${project.build.directory}" />
-                    <property name="overlord-commons.appserver.dir" location="${project.build.directory}/apache-tomcat-7.0.47" />
-
-                    <!-- Overlord Commons Installer and Dependencies -->
-                    <property name="overlord-commons.idp.download.url" value="file:///${maven.dependency.org.overlord.overlord-commons-idp-tomcat7.war.path}" />
-                    <property name="overlord-commons.lib.overlord-commons-auth.download.url" value="file:///${maven.dependency.org.overlord.overlord-commons-auth.jar.path}" />
-                    <property name="overlord-commons.lib.overlord-commons-auth-tomcat7.download.url" value="file:///${maven.dependency.org.overlord.overlord-commons-auth-tomcat7.jar.path}" />
-
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
                       <target name="install" />
                     </ant>
