@@ -105,7 +105,7 @@
     <version.org.jboss.errai>2.4.4.Final</version.org.jboss.errai>
     <version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>2.1.19.Final</version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>
     <version.org.modeshape>3.8.0.Final</version.org.modeshape>
-    <version.org.overlord.overlord-commons>2.0.13-SNAPSHOT</version.org.overlord.overlord-commons>
+    <version.org.overlord.overlord-commons>3.0.0-SNAPSHOT</version.org.overlord.overlord-commons>
     <version.org.switchyard>2.0.0.Alpha1</version.org.switchyard>
 
     <!-- BOM Overrides -->
@@ -577,11 +577,6 @@
 
       <!-- Overlord Commons -->
       <dependency>
-        <groupId>org.overlord.commons.bundles</groupId>
-        <artifactId>overlord-commons-bundles-maven</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-      </dependency>
-      <dependency>
         <groupId>org.overlord</groupId>
         <artifactId>overlord-commons-ant</artifactId>
         <version>${version.org.overlord.overlord-commons}</version>
@@ -598,22 +593,6 @@
       </dependency>
       <dependency>
         <groupId>org.overlord</groupId>
-        <artifactId>overlord-commons-dist-eap6</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-        <type>zip</type>
-      </dependency>
-      <!--<dependency>
-        <groupId>org.overlord</groupId>
-        <artifactId>overlord-commons-errai-fuse-support</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.overlord</groupId>
-        <artifactId>overlord-commons-osgi</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-      </dependency>-->
-      <dependency>
-        <groupId>org.overlord</groupId>
         <artifactId>overlord-commons-services</artifactId>
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>
@@ -627,16 +606,6 @@
         <artifactId>overlord-commons-dev</artifactId>
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>
-      <dependency>
-	  	<groupId>org.overlord</groupId>
-	   	<artifactId>overlord-commons-codec</artifactId>
-       	<version>${version.org.overlord.overlord-commons}</version>	      
-      </dependency>
-      <!--<dependency>
-        <groupId>org.overlord</groupId>
-        <artifactId>overlord-commons-karaf-commands</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-      </dependency>-->
 
       <!-- Apache Commons -->
       <dependency>

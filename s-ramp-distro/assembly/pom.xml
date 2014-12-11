@@ -14,17 +14,8 @@
     <!-- Overlord Commons -->
     <dependency>
       <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-dist-eap6</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-ant</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-codec</artifactId>
-    </dependency>    
     <!-- S-RAMP Installer -->
     <dependency>
       <groupId>org.overlord.sramp</groupId>
@@ -172,12 +163,6 @@
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-javadoc</artifactId>
       <classifier>javadoc</classifier>
-    </dependency>
-    
-    
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
     </dependency>
 
     <!-- Keycloak -->

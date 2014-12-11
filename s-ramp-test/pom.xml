@@ -23,16 +23,6 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-codec</artifactId>
-      <scope>test</scope>
-    </dependency>
     
     <dependency>
       <groupId>org.overlord.sramp</groupId>
@@ -286,12 +276,6 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-dist-eap6</artifactId>
-          <type>zip</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
           <groupId>org.overlord.sramp</groupId>
           <artifactId>s-ramp-server-eap6</artifactId>
           <type>war</type>
@@ -363,12 +347,6 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-dist-eap6</artifactId>
-          <type>zip</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
           <groupId>org.overlord.sramp</groupId>
           <artifactId>s-ramp-server-eap6</artifactId>
           <type>war</type>
@@ -437,12 +415,6 @@
           <artifactId>modeshape-distribution</artifactId>
           <type>zip</type>
           <classifier>jbosseap-dist</classifier>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.overlord</groupId>
-          <artifactId>overlord-commons-dist-eap6</artifactId>
-          <type>zip</type>
           <scope>test</scope>
         </dependency>
         <dependency>
