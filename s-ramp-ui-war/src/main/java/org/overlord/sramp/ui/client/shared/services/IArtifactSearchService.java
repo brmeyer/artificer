@@ -30,7 +30,8 @@ import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
  *
  * @author eric.wittmann@redhat.com
  */
-@Path("artifacts")
+//@Path("artifacts")
+@Path("search")
 public interface IArtifactSearchService {
 
     /**
@@ -38,7 +39,7 @@ public interface IArtifactSearchService {
      * @throws SrampUiException
      */
     @POST
-    @Path("search")
+//    @Path("search")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ArtifactResultSetBean search(ArtifactSearchBean searchBean) throws SrampUiException;
