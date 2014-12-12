@@ -48,6 +48,4 @@
          <property name="serverConfig">standalone-full.xml</property>
       </configuration>
    </container>
-   
-   <!-- TODO: Jetty -->
 </arquillian>

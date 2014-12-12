@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.client.ClientResponse;
@@ -29,7 +30,6 @@ import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartConstants;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartRelatedOutput;
-import org.jgroups.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Artifact;

@@ -9,7 +9,6 @@
   </parent>
 
   <artifactId>s-ramp-test</artifactId>
-  <packaging>jar</packaging>
   <name>S-RAMP Test</name>
   <description>A general test package supporting various integration tests.</description>
 
