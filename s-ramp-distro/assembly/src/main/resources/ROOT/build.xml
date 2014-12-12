@@ -82,7 +82,7 @@
         </then>
         <else>
             <!-- default to 6.2+ -->
-            <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/AS/EAP/modeshape-distribution-${version.org.modeshape}-jbosseap-dist.zip" />
+            <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/AS/EAP/modeshape-distribution-3.8.0.Final-jbosseap-dist.zip" />
         </else>
     </if>
 

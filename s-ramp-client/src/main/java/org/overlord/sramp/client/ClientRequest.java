@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.overlord.sramp.atom.client;
-
-import javax.ws.rs.core.UriBuilder;
+package org.overlord.sramp.client;
 
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.specimpl.UriBuilderImpl;
+import org.jboss.resteasy.specimpl.ResteasyUriBuilder;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.util.HttpHeaderNames;
 import org.overlord.sramp.atom.MediaType;
@@ -29,9 +27,11 @@ import org.overlord.sramp.atom.i18n.Messages;
 import org.overlord.sramp.atom.providers.HttpResponseProvider;
 import org.overlord.sramp.atom.providers.SrampAtomExceptionProvider;
 
+import javax.ws.rs.core.UriBuilder;
+
 /**
  * Extends the RESTEasy {@link org.jboss.resteasy.client.ClientRequest} class in order to provide a
- * {@link ClientExecutor} and {@link ResteasyProviderFactory} without requiring clients to pass them in.
+ * {@link org.jboss.resteasy.client.ClientExecutor} and {@link org.jboss.resteasy.spi.ResteasyProviderFactory} without requiring clients to pass them in.
  *
  * Additionally, this class overrides the various http methods (post, get, put) in order to implement
  * some error handling.  These methods will throw an appropriate exception now (when possible), rather
@@ -52,11 +52,11 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	}
 
 	/**
-	 * Creates a {@link UriBuilder} for the given URI template.
+	 * Creates a {@link javax.ws.rs.core.UriBuilder} for the given URI template.
 	 * @param uriTemplate
 	 */
 	private static UriBuilder getBuilder(String uriTemplate) {
-		return new UriBuilderImpl().uriTemplate(uriTemplate);
+		return new ResteasyUriBuilder().uriTemplate(uriTemplate);
 	}
 
     /**
@@ -77,7 +77,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
     }
 
 	/**
-	 * @see org.jboss.resteasy.client.ClientRequest#post(java.lang.Class)
+	 * @see org.jboss.resteasy.client.ClientRequest#post(Class)
 	 */
 	@Override
 	public <T> ClientResponse<T> post(Class<T> returnType) throws Exception {
@@ -98,7 +98,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	}
 
 	/**
-	 * @see org.jboss.resteasy.client.ClientRequest#get(java.lang.Class)
+	 * @see org.jboss.resteasy.client.ClientRequest#get(Class)
 	 */
 	@Override
 	public <T> ClientResponse<T> get(Class<T> returnType) throws Exception {
@@ -119,7 +119,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	}
 
 	/**
-	 * @see org.jboss.resteasy.client.ClientRequest#put(java.lang.Class)
+	 * @see org.jboss.resteasy.client.ClientRequest#put(Class)
 	 */
 	@Override
 	public <T> ClientResponse<T> put(Class<T> returnType) throws Exception {
@@ -140,7 +140,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	}
 
 	/**
-	 * @see org.jboss.resteasy.client.ClientRequest#delete(java.lang.Class)
+	 * @see org.jboss.resteasy.client.ClientRequest#delete(Class)
 	 */
 	@Override
 	public <T> ClientResponse<T> delete(Class<T> returnType) throws Exception {

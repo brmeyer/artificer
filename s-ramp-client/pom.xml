@@ -43,25 +43,32 @@
     </dependency>
 
     <!-- RESTEasy -->
+    <!-- Note the scopes!  There are a few things specific to RE 4 that are not backward compatible with 3.  However,
+    we need to continue supporting EAP 6.  So, for now, simply provide these! -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-atom-provider</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxb-provider</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>jaxrs-api</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-multipart-provider</artifactId>
+      <scope>provided</scope>
       <exclusions>
         <exclusion>
           <artifactId>servlet-api</artifactId>

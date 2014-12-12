@@ -40,7 +40,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- ModeShape -->
+    <!-- ModeShape/Infinispan -->
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-jcr-api</artifactId>
@@ -52,6 +52,13 @@
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-jcr</artifactId>
+      <exclusions>
+        <exclusion>
+          <!-- Override with the newer infinispan, further below -->
+          <groupId>org.infinispan</groupId>
+          <artifactId>infinispan-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jboss.marshalling</groupId>
@@ -68,6 +75,15 @@
     <dependency>
       <groupId>org.jboss</groupId>
       <artifactId>staxmapper</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-core</artifactId>
     </dependency>
 
     <!-- Apache Commons -->

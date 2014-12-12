@@ -102,7 +102,6 @@
     <version.org.jboss.aesh>0.33.13</version.org.jboss.aesh>
     <version.org.jboss.errai>2.4.4.Final</version.org.jboss.errai>
     <version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>2.1.19.Final</version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>
-    <version.org.modeshape>3.8.0.Final</version.org.modeshape>
     <version.org.overlord.overlord-commons>3.0.0-SNAPSHOT</version.org.overlord.overlord-commons>
     <version.org.switchyard>2.0.0.Alpha1</version.org.switchyard>
     <version.org.keycloak>1.1.0.Beta2</version.org.keycloak>
@@ -112,6 +111,9 @@
     <version.org.apache.httpcomponents.httpclient>4.2.1</version.org.apache.httpcomponents.httpclient>
     <version.org.apache.httpcomponents.httpcore>4.2.1</version.org.apache.httpcomponents.httpcore>
     <version.org.apache.httpcomponents.httpmime>4.2.1</version.org.apache.httpcomponents.httpmime>
+    <version.org.modeshape>4.0.0.Final</version.org.modeshape>
+    <version.org.infinispan>6.0.2.Final</version.org.infinispan>
+    <version.resteasy>3.0.8.Final</version.resteasy>
   </properties>
 
   <build>
@@ -649,19 +651,16 @@
         <version>${version.org.modeshape}</version>
       </dependency>
       <dependency>
-        <groupId>org.modeshape</groupId>
-        <artifactId>modeshape-distribution</artifactId>
-        <version>${version.org.modeshape}</version>
-        <type>zip</type>
-        <classifier>jbosseap-dist</classifier>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-commons</artifactId>
+        <version>${version.org.infinispan}</version>
       </dependency>
       <dependency>
-        <groupId>org.modeshape</groupId>
-        <artifactId>modeshape-distribution</artifactId>
-        <version>${version.org.modeshape}</version>
-        <type>zip</type>
-        <classifier>jbossas-71-dist</classifier>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-core</artifactId>
+        <version>${version.org.infinispan}</version>
       </dependency>
+
       <dependency>
         <groupId>jstl</groupId>
         <artifactId>jstl</artifactId>
@@ -891,6 +890,32 @@
         <groupId>org.jboss.errai</groupId>
         <artifactId>errai-marshalling</artifactId>
         <version>${version.org.jboss.errai}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxrs</artifactId>
+        <version>${version.resteasy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-atom-provider</artifactId>
+        <version>${version.resteasy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxb-provider</artifactId>
+        <version>${version.resteasy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-multipart-provider</artifactId>
+        <version>${version.resteasy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>jaxrs-api</artifactId>
+        <version>${version.resteasy}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

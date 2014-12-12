@@ -10,6 +10,18 @@
   <packaging>pom</packaging>
   <name>S-RAMP Distribution: Assembly</name>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.modeshape</groupId>
+        <artifactId>modeshape-distribution</artifactId>
+        <version>3.8.0.Final</version>
+        <classifier>jbosseap-dist</classifier>
+        <type>zip</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- Overlord Commons -->
     <dependency>
@@ -148,6 +160,13 @@
     </dependency>
 
     <!-- ModeShape Distro -->
+    <!--<dependency>
+      <groupId>org.modeshape</groupId>
+      <artifactId>modeshape-distribution</artifactId>
+      <version>${version.org.modeshape}</version>
+      <classifier>jboss-wf8-dist</classifier>
+      <type>zip</type>
+    </dependency>-->
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-distribution</artifactId>
