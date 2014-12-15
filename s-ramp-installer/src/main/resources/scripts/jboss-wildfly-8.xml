@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Install S-RAMP into JBoss EAP 6" default="install">
+<project name="Install S-RAMP into Wildfly 8" default="install">
 
-  <!-- Configure properties for JBoss EAP 6 -->
-  <target name="properties-jboss-eap-6">
+  <!-- Configure properties for Wildfly 8 -->
+  <target name="properties-jboss-wildfly-8">
     <property name="s-ramp.updates.dir" location="${basedir}/updates" />
   
     <property name="s-ramp.jboss.bin.dir" location="${s-ramp.appserver.dir}/bin" />
@@ -11,15 +11,15 @@
     <property name="s-ramp.jboss.module.path" location="${s-ramp.appserver.dir}/modules" />
     <property name="s-ramp.jboss.deployments.dir" location="${s-ramp.appserver.dir}/standalone/deployments" />
 
-    <property name="s-ramp.s-ramp-server.war.path" location="bin/s-ramp-server-eap6-${s-ramp.version}.war" />
-    <property name="s-ramp.s-ramp-ui.war.path" location="bin/s-ramp-ui-war-eap6-${s-ramp.version}.war" />
+    <property name="s-ramp.s-ramp-server.war.path" location="bin/s-ramp-server-wildfly8-${s-ramp.version}.war" />
+    <property name="s-ramp.s-ramp-ui.war.path" location="bin/s-ramp-ui-war-wildfly8-${s-ramp.version}.war" />
   </target>
 
   <!-- Install S-RAMP -->
-  <target name="install" depends="properties-jboss-eap-6">
+  <target name="install" depends="properties-jboss-wildfly-8">
     <echo message=" " />
     <echo message="#############################################" />
-    <echo message="# Installing S-RAMP into JBoss EAP 6. #" />
+    <echo message="# Installing S-RAMP into Wildfly 8. #" />
     <echo message="#############################################" />
 
     <echo>----------------------------------</echo>
@@ -48,7 +48,7 @@
     <echo>-----------------------------------</echo>
     <echo>Configuring S-RAMP</echo>
     <echo>-----------------------------------</echo>
-    <antcall target="config-jboss-eap-6" />
+    <antcall target="config-jboss-wildfly-8" />
 
     <echo message=" " />
     <echo message="########" />
@@ -58,8 +58,8 @@
   </target>
   
 
-  <!-- Configure JBoss EAP 6 -->
-  <target name="config-jboss-eap-6">
+  <!-- Configure Wildfly 8 -->
+  <target name="config-jboss-wildfly-8">
     <echo>-----------------------------------</echo>
     <echo>Installing Modeshape Service</echo>
     <echo>-----------------------------------</echo>
@@ -85,18 +85,18 @@
     <transformConfig config="${s-ramp.jboss.config.dir}/standalone-ha.xml" />
 
     <!-- Patch solr if needed -->
-    <xslt
-      style="${s-ramp.updates.dir}/xslt/patchSolr-jboss-eap-6.xslt"
+    <!--<xslt
+      style="${s-ramp.updates.dir}/xslt/patchSolr-jboss-wildfly-8.xslt"
       in="${s-ramp.jboss.module.path}/org/apache/solr/3.6.2/module.xml"
       out="${s-ramp.install.dir}/_tmp_solr_module.xml" />
     <copy file="${s-ramp.install.dir}/_tmp_solr_module.xml" tofile="${s-ramp.jboss.module.path}/org/apache/solr/3.6.2/module.xml" overwrite="true" />
-    <delete file="${s-ramp.install.dir}/_tmp_solr_module.xml" />
+    <delete file="${s-ramp.install.dir}/_tmp_solr_module.xml" />-->
 
     <!-- Deploy the datasource -->
     <copy file="${s-ramp.updates.dir}/sramp-ds.xml" todir="${s-ramp.jboss.deployments.dir}" overwrite="true" />
     
     <xslt
-      style="${s-ramp.updates.dir}/xslt/configureJMS-jboss-eap-6.xslt"
+      style="${s-ramp.updates.dir}/xslt/configureJMS-jboss-wildfly-8.xslt"
       in="${s-ramp.jboss.config.dir}/standalone-full.xml"
       out="${s-ramp.install.dir}/_tmp_standalone-ms.xml" />
     <copy file="${s-ramp.install.dir}/_tmp_standalone-ms.xml" tofile="${s-ramp.jboss.config.dir}/standalone-full.xml" overwrite="true" />

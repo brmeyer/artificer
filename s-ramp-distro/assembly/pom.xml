@@ -15,8 +15,22 @@
       <dependency>
         <groupId>org.modeshape</groupId>
         <artifactId>modeshape-distribution</artifactId>
+        <version>${version.org.modeshape}</version>
+        <classifier>jboss-wf8-dist</classifier>
+        <type>zip</type>
+      </dependency>
+      <dependency>
+        <groupId>org.modeshape</groupId>
+        <artifactId>modeshape-distribution</artifactId>
         <version>3.8.0.Final</version>
         <classifier>jbosseap-dist</classifier>
+        <type>zip</type>
+      </dependency>
+      <dependency>
+        <groupId>org.modeshape</groupId>
+        <artifactId>modeshape-distribution</artifactId>
+        <version>3.6.0.Final</version>
+        <classifier>jbosseap-61-dist</classifier>
         <type>zip</type>
       </dependency>
     </dependencies>
@@ -54,11 +68,6 @@
       <artifactId>s-ramp-server-tomcat7</artifactId>
       <type>war</type>
     </dependency>
-    <!--<dependency>
-      <groupId>org.overlord.sramp</groupId>
-      <artifactId>s-ramp-server-jetty8</artifactId>
-      <type>war</type>
-    </dependency>-->
     <dependency>
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-server-eap6</artifactId>
@@ -66,17 +75,22 @@
     </dependency>
     <dependency>
       <groupId>org.overlord.sramp</groupId>
-      <artifactId>s-ramp-ui-war-tomcat7</artifactId>
+      <artifactId>s-ramp-server-wildfly8</artifactId>
       <type>war</type>
     </dependency>
-    <!--<dependency>
-      <groupId>org.overlord.sramp</groupId>
-      <artifactId>s-ramp-ui-war-jetty8</artifactId>
-      <type>war</type>
-    </dependency>-->
     <dependency>
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-ui-war-eap6</artifactId>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-ui-war-tomcat7</artifactId>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-ui-war-wildfly8</artifactId>
       <type>war</type>
     </dependency>
 
@@ -159,18 +173,23 @@
       <type>jdocbook</type>
     </dependency>
 
-    <!-- ModeShape Distro -->
-    <!--<dependency>
+    <!-- ModeShape Distros -->
+    <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-distribution</artifactId>
-      <version>${version.org.modeshape}</version>
       <classifier>jboss-wf8-dist</classifier>
       <type>zip</type>
-    </dependency>-->
+    </dependency>
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-distribution</artifactId>
       <classifier>jbosseap-dist</classifier>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.modeshape</groupId>
+      <artifactId>modeshape-distribution</artifactId>
+      <classifier>jbosseap-61-dist</classifier>
       <type>zip</type>
     </dependency>
     
@@ -276,46 +295,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>community</id>
-      <activation>
-        <property>
-          <name>!product</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!-- NOTE: Need to temporarily include the old ModeShape 3.6 distro (EAP 6.1) for the assembly,
-               *without* declaring it as a dependency.  The assembly pulls this in as a fileSet. -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.modeshape</groupId>
-                      <artifactId>modeshape-distribution</artifactId>
-                      <version>3.6.0.Final</version>
-                      <classifier>jbosseap-61-dist</classifier>
-                      <type>zip</type>
-                    </artifactItem>
-                  </artifactItems>
-                  <outputDirectory>${project.build.directory}/modeshape</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <!-- ***************************************** -->
     <!-- Profile to *test* installing into EAP 6 -->
     <!-- ***************************************** -->

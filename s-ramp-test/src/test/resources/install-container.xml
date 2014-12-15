@@ -15,6 +15,11 @@
   <property name="filename.eap63" value="jboss-eap-6.3.0.zip" />
   <property name="dir.eap63" value="jboss-eap-6.3" />
 
+  <property name="filename.wildfly8" value="wildfly-8.2.0.Final.zip" />
+  <property name="download.url.wildfly8"
+            value="http://download.jboss.org/wildfly/8.2.0.Final/${filename.tomcat}" />
+  <property name="dir.wildfly8" value="wildfly-8.2.0.Final" />
+
   <target name="install-tomcat">
     <property name="name" value="Tomcat" />
     <property name="filename" value="${filename.tomcat}" />
@@ -44,6 +49,14 @@
     <property name="name" value="JBoss EAP 6.3" />
     <property name="filename" value="${filename.eap63}" />
     <property name="dir" value="target/${dir.eap63}" />
+    <antcall target="install" />
+  </target>
+
+  <target name="install-wildfly8">
+    <property name="name" value="Wildfly 8.2" />
+    <property name="filename" value="${filename.wildfly8}" />
+    <property name="dir" value="target/${dir.wildfly8}" />
+    <property name="download.url" value="${download.url.wildfly8}" />
     <antcall target="install" />
   </target>
 

@@ -18,7 +18,6 @@ package org.overlord.sramp.client;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.specimpl.ResteasyUriBuilder;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.util.HttpHeaderNames;
 import org.overlord.sramp.atom.MediaType;
@@ -51,12 +50,35 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 		providerFactory.registerProvider(HttpResponseProvider.class);
 	}
 
+    private static Class<?> uriBuilderClass = null;
+    static {
+        // Extremely hacky way of doing this.  However, for now, I want to support both EAP 6 (RESTEasy 2) and
+        // Wildfly (RESTEasy 3).  Rather than introducing a new UriBuilderProvider service, just keep it simple.
+        // Note that I'm naively assuming it will always been one or the other...
+        try {
+            // RE 3
+            uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.ResteasyUriBuilder");
+        } catch (ClassNotFoundException e) {
+            try {
+                // RE 2
+                uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.UriBuilderImpl");
+            } catch (ClassNotFoundException e1) {
+            }
+        }
+    }
+
 	/**
 	 * Creates a {@link javax.ws.rs.core.UriBuilder} for the given URI template.
 	 * @param uriTemplate
 	 */
 	private static UriBuilder getBuilder(String uriTemplate) {
-		return new ResteasyUriBuilder().uriTemplate(uriTemplate);
+        try {
+            UriBuilder uriBuilder = (UriBuilder) uriBuilderClass.newInstance();
+            return uriBuilder.uri(uriTemplate);
+        } catch (Exception e) {
+            // TODO
+            return null;
+        }
 	}
 
     /**
