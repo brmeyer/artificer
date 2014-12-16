@@ -44,6 +44,8 @@
           tofile="${s-ramp.jboss.deployments.dir}/s-ramp-server.war" overwrite="true" />
     <copy file="${s-ramp.s-ramp-ui.war.path}"
           tofile="${s-ramp.jboss.deployments.dir}/s-ramp-ui.war" overwrite="true" />
+    <copy file="${s-ramp.updates.dir}/sramp.properties" todir="${s-ramp.jboss.config.dir}" overwrite="true" />
+    <copy file="${s-ramp.updates.dir}/sramp-ui.properties" todir="${s-ramp.jboss.config.dir}" overwrite="true" />
 
     <echo>-----------------------------------</echo>
     <echo>Configuring S-RAMP</echo>
