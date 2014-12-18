@@ -151,8 +151,6 @@ public class SrampDevServer extends ErraiDevServer {
         srampUI.setContextPath("/s-ramp-ui");
         srampUI.setWelcomeFiles(new String[]{"index.html"});
         srampUI.setResourceBase(environment.getModuleDir("s-ramp-ui").getCanonicalPath());
-        // TODO: Move this to S-RAMP or embed it?
-//        srampUI.addFilter(HttpRequestThreadLocalFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(GWTCacheControlFilter.class, "/app/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(GWTCacheControlFilter.class, "/rest/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(GWTCacheControlFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
@@ -201,11 +199,11 @@ public class SrampDevServer extends ErraiDevServer {
         srampServer.addServlet(mvnServlet, "/maven/repository/*");
         srampServer.addServlet(mvnServlet, "/maven/repository");
         // TODO enable JSP support to test the repository listing
-        
-//        srampServer.addFilter(SamlBearerTokenAuthFilter.class, "/s-ramp/*", EnumSet.of(DispatcherType.REQUEST))
-//            .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
+
+        srampServer.addFilter(BasicAuthFilter.class, "/s-ramp/*", EnumSet.of(DispatcherType.REQUEST))
+                .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
         srampServer.addFilter(MavenRepositoryAuthFilter.class, "/maven/repository/*", EnumSet.of(DispatcherType.REQUEST))
-        .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
+                .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
         srampServer.addFilter(LocaleFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         srampServer.addFilter(ServletCredentialsFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
@@ -220,7 +218,7 @@ public class SrampDevServer extends ErraiDevServer {
     private SecurityHandler createSecurityHandler(boolean forUI) {
         Constraint constraint = new Constraint();
         constraint.setName(Constraint.__BASIC_AUTH);
-        constraint.setRoles(new String[]{"overlorduser"});
+        constraint.setRoles(new String[]{"user"});
         constraint.setAuthenticate(true);
 
         ConstraintMapping cm = new ConstraintMapping();
@@ -230,7 +228,7 @@ public class SrampDevServer extends ErraiDevServer {
         ConstraintSecurityHandler csh = new ConstraintSecurityHandler();
         csh.setSessionRenewedOnAuthentication(false);
         csh.setAuthenticator(new BasicAuthenticator());
-        csh.setRealmName("overlord");
+        csh.setRealmName("governance");
         if (forUI) {
             csh.addConstraintMapping(cm);
         }
@@ -243,7 +241,7 @@ public class SrampDevServer extends ErraiDevServer {
                 Subject subject = new Subject();
                 subject.getPrincipals().add(userPrincipal);
                 subject.getPrivateCredentials().add(credential);
-                String[] roles = new String[] { "overlorduser", "admin.sramp" };
+                String[] roles = new String[] { "user","readonly","readwrite","admin" };
                 for (String role : roles) {
                     subject.getPrincipals().add(new RolePrincipal(role));
                 }
