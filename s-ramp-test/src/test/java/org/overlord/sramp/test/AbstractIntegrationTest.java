@@ -58,7 +58,7 @@ public abstract class AbstractIntegrationTest {
 
     protected static final String USERNAME = System.getProperty("sramp.test.username", "admin"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    protected static final String PASSWORD = System.getProperty("sramp.test.password", "admin"); //$NON-NLS-1$ //$NON-NLS-2$
+    protected static final String PASSWORD = System.getProperty("sramp.test.password", "overlord1!"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @After
     public void cleanup() {

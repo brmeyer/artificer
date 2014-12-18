@@ -27,6 +27,7 @@ import org.overlord.sramp.atom.providers.HttpResponseProvider;
 import org.overlord.sramp.atom.providers.SrampAtomExceptionProvider;
 
 import javax.ws.rs.core.UriBuilder;
+import java.lang.reflect.Method;
 
 /**
  * Extends the RESTEasy {@link org.jboss.resteasy.client.ClientRequest} class in order to provide a
@@ -50,19 +51,21 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 		providerFactory.registerProvider(HttpResponseProvider.class);
 	}
 
-    private static Class<?> uriBuilderClass = null;
+    private static Method uriBuilderMethod = null;
     static {
         // Extremely hacky way of doing this.  However, for now, I want to support both EAP 6 (RESTEasy 2) and
         // Wildfly (RESTEasy 3).  Rather than introducing a new UriBuilderProvider service, just keep it simple.
         // Note that I'm naively assuming it will always been one or the other...
         try {
             // RE 3
-            uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.ResteasyUriBuilder");
-        } catch (ClassNotFoundException e) {
+            Class<?> uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.ResteasyUriBuilder");
+            uriBuilderMethod = uriBuilderClass.getMethod("fromUri", String.class);
+        } catch (Exception e) {
             try {
                 // RE 2
-                uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.UriBuilderImpl");
-            } catch (ClassNotFoundException e1) {
+                Class<?> uriBuilderClass = ClientRequest.class.getClassLoader().loadClass("org.jboss.resteasy.specimpl.UriBuilderImpl");
+                uriBuilderMethod = uriBuilderClass.getMethod("fromUri", String.class);
+            } catch (Exception e1) {
             }
         }
     }
@@ -73,8 +76,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	 */
 	private static UriBuilder getBuilder(String uriTemplate) {
         try {
-            UriBuilder uriBuilder = (UriBuilder) uriBuilderClass.newInstance();
-            return uriBuilder.uri(uriTemplate);
+            return (UriBuilder) uriBuilderMethod.invoke(null, uriTemplate);
         } catch (Exception e) {
             // TODO
             return null;
