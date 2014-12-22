@@ -36,8 +36,7 @@ public class BasicAuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         SimplePrincipal principal = new SimplePrincipal(SrampConfig.getMavenReadOnlyUsername());
-        principal.addRole("readonly." + SrampConfig.getJCRRepositoryName()); //$NON-NLS-1$
-        principal.addRole("readwrite." + SrampConfig.getJCRRepositoryName()); //$NON-NLS-1$
+        principal.addRole("admin." + SrampConfig.getJCRRepositoryName()); //$NON-NLS-1$
         chain.doFilter(wrapRequest(request, principal), response);
     }
 
