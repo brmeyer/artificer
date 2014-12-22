@@ -42,9 +42,6 @@
     <echo>-----------------------------------</echo>
     <echo>Configuring S-RAMP</echo>
     <echo>-----------------------------------</echo>
-    <property name="overlord-apps.dir" location="${s-ramp.tomcat.config.dir}/overlord-apps" />
-    <mkdir dir="${overlord-apps.dir}" />
-    <copy file="${s-ramp.updates.dir}/srampui-overlordapp.properties" todir="${overlord-apps.dir}" overwrite="true" />
     <copy file="${s-ramp.updates.dir}/sramp.properties" todir="${s-ramp.tomcat.config.dir}" overwrite="true" />
     <copy file="${s-ramp.updates.dir}/sramp-ui.properties" todir="${s-ramp.tomcat.config.dir}" overwrite="true" />
     <copy file="${s-ramp.updates.dir}/sramp-modeshape.json" todir="${s-ramp.tomcat.config.dir}" overwrite="true" />

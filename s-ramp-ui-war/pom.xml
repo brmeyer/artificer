@@ -85,10 +85,6 @@
     </dependency>
     <dependency>
       <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-uiheader</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-gwt</artifactId>
     </dependency>
 

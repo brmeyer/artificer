@@ -556,11 +556,6 @@
       </dependency>
       <dependency>
         <groupId>org.overlord</groupId>
-        <artifactId>overlord-commons-uiheader</artifactId>
-        <version>${version.org.overlord.overlord-commons}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.overlord</groupId>
         <artifactId>overlord-commons-dev</artifactId>
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>

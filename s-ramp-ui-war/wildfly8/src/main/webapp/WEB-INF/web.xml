@@ -78,23 +78,6 @@
   </filter-mapping>
 
   <servlet>
-    <servlet-name>OverlordHeaderDataJS</servlet-name>
-    <servlet-class>org.overlord.commons.ui.header.OverlordHeaderDataJS</servlet-class>
-    <init-param>
-      <param-name>app-id</param-name>
-      <param-value>s-ramp-ui</param-value>
-    </init-param>
-    <init-param>
-      <param-name>logout-url</param-name>
-      <param-value>/auth/realms/governance/tokens/logout?redirect_uri=/s-ramp-ui/index.html</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>OverlordHeaderDataJS</servlet-name>
-    <url-pattern>/js/overlord-header-data.js</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>ArtifactDownload</servlet-name>
     <servlet-class>org.overlord.sramp.ui.server.servlets.ArtifactDownloadServlet</servlet-class>
   </servlet>
@@ -128,6 +111,15 @@
   <servlet-mapping>
     <servlet-name>OntologyDownload</servlet-name>
     <url-pattern>/app/services/ontologyDownload</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>KeyCloakLogout</servlet-name>
+    <servlet-class>org.overlord.sramp.ui.server.servlets.KeyCloakLogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KeyCloakLogout</servlet-name>
+    <url-pattern>/app/services/logout</url-pattern>
   </servlet-mapping>
 
   <!-- Security -->
