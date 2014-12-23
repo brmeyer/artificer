@@ -15,19 +15,13 @@
  */
 package org.overlord.sramp.ui.client.shared.services;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import org.jboss.errai.common.client.api.interceptor.InterceptedCall;
 import org.overlord.sramp.ui.client.shared.beans.OntologyBean;
 import org.overlord.sramp.ui.client.shared.beans.OntologyResultSetBean;
 import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Provides a way to get/set ontology data.
@@ -35,6 +29,7 @@ import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
  * @author eric.wittmann@redhat.com
  */
 @Path("ontologies")
+@InterceptedCall(KeycloakBearerTokenInterceptor.class)
 public interface IOntologyService {
 
     /**

@@ -15,15 +15,16 @@
  */
 package org.overlord.sramp.ui.client.shared.services;
 
+import org.jboss.errai.common.client.api.interceptor.InterceptedCall;
+import org.overlord.sramp.ui.client.shared.beans.ArtifactResultSetBean;
+import org.overlord.sramp.ui.client.shared.beans.ArtifactSearchBean;
+import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import org.overlord.sramp.ui.client.shared.beans.ArtifactResultSetBean;
-import org.overlord.sramp.ui.client.shared.beans.ArtifactSearchBean;
-import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
 
 /**
  * Provides a way to search for artifacts.
@@ -31,6 +32,7 @@ import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
  * @author eric.wittmann@redhat.com
  */
 @Path("artifacts")
+@InterceptedCall(KeycloakBearerTokenInterceptor.class)
 public interface IArtifactSearchService {
 
     /**

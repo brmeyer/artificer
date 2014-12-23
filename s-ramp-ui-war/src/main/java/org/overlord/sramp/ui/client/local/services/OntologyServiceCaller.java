@@ -15,14 +15,8 @@
  */
 package org.overlord.sramp.ui.client.local.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.user.client.Command;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -34,8 +28,12 @@ import org.overlord.sramp.ui.client.shared.beans.OntologyResultSetBean;
 import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
 import org.overlord.sramp.ui.client.shared.services.IOntologyService;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.user.client.Command;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Client-side service for making Caller calls to the remote ontology service.  This service
@@ -48,7 +46,7 @@ import com.google.gwt.user.client.Command;
 public class OntologyServiceCaller {
 
     @Inject
-    private Caller<IOntologyServiceIntercepted> remoteOntologyService;
+    private Caller<IOntologyService> remoteOntologyService;
 
     private OntologyResultSetBean summaryCache = null;
     private Map<String, OntologyBean> ontologyCache = new HashMap<String, OntologyBean>();

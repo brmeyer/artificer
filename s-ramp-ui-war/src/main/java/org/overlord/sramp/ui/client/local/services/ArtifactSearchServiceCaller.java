@@ -15,9 +15,6 @@
  */
 package org.overlord.sramp.ui.client.local.services;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -29,6 +26,9 @@ import org.overlord.sramp.ui.client.shared.beans.ArtifactSearchBean;
 import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
 import org.overlord.sramp.ui.client.shared.services.IArtifactSearchService;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 /**
  * Client-side service for making Caller calls to the remote search service.
  *
@@ -38,7 +38,7 @@ import org.overlord.sramp.ui.client.shared.services.IArtifactSearchService;
 public class ArtifactSearchServiceCaller {
 
     @Inject
-    private Caller<IArtifactSearchServiceIntercepted> remoteSearchService;
+    private Caller<IArtifactSearchService> remoteSearchService;
 
     /**
      * Constructor.
