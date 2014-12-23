@@ -48,7 +48,7 @@ import com.google.gwt.user.client.Command;
 public class OntologyServiceCaller {
 
     @Inject
-    private Caller<IOntologyService> remoteOntologyService;
+    private Caller<IOntologyServiceIntercepted> remoteOntologyService;
 
     private OntologyResultSetBean summaryCache = null;
     private Map<String, OntologyBean> ontologyCache = new HashMap<String, OntologyBean>();

@@ -18,6 +18,25 @@
       erraiBusRemoteCommunicationEnabled = false;
     </script>
 
+    <script src="http://localhost:8080/auth/js/keycloak.js"></script>
+    <script>
+      keycloak = Keycloak({
+        url: 'http://localhost:8080/auth',
+        realm: 'governance',
+        clientId: 's-ramp-ui',
+        credentials: {
+          secret: 'password'
+        }
+      });
+      alert("TEST");
+      keycloak.init({ onLoad: 'login-required' }).success(function(authenticated) {
+        alert(authenticated ? 'authenticated' : 'not authenticated');
+        alert(keycloak.token);
+      }).error(function() {
+        alert('failed to initialize');
+      });
+    </script>
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

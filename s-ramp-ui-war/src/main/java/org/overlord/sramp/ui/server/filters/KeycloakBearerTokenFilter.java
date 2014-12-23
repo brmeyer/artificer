@@ -41,13 +41,14 @@ public class KeycloakBearerTokenFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        KeycloakSecurityContext session = (KeycloakSecurityContext) httpServletRequest.getAttribute(KeycloakSecurityContext.class.getName());
-        String bearerToken;
-        if (session != null) {
-            bearerToken = session.getTokenString();
-        } else {
-            bearerToken = "LOGGED_OUT";
-        }
+//        KeycloakSecurityContext session = (KeycloakSecurityContext) httpServletRequest.getAttribute(KeycloakSecurityContext.class.getName());
+//        String bearerToken;
+//        if (session != null) {
+//            bearerToken = session.getTokenString();
+//        } else {
+//            bearerToken = "LOGGED_OUT";
+//        }
+        String bearerToken = httpServletRequest.getHeader("Authorization");
         KeycloakBearerTokenAuthenticationProvider.setBearerToken(bearerToken);
         chain.doFilter(request, response);
         KeycloakBearerTokenAuthenticationProvider.clearBearerToken();

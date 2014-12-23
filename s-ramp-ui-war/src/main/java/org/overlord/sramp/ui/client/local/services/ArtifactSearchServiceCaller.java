@@ -38,7 +38,7 @@ import org.overlord.sramp.ui.client.shared.services.IArtifactSearchService;
 public class ArtifactSearchServiceCaller {
 
     @Inject
-    private Caller<IArtifactSearchService> remoteSearchService;
+    private Caller<IArtifactSearchServiceIntercepted> remoteSearchService;
 
     /**
      * Constructor.
