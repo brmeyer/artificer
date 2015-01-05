@@ -62,6 +62,7 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
+        super.doPost(req, response);
 		// Extract the relevant content from the POST'd form
 		if (ServletFileUpload.isMultipartContent(req)) {
 			Map<String, String> responseMap;
@@ -78,7 +79,9 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 					if (item.isFormField()) {
 						if (item.getFieldName().equals("artifactType")) { //$NON-NLS-1$
 							artifactType = item.getString();
-						}
+						} else if (item.getFieldName().equals("Authorization")) {
+                            setBearerToken(item.getString());
+                        }
 					} else {
 						fileName = item.getName();
 						if (fileName != null)
@@ -100,6 +103,7 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 				responseMap.put("exception-message", e.getMessage()); //$NON-NLS-1$
 				responseMap.put("exception-stack", ExceptionUtils.getRootStackTrace(e)); //$NON-NLS-1$
 			} finally {
+                cleanup();
 				IOUtils.closeQuietly(artifactContent);
 			}
 			writeToResponse(responseMap, response);

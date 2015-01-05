@@ -63,9 +63,10 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
+        super.doPost(req, response);
 		// Extract the relevant content from the POST'd form
 		if (ServletFileUpload.isMultipartContent(req)) {
-			Map<String, String> responseMap;
+            Map<String, String> responseMap;
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -76,7 +77,9 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 				List<FileItem> items = upload.parseRequest(req);
 				for (FileItem item : items) {
 					if (item.isFormField()) {
-					    // No form fields to process.
+                        if (item.getFieldName().equals("Authorization")) {
+                            setBearerToken(item.getString());
+                        }
 					} else {
 						fileName = item.getName();
 						if (fileName != null)
@@ -98,7 +101,8 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 				responseMap.put("exception-message", e.getMessage()); //$NON-NLS-1$
 				responseMap.put("exception-stack", ExceptionUtils.getRootStackTrace(e)); //$NON-NLS-1$
 			} finally {
-				IOUtils.closeQuietly(ontologyContent);
+                cleanup();
+                IOUtils.closeQuietly(ontologyContent);
 			}
 			writeToResponse(responseMap, response);
 		} else {

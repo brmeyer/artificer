@@ -35,7 +35,7 @@ import org.codehaus.jackson.JsonGenerator;
  *
  * @author eric.wittmann@redhat.com
  */
-public abstract class AbstractUploadServlet extends HttpServlet {
+public abstract class AbstractUploadServlet extends AbstractServlet {
 
 	private static final long serialVersionUID = AbstractUploadServlet.class.hashCode();
 

@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  * @author David Virgil Naranjo
  */
-public abstract class AbstractDownloadServlet extends HttpServlet {
+public abstract class AbstractDownloadServlet extends AbstractServlet {
 
     /**
      *

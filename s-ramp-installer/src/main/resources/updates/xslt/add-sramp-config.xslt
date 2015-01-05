@@ -12,17 +12,6 @@
     <xsl:element name="subsystem" namespace="{$currentNS}">
       <xsl:apply-templates select="./node()|./text()" />
       <!-- Secure Deployment Config -->
-      <xsl:if test="not(kc:secure-deployment[@name='s-ramp-ui.war'])">
-          <xsl:element name="secure-deployment" namespace="urn:jboss:domain:keycloak:1.0">
-            <xsl:attribute name="name">s-ramp-ui.war</xsl:attribute>
-            <xsl:element name="realm" namespace="urn:jboss:domain:keycloak:1.0">governance</xsl:element>
-            <xsl:element name="resource" namespace="urn:jboss:domain:keycloak:1.0">s-ramp-ui</xsl:element>
-            <xsl:element name="credential" namespace="urn:jboss:domain:keycloak:1.0">
-                <xsl:attribute name="name">secret</xsl:attribute>
-                password
-            </xsl:element>
-          </xsl:element>
-      </xsl:if>
       <xsl:if test="not(kc:secure-deployment[@name='s-ramp-server.war'])">
           <xsl:element name="secure-deployment" namespace="urn:jboss:domain:keycloak:1.0">
             <xsl:attribute name="name">s-ramp-server.war</xsl:attribute>

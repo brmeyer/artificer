@@ -20,6 +20,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.Hidden;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
@@ -30,6 +31,7 @@ import org.overlord.sramp.ui.client.local.util.IUploadCompletionHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Button;
+import org.overlord.sramp.ui.client.shared.services.KeycloakBearerTokenInterceptor;
 
 /**
  * A modal dialog used to import artifacts into S-RAMP.
@@ -49,6 +51,8 @@ public class ImportArtifactDialog extends ModalDialog {
     private ImportArtifactFormSubmitHandler formHandler;
     private IUploadCompletionHandler completionHandler;
 
+    private Hidden bearerToken = new Hidden("Authorization");
+
     /**
      * Constructor.
      */
@@ -64,6 +68,7 @@ public class ImportArtifactDialog extends ModalDialog {
         formHandler.setDialog(this);
         form.addSubmitHandler(formHandler);
         form.addSubmitCompleteHandler(formHandler);
+        form.add(bearerToken);
     }
 
     /**
@@ -82,6 +87,7 @@ public class ImportArtifactDialog extends ModalDialog {
     @EventHandler("import-dialog-submit-button")
     public void onSubmitClick(ClickEvent event) {
         formHandler.setCompletionHandler(this.completionHandler);
+        bearerToken.setValue(KeycloakBearerTokenInterceptor.getBearerToken());
         form.submit();
     }
 

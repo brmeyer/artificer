@@ -28,12 +28,10 @@
           secret: 'password'
         }
       });
-      alert("TEST");
       window.keycloak.init({ onLoad: 'login-required' }).success(function(authenticated) {
-        alert(authenticated ? 'authenticated' : 'not authenticated');
-        alert(window.keycloak.token);
+//        alert(window.keycloak.token);
       }).error(function() {
-        alert('failed to initialize');
+//        alert('failed to initialize');
       });
     </script>
 

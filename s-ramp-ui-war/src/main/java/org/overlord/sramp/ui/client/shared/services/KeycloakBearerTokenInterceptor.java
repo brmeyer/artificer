@@ -26,13 +26,14 @@ public class KeycloakBearerTokenInterceptor implements RestClientInterceptor {
     @Override
     public void aroundInvoke(RestCallContext context) {
         String bearerToken = getBearerToken();
-        context.getRequestBuilder().setHeader("Authorization", "Bearer " + bearerToken);
+        context.getRequestBuilder().setHeader("Authorization", bearerToken);
 
         context.proceed();
     }
 
     public static native String getBearerToken() /*-{
+        $wnd.keycloak.updateToken(10);
         $wnd.alert($wnd.keycloak.token);
-        return $wnd.keycloak.token;
+        return "Bearer " + $wnd.keycloak.token;
     }-*/;
 }

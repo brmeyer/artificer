@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * A filter that attempts to pull the KeycloakSecurityContext and its bearer token String from the ServletRequest.
- * If found, it's provided to KeycloakBearerTokenAuthenticationProvider's ThreadLocal variable for use during authentication.
+ * A filter that pull the Authorization header and its bearer token String from the ServletRequest (set by KeycloakBearerTokenInterceptor).
+ * It's then provided to KeycloakBearerTokenAuthenticationProvider's ThreadLocal variable for use during authentication.
  *
  * @author Brett Meyer
  */
@@ -41,13 +41,6 @@ public class KeycloakBearerTokenFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        KeycloakSecurityContext session = (KeycloakSecurityContext) httpServletRequest.getAttribute(KeycloakSecurityContext.class.getName());
-//        String bearerToken;
-//        if (session != null) {
-//            bearerToken = session.getTokenString();
-//        } else {
-//            bearerToken = "LOGGED_OUT";
-//        }
         String bearerToken = httpServletRequest.getHeader("Authorization");
         KeycloakBearerTokenAuthenticationProvider.setBearerToken(bearerToken);
         chain.doFilter(request, response);

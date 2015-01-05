@@ -57,6 +57,7 @@ public class ArtifactDownloadServlet extends AbstractDownloadServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
 			IOException {
+        super.doGet(req, resp);
         HttpServletResponse httpResponse = resp;
 		try {
 			SrampAtomApiClient client = SrampApiClientAccessor.getClient();
@@ -76,7 +77,9 @@ public class ArtifactDownloadServlet extends AbstractDownloadServlet {
 		} catch (Exception e) {
 			// TODO throw sensible errors (http responses - 404, 500, etc)
 			throw new ServletException(e);
-		}
+		} finally {
+            cleanup();
+        }
 	}
 
     /**

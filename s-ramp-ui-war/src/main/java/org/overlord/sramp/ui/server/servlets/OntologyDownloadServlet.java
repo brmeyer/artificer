@@ -65,6 +65,7 @@ public class OntologyDownloadServlet extends AbstractDownloadServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
+        super.doGet(req, resp);
         HttpServletResponse httpResponse = resp;
         try {
             SrampAtomApiClient client = SrampApiClientAccessor.getClient();
@@ -74,10 +75,11 @@ public class OntologyDownloadServlet extends AbstractDownloadServlet {
             } else {
                 throw new Exception(Messages.i18n.format("OntologyDownloadServlet.no.uuid.param")); //$NON-NLS-1$
             }
-
         } catch (Exception e) {
             // TODO throw sensible errors (http responses - 404, 500, etc)
             throw new ServletException(e);
+        } finally {
+            cleanup();
         }
     }
 
