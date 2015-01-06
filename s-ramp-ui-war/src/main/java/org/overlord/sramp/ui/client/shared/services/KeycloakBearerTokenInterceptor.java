@@ -32,7 +32,7 @@ public class KeycloakBearerTokenInterceptor implements RestClientInterceptor {
     }
 
     public static native String getBearerToken() /*-{
-        $wnd.keycloak.updateToken(10);
+        //$wnd.keycloak.updateToken(10);
         return "Bearer " + $wnd.keycloak.token;
     }-*/;
 }

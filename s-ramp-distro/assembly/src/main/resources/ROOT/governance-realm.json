@@ -58,6 +58,9 @@
             "name": "s-ramp-server",
             "enabled": true,
             "baseUrl": "/s-ramp-server",
+            "redirectUris": [
+                "/s-ramp-server/*"
+            ],
             "secret": "password"
         }
     ]
