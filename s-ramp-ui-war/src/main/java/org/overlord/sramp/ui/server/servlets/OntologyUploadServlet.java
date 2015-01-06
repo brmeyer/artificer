@@ -63,8 +63,7 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
-        super.doPost(req, response);
-		// Extract the relevant content from the POST'd form
+        // Extract the relevant content from the POST'd form
 		if (ServletFileUpload.isMultipartContent(req)) {
             Map<String, String> responseMap;
 			FileItemFactory factory = new DiskFileItemFactory();

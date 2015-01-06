@@ -34,6 +34,9 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * The main entry point into the S-RAMP browser UI app.
  *
@@ -42,6 +45,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 @EntryPoint
 @Bundle("messages.json")
 public class App {
+
+    // Used by com.google.gwt.logging.Logging
+    private static final Logger logger = Logger.getLogger(App.class.getName());
 
 	@Inject
 	private RootPanel rootPanel;
@@ -60,8 +66,9 @@ public class App {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             @Override
             public void onUncaughtException(Throwable e) {
-                GWT.log("Uncaught error!", e); //$NON-NLS-1$
+                GWT.log("Uncaught GWT Error!", e); //$NON-NLS-1$
                 notificationService.sendErrorNotification("Uncaught GWT Error!", e); //$NON-NLS-1$
+                logger.log(Level.SEVERE, "Uncaught GWT Error!", e);
             }
         });
 		bus.addLifecycleListener(new BusLifecycleAdapter() {

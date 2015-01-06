@@ -28,13 +28,12 @@ import java.io.IOException;
  */
 public abstract class AbstractServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void setBearerToken(HttpServletRequest req) {
         // set by hidden form field
         setBearerToken(req.getParameter("Authorization"));
     }
 
-    public void setBearerToken(String bearerToken) {
+    protected void setBearerToken(String bearerToken) {
         KeycloakBearerTokenAuthenticationProvider.setBearerToken(bearerToken);
     }
 
