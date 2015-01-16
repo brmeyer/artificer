@@ -3,10 +3,11 @@
   xmlns:as="urn:jboss:domain:1.4"
   xmlns:as15="urn:jboss:domain:1.5"
   xmlns:as16="urn:jboss:domain:1.6"
+  xmlns:as17="urn:jboss:domain:1.7"
   xmlns:inf="urn:jboss:domain:infinispan:1.4"
   xmlns:inf15="urn:jboss:domain:infinispan:1.5"
   xmlns:xalan="http://xml.apache.org/xalan" 
-  exclude-result-prefixes="inf inf15 xalan as as15 as16" version="1.0">
+  exclude-result-prefixes="inf inf15 xalan as as15 as16 as17" version="1.0">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
@@ -99,41 +100,83 @@
   <!-- ************************* -->
 
   <xsl:template match="as16:extensions" xmlns="urn:jboss:domain:1.6">
-      <extensions>
-        <xsl:apply-templates select="@* | *" />
-        <extension module="org.modeshape"/>
-      </extensions>
+    <extensions>
+      <xsl:apply-templates select="@* | *" />
+      <extension module="org.modeshape"/>
+    </extensions>
   </xsl:template>
 
   <xsl:template match="as16:profile" xmlns="urn:jboss:domain:1.6">
     <profile>
-        <xsl:apply-templates select="@* | *" />
-        <subsystem xmlns="urn:jboss:domain:modeshape:1.0">
-            <repository name="sramp" cache-name="sramp" cache-container="modeshape" 
-                        use-anonymous-upon-failed-authentication="false"
-                        anonymous-roles="readonly">
-            </repository>
-        </subsystem>
+      <xsl:apply-templates select="@* | *" />
+      <subsystem xmlns="urn:jboss:domain:modeshape:1.0">
+        <repository name="sramp" cache-name="sramp" cache-container="modeshape"
+                    use-anonymous-upon-failed-authentication="false"
+                    anonymous-roles="readonly">
+        </repository>
+      </subsystem>
     </profile>
   </xsl:template>
 
   <xsl:template match="as16:profile/inf15:subsystem" xmlns="urn:jboss:domain:1.6">
-        <subsystem xmlns="urn:jboss:domain:infinispan:1.5" default-cache-container="hibernate">
-            <xsl:apply-templates select="@* | *" />
-            <cache-container name="modeshape">
-                <local-cache name="sramp">
-                    <locking isolation="NONE"/>
-                    <transaction mode="NON_XA"/>
-                    <string-keyed-jdbc-store datasource="java:jboss/datasources/srampDS" passivation="false" purge="false">
-                        <string-keyed-table prefix="ispn_bucket">
-                            <id-column name="id" type="VARCHAR(500)"/>
-                            <data-column name="datum" type="BLOB"/>
-                            <timestamp-column name="version" type="BIGINT"/>
-                        </string-keyed-table>
-                    </string-keyed-jdbc-store>
-                </local-cache>
-            </cache-container>
-        </subsystem>
+    <subsystem xmlns="urn:jboss:domain:infinispan:1.5" default-cache-container="hibernate">
+      <xsl:apply-templates select="@* | *" />
+      <cache-container name="modeshape">
+        <local-cache name="sramp">
+          <locking isolation="NONE"/>
+          <transaction mode="NON_XA"/>
+          <string-keyed-jdbc-store datasource="java:jboss/datasources/srampDS" passivation="false" purge="false">
+            <string-keyed-table prefix="ispn_bucket">
+              <id-column name="id" type="VARCHAR(500)"/>
+              <data-column name="datum" type="BLOB"/>
+              <timestamp-column name="version" type="BIGINT"/>
+            </string-keyed-table>
+          </string-keyed-jdbc-store>
+        </local-cache>
+      </cache-container>
+    </subsystem>
+  </xsl:template>
+
+  <!-- ************************* -->
+  <!-- Support for JBoss EAP 6.4 -->
+  <!-- ************************* -->
+
+  <xsl:template match="as17:extensions" xmlns="urn:jboss:domain:1.7">
+    <extensions>
+      <xsl:apply-templates select="@* | *" />
+      <extension module="org.modeshape"/>
+    </extensions>
+  </xsl:template>
+
+  <xsl:template match="as17:profile" xmlns="urn:jboss:domain:1.7">
+    <profile>
+      <xsl:apply-templates select="@* | *" />
+      <subsystem xmlns="urn:jboss:domain:modeshape:1.0">
+        <repository name="sramp" cache-name="sramp" cache-container="modeshape"
+                    use-anonymous-upon-failed-authentication="false"
+                    anonymous-roles="readonly">
+        </repository>
+      </subsystem>
+    </profile>
+  </xsl:template>
+
+  <xsl:template match="as17:profile/inf15:subsystem" xmlns="urn:jboss:domain:1.7">
+    <subsystem xmlns="urn:jboss:domain:infinispan:1.5" default-cache-container="hibernate">
+      <xsl:apply-templates select="@* | *" />
+      <cache-container name="modeshape">
+        <local-cache name="sramp">
+          <locking isolation="NONE"/>
+          <transaction mode="NON_XA"/>
+          <string-keyed-jdbc-store datasource="java:jboss/datasources/srampDS" passivation="false" purge="false">
+            <string-keyed-table prefix="ispn_bucket">
+              <id-column name="id" type="VARCHAR(500)"/>
+              <data-column name="datum" type="BLOB"/>
+              <timestamp-column name="version" type="BIGINT"/>
+            </string-keyed-table>
+          </string-keyed-jdbc-store>
+        </local-cache>
+      </cache-container>
+    </subsystem>
   </xsl:template>
 
   <!-- Copy everything else. -->
