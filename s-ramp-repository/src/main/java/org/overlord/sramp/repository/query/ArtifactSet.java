@@ -16,21 +16,12 @@
 package org.overlord.sramp.repository.query;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.sramp.repository.AbstractSet;
 
 /**
  * A set of s-ramp artifacts returned when performing an S-RAMP query.
  *
  * @author eric.wittmann@redhat.com
  */
-public interface ArtifactSet extends Iterable<BaseArtifactType> {
-
-	/**
-	 * Returns the size of the artifact set.
-	 */
-	public long size();
-
-	/**
-	 * Called to close the artifact set when the caller is done with it.
-	 */
-	public void close();
+public interface ArtifactSet extends Iterable<BaseArtifactType>, AbstractSet {
 }

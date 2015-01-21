@@ -15,46 +15,43 @@
  */
 package org.overlord.sramp.repository.jcr.query;
 
-import java.util.Iterator;
+import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.sramp.repository.jcr.JCRAbstractSet;
+import org.overlord.sramp.repository.jcr.JCRNodeToArtifactFactory;
+import org.overlord.sramp.repository.query.ArtifactSet;
+import org.overlord.sramp.repository.query.ArtifactSetImplementor;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.Session;
-
-import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.overlord.sramp.repository.jcr.JCRNodeToArtifactFactory;
-import org.overlord.sramp.repository.jcr.JCRRepositoryFactory;
-import org.overlord.sramp.repository.query.ArtifactSet;
+import javax.jcr.query.QueryResult;
+import java.util.Iterator;
 
 /**
  * A JCR implementation of an {@link ArtifactSet}.
  *
  * @author eric.wittmann@redhat.com
  */
-public class JCRArtifactSet implements ArtifactSet, Iterator<BaseArtifactType> {
+public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSetImplementor, Iterator<BaseArtifactType> {
 
-	private Session session;
-	private NodeIterator jcrNodes;
 	private boolean logoutOnClose = true;
 
 	/**
 	 * Constructor.
 	 * @param session
-	 * @param jcrNodes
+	 * @param jcrQueryResult
 	 */
-	public JCRArtifactSet(Session session, NodeIterator jcrNodes) {
-		this.session = session;
-		this.jcrNodes = jcrNodes;
+	public JCRArtifactSet(Session session, QueryResult jcrQueryResult) throws Exception {
+		super(session, jcrQueryResult);
 	}
 
     /**
      * Constructor.
      * @param session
-     * @param jcrNodes
+     * @param jcrQueryResult
      * @param logoutOnClose
      */
-    public JCRArtifactSet(Session session, NodeIterator jcrNodes, boolean logoutOnClose) {
-        this(session, jcrNodes);
+    public JCRArtifactSet(Session session, QueryResult jcrQueryResult, boolean logoutOnClose) throws Exception {
+        this(session, jcrQueryResult);
         this.logoutOnClose = logoutOnClose;
     }
 
@@ -66,21 +63,10 @@ public class JCRArtifactSet implements ArtifactSet, Iterator<BaseArtifactType> {
 		return this;
 	}
 
-	/**
-	 * @see org.overlord.sramp.common.repository.query.ArtifactSet#size()
-	 */
-	@Override
-	public long size() {
-		return this.jcrNodes.getSize();
-	}
-
-	/**
-	 * @see org.overlord.sramp.common.repository.query.ArtifactSet#close()
-	 */
 	@Override
 	public void close() {
 	    if (logoutOnClose)
-	        JCRRepositoryFactory.logoutQuietly(this.session);
+	        super.close();
 	}
 
 	/**
@@ -88,7 +74,7 @@ public class JCRArtifactSet implements ArtifactSet, Iterator<BaseArtifactType> {
 	 */
 	@Override
 	public boolean hasNext() {
-		return this.jcrNodes.hasNext();
+		return nodes.hasNext();
 	}
 
 	/**
@@ -96,7 +82,7 @@ public class JCRArtifactSet implements ArtifactSet, Iterator<BaseArtifactType> {
 	 */
 	@Override
 	public BaseArtifactType next() {
-		Node jcrNode = this.jcrNodes.nextNode();
+        Node jcrNode = nodes.next();
 		return JCRNodeToArtifactFactory.createArtifact(this.session, jcrNode);
 	}
 

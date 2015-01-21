@@ -15,14 +15,19 @@
  */
 package org.overlord.sramp.repository.jcr.audit;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
+import javax.jcr.query.QueryResult;
 
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.overlord.sramp.repository.audit.AuditEntrySet;
+import org.overlord.sramp.repository.audit.AuditEntrySetImplementor;
+import org.overlord.sramp.repository.jcr.JCRAbstractSet;
 import org.overlord.sramp.repository.jcr.JCRRepositoryFactory;
 import org.overlord.sramp.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
 
@@ -31,19 +36,15 @@ import org.overlord.sramp.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
  * a set of JCR nodes.  Each node must be an audit:auditEntry JCR node.
  * @author eric.wittmann@redhat.com
  */
-public class JCRAuditEntrySet implements AuditEntrySet, Iterator<AuditEntry> {
-
-    private final Session session;
-    private final NodeIterator jcrNodes;
+public class JCRAuditEntrySet extends JCRAbstractSet implements AuditEntrySetImplementor, Iterator<AuditEntry> {
 
     /**
      * Constructor.
      * @param session
-     * @param jcrNodes
+     * @param jcrQueryResult
      */
-    public JCRAuditEntrySet(Session session, NodeIterator jcrNodes) {
-        this.session = session;
-        this.jcrNodes = jcrNodes;
+    public JCRAuditEntrySet(Session session, QueryResult jcrQueryResult) throws Exception {
+        super(session, jcrQueryResult);
     }
 
     /**
@@ -55,41 +56,19 @@ public class JCRAuditEntrySet implements AuditEntrySet, Iterator<AuditEntry> {
     }
 
     /**
-     * @see org.overlord.sramp.repository.audit.AuditEntrySet#size()
-     */
-    @Override
-    public long size() {
-        return this.jcrNodes.getSize();
-    }
-
-    /**
-     * @see org.overlord.sramp.repository.audit.AuditEntrySet#close()
-     */
-    @Override
-    public void close() {
-        JCRRepositoryFactory.logoutQuietly(this.session);
-    }
-
-    /**
-     * @see java.util.Iterator#hasNext()
-     */
-    @Override
-    public boolean hasNext() {
-        return this.jcrNodes.hasNext();
-    }
-
-    /**
      * @see java.util.Iterator#next()
      */
     @Override
     public AuditEntry next() {
-        Node jcrNode = this.jcrNodes.nextNode();
-        return JCRNodeToAuditEntryFactory.createAuditEntry(this.session, jcrNode);
+        Node jcrNode = nodes.next();
+        return JCRNodeToAuditEntryFactory.createAuditEntry(session, jcrNode);
     }
 
-    /**
-     * @see java.util.Iterator#remove()
-     */
+    @Override
+    public boolean hasNext() {
+        return nodes.hasNext();
+    }
+
     @Override
     public void remove() {
         throw new UnsupportedOperationException();

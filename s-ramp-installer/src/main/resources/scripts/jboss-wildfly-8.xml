@@ -104,7 +104,7 @@
     <copy file="${s-ramp.install.dir}/_tmp_standalone-ms.xml" tofile="${s-ramp.jboss.config.dir}/standalone-full.xml" overwrite="true" />
     <delete file="${s-ramp.install.dir}/_tmp_standalone-ms.xml" />
 
-    <!-- Installs the admin user (mainly needed for JMS) -->
+    <!-- Installs the admin user (needed for JMS and external use of ModeShape) -->
     <java jar="${s-ramp.appserver.dir}/jboss-modules.jar"
           fork="true" dir="${s-ramp.appserver.dir}"
           failonerror="true" maxmemory="128m">
@@ -121,7 +121,7 @@
       <arg value="-r"/>
       <arg value="ApplicationRealm"/>
       <arg value="-ro"/>
-      <arg value="artificer,admin,dev,qa,stage,prod,ba,arch"/>
+      <arg value="artificer,admin.sramp,dev,qa,stage,prod,ba,arch"/>
     </java>
   </target>
 
@@ -129,7 +129,7 @@
   <target name="password-prompt" unless="admin.password">
     <!-- Ask the user for the admin password -->
     <input
-        message="Please enter a password for the Wildfly 'admin' user (used for JMS auth, etc.): "
+        message="Please enter a password for the Wildfly 'admin' user: "
         addproperty="admin.password"/>
     <echo message="" />
   </target>

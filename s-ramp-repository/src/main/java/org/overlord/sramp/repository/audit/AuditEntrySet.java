@@ -16,22 +16,13 @@
 package org.overlord.sramp.repository.audit;
 
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.overlord.sramp.repository.AbstractSet;
 
 /**
  * A set of audit entries returned from the audit manager.
  *
  * @author eric.wittmann@redhat.com
  */
-public interface AuditEntrySet extends Iterable<AuditEntry> {
-
-    /**
-     * Returns the size of the artifact set.
-     */
-    public long size();
-
-    /**
-     * Called to close the artifact set when the caller is done with it.
-     */
-    public void close();
+public interface AuditEntrySet extends Iterable<AuditEntry>, AbstractSet {
 
 }
