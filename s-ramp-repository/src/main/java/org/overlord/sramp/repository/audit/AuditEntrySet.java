@@ -18,6 +18,8 @@ package org.overlord.sramp.repository.audit;
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.overlord.sramp.repository.AbstractSet;
 
+import java.util.List;
+
 /**
  * A set of audit entries returned from the audit manager.
  *
@@ -25,4 +27,13 @@ import org.overlord.sramp.repository.AbstractSet;
  */
 public interface AuditEntrySet extends Iterable<AuditEntry>, AbstractSet {
 
+    /**
+     * After the query has been executed, this is called by the REST/EJB service to return all results.
+     */
+    public List<AuditEntry> list() throws Exception;
+
+    /**
+     * After the query has been executed, this is called by the REST/EJB service to page the results.
+     */
+    public List<AuditEntry> pagedList(long startIndex, long endIndex) throws Exception;
 }

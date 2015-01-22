@@ -28,16 +28,6 @@ public interface AbstractSet {
     public long size();
 
     /**
-     * Returns the number of items on the current page.
-     */
-    public long pageSize();
-
-    /**
-     * Returns the start index of the current page.
-     */
-    public long startIndex();
-
-    /**
      * Called to close the artifact set when the caller is done with it.
      */
     public void close();

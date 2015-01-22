@@ -38,7 +38,7 @@ public abstract class AbstractServiceImpl implements AbstractService {
         this.password = password;
     }
 
-    public PersistenceManager persistenceManager() {
+    protected PersistenceManager persistenceManager() {
         PersistenceManager persistenceManager = PersistenceFactory.newInstance();
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
             persistenceManager.login(username, password);
@@ -46,7 +46,7 @@ public abstract class AbstractServiceImpl implements AbstractService {
         return persistenceManager;
     }
 
-    public AuditManager auditManager() {
+    protected AuditManager auditManager() {
         AuditManager auditManager = AuditManagerFactory.newInstance();
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
             auditManager.login(username, password);
@@ -54,11 +54,23 @@ public abstract class AbstractServiceImpl implements AbstractService {
         return auditManager;
     }
 
-    public QueryManager queryManager() {
+    protected QueryManager queryManager() {
         QueryManager queryManager = QueryManagerFactory.newInstance();
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
             queryManager.login(username, password);
         }
         return queryManager;
+    }
+
+    public int startIndex(Integer startPage, Integer startIndex, Integer count) {
+        if (startIndex == null && startPage != null) {
+            int c = count != null ? count.intValue() : 100;
+            startIndex = (startPage.intValue() - 1) * c;
+        }
+
+        if (startIndex == null)
+            startIndex = 0;
+
+        return startIndex;
     }
 }

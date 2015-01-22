@@ -185,7 +185,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
             long endTime = System.currentTimeMillis();
             log.debug(Messages.i18n.format("QUERY_EXECUTED", query));
             log.debug(Messages.i18n.format("QUERY_EXECUTED_IN", endTime - startTime));
-            return new JCRAuditEntrySet(session, jcrQueryResult);
+            return new JCRAuditEntrySet(session, jcrQueryResult.getNodes());
         } catch (Throwable t) {
             JCRRepositoryFactory.logoutQuietly(session);
             throw new SrampServerException(t);

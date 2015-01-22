@@ -111,7 +111,7 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
 			log.debug(Messages.i18n.format("QUERY_EXECUTED", jcrQueryString));
 			log.debug(Messages.i18n.format("QUERY_EXECUTED_IN", endTime - startTime));
 
-			return new JCRArtifactSet(session, jcrQueryResult, logoutOnClose);
+			return new JCRArtifactSet(session, jcrQueryResult.getNodes(), logoutOnClose);
 		} catch (SrampException e) {
             // Only logout of the session on a throw.  Otherwise, the JCRArtifactSet will be
             // responsible for closing the session.

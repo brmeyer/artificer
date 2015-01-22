@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -113,7 +114,7 @@ public class AuditResource extends AbstractResource {
 
         try {
             // Get all audit entries by artifact uuid
-            AuditEntrySet entries = auditService.queryByArtifact(artifactUuid, startPage, startIndex, count);
+            List<AuditEntry> entries = auditService.queryByArtifact(artifactUuid, startPage, startIndex, count);
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES", artifactUuid), e); //$NON-NLS-1$
@@ -135,7 +136,7 @@ public class AuditResource extends AbstractResource {
             @QueryParam("count") Integer count) throws SrampAtomException {
         try {
             // Get all audit entries by user
-            AuditEntrySet entries = auditService.queryByUser(username, startPage, startIndex, count);
+            List<AuditEntry> entries = auditService.queryByUser(username, startPage, startIndex, count);
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES_2", username), e); //$NON-NLS-1$
@@ -149,20 +150,18 @@ public class AuditResource extends AbstractResource {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    private Feed createAuditFeed(AuditEntrySet auditEntrySet) throws Exception {
+    private Feed createAuditFeed(List<AuditEntry> auditEntries) throws Exception {
         Feed feed = new Feed();
         feed.getExtensionAttributes().put(SrampConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntrySet.pageSize()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntrySet.startIndex()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntrySet.size()));
+//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntrySet.pageSize()));
+//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntrySet.startIndex()));
+//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntrySet.size()));
         feed.setId(new URI("urn:uuid:" + UUID.randomUUID().toString())); //$NON-NLS-1$
         feed.setTitle("S-RAMP Audit Feed"); //$NON-NLS-1$
         feed.setSubtitle("All Audit Entries for Artifact"); //$NON-NLS-1$
         feed.setUpdated(new Date());
 
-        Iterator<AuditEntry> iterator = auditEntrySet.iterator();
-        while (iterator.hasNext()) {
-            AuditEntry auditEntry = iterator.next();
+        for (AuditEntry auditEntry : auditEntries) {
             Entry entry = new Entry();
             entry.setId(new URI(auditEntry.getUuid()));
             entry.setPublished(auditEntry.getWhen().toGregorianCalendar().getTime());

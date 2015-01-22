@@ -15,36 +15,32 @@
  */
 package org.overlord.sramp.repository.jcr.audit;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.overlord.sramp.repository.audit.AuditEntrySet;
+import org.overlord.sramp.repository.jcr.JCRAbstractSet;
+import org.overlord.sramp.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
-import javax.jcr.query.QueryResult;
-
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.overlord.sramp.repository.audit.AuditEntrySet;
-import org.overlord.sramp.repository.audit.AuditEntrySetImplementor;
-import org.overlord.sramp.repository.jcr.JCRAbstractSet;
-import org.overlord.sramp.repository.jcr.JCRRepositoryFactory;
-import org.overlord.sramp.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * JCR implementation of the {@link AuditEntrySet} interface.  This implementation iterates over
  * a set of JCR nodes.  Each node must be an audit:auditEntry JCR node.
  * @author eric.wittmann@redhat.com
  */
-public class JCRAuditEntrySet extends JCRAbstractSet implements AuditEntrySetImplementor, Iterator<AuditEntry> {
+public class JCRAuditEntrySet extends JCRAbstractSet implements AuditEntrySet, Iterator<AuditEntry> {
 
     /**
      * Constructor.
      * @param session
-     * @param jcrQueryResult
+     * @param jcrNodes
      */
-    public JCRAuditEntrySet(Session session, QueryResult jcrQueryResult) throws Exception {
-        super(session, jcrQueryResult);
+    public JCRAuditEntrySet(Session session, NodeIterator jcrNodes) throws Exception {
+        super(session, jcrNodes);
     }
 
     /**
@@ -60,18 +56,45 @@ public class JCRAuditEntrySet extends JCRAbstractSet implements AuditEntrySetImp
      */
     @Override
     public AuditEntry next() {
-        Node jcrNode = nodes.next();
+        Node jcrNode = jcrNodes.nextNode();
         return JCRNodeToAuditEntryFactory.createAuditEntry(session, jcrNode);
     }
 
     @Override
     public boolean hasNext() {
-        return nodes.hasNext();
+        return jcrNodes.hasNext();
     }
 
     @Override
     public void remove() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<AuditEntry> list() throws Exception {
+        List<AuditEntry> entries = new ArrayList<AuditEntry>();
+        while (hasNext()) {
+            entries.add(next());
+        }
+        return entries;
+    }
+
+    @Override
+    public List<AuditEntry> pagedList(long startIndex, long endIndex) throws Exception {
+        // Get only the rows we're interested in.
+        List<AuditEntry> entries = new ArrayList<AuditEntry>();
+        int i = 0;
+        while (hasNext()) {
+            if (i >= startIndex && i <= endIndex) {
+                entries.add(next());
+            } else {
+                // burn it
+                jcrNodes.next();
+            }
+            i++;
+        }
+
+        return entries;
     }
 
 }

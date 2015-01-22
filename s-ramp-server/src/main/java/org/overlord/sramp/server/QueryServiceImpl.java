@@ -15,20 +15,16 @@
  */
 package org.overlord.sramp.server;
 
+import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.overlord.sramp.repository.PersistenceFactory;
-import org.overlord.sramp.repository.PersistenceManager;
 import org.overlord.sramp.repository.QueryManager;
-import org.overlord.sramp.repository.QueryManagerFactory;
 import org.overlord.sramp.repository.query.ArtifactSet;
-import org.overlord.sramp.repository.query.ArtifactSetImplementor;
 import org.overlord.sramp.repository.query.SrampQuery;
 import org.overlord.sramp.server.core.api.QueryService;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Brett Meyer.
@@ -38,19 +34,29 @@ import java.util.Set;
 public class QueryServiceImpl extends AbstractServiceImpl implements QueryService {
 
     @Override
-    public ArtifactSet query(String query, Integer startPage, Integer startIndex, Integer count, String orderBy,
-            Boolean ascending) throws Exception {
-        String xpath = queryToXPath(query);
+    public List<BaseArtifactType> query(String query) throws Exception {
+        ArtifactSet artifactSet = query(query, "name", true);
+        return artifactSet.list();
+    }
 
-        if (startIndex == null && startPage != null) {
-            int c = count != null ? count.intValue() : 100;
-            startIndex = (startPage.intValue() - 1) * c;
+    @Override
+    public List<BaseArtifactType> query(String query, Integer startPage, Integer startIndex, Integer count,
+            String orderBy, Boolean ascending) throws Exception {
+        ArtifactSet artifactSet = query(query, orderBy, ascending);
+        return pagedList(artifactSet, startPage, startIndex, count);
+    }
+
+    // Separated off specifically for simple logic within the Atom resources.
+    public ArtifactSet query(String query, String orderBy, Boolean ascending) throws Exception {
+        // Add on the "/s-ramp/" if it's missing
+        String xpath = query;
+        if (!xpath.startsWith("/s-ramp")) { //$NON-NLS-1$
+            if (query.startsWith("/")) //$NON-NLS-1$
+                xpath = "/s-ramp" + query; //$NON-NLS-1$
+            else
+                xpath = "/s-ramp/" + query; //$NON-NLS-1$
         }
 
-        if (startIndex == null)
-            startIndex = 0;
-        if (count == null)
-            count = 100;
         if (orderBy == null)
             orderBy = "name"; //$NON-NLS-1$
         if (ascending == null)
@@ -58,12 +64,23 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
 
         QueryManager queryManager = queryManager();
         SrampQuery srampQuery = queryManager.createQuery(xpath, orderBy, ascending);
-        ArtifactSetImplementor artifactSet = (ArtifactSetImplementor) srampQuery.executeQuery();
+        return srampQuery.executeQuery();
+    }
+
+    // Separated off specifically for simple logic within the Atom resources.
+    public List<BaseArtifactType> pagedList(ArtifactSet artifactSet, Integer startPage, Integer startIndex,
+            Integer count) throws Exception {
+        startIndex = startIndex(startPage, startIndex, count);
+        if (count == null)
+            count = 100;
+
         int startIdx = startIndex;
         int endIdx = startIdx + count - 1;
-        artifactSet.reduceToPage(startIdx, endIdx);
-
-        return artifactSet;
+        try {
+            return artifactSet.pagedList(startIdx, endIdx);
+        } finally {
+            artifactSet.close();
+        }
     }
 
     @Override
@@ -89,17 +106,5 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
     @Override
     public void deleteStoredQuery(String queryName) throws Exception {
         persistenceManager().deleteStoredQuery(queryName);
-    }
-
-    public String queryToXPath(String query) {
-        // Add on the "/s-ramp/" if it's missing
-        String xpath = query;
-        if (!xpath.startsWith("/s-ramp")) { //$NON-NLS-1$
-            if (query.startsWith("/")) //$NON-NLS-1$
-                xpath = "/s-ramp" + query; //$NON-NLS-1$
-            else
-                xpath = "/s-ramp/" + query; //$NON-NLS-1$
-        }
-        return xpath;
     }
 }

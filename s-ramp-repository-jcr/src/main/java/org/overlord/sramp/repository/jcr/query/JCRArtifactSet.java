@@ -19,39 +19,41 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.repository.jcr.JCRAbstractSet;
 import org.overlord.sramp.repository.jcr.JCRNodeToArtifactFactory;
 import org.overlord.sramp.repository.query.ArtifactSet;
-import org.overlord.sramp.repository.query.ArtifactSetImplementor;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.query.QueryResult;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A JCR implementation of an {@link ArtifactSet}.
  *
  * @author eric.wittmann@redhat.com
  */
-public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSetImplementor, Iterator<BaseArtifactType> {
+public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSet, Iterator<BaseArtifactType> {
 
 	private boolean logoutOnClose = true;
 
 	/**
 	 * Constructor.
 	 * @param session
-	 * @param jcrQueryResult
+	 * @param jcrNodes
 	 */
-	public JCRArtifactSet(Session session, QueryResult jcrQueryResult) throws Exception {
-		super(session, jcrQueryResult);
+	public JCRArtifactSet(Session session, NodeIterator jcrNodes) throws Exception {
+		super(session, jcrNodes);
 	}
 
     /**
      * Constructor.
      * @param session
-     * @param jcrQueryResult
+     * @param jcrNodes
      * @param logoutOnClose
      */
-    public JCRArtifactSet(Session session, QueryResult jcrQueryResult, boolean logoutOnClose) throws Exception {
-        this(session, jcrQueryResult);
+    public JCRArtifactSet(Session session, NodeIterator jcrNodes, boolean logoutOnClose) throws Exception {
+        this(session, jcrNodes);
         this.logoutOnClose = logoutOnClose;
     }
 
@@ -74,7 +76,7 @@ public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSetImpleme
 	 */
 	@Override
 	public boolean hasNext() {
-		return nodes.hasNext();
+		return jcrNodes.hasNext();
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSetImpleme
 	 */
 	@Override
 	public BaseArtifactType next() {
-        Node jcrNode = nodes.next();
+        Node jcrNode = jcrNodes.nextNode();
 		return JCRNodeToArtifactFactory.createArtifact(this.session, jcrNode);
 	}
 
@@ -93,5 +95,32 @@ public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSetImpleme
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
+
+    @Override
+    public List<BaseArtifactType> list() throws Exception {
+        List<BaseArtifactType> artifacts = new ArrayList<BaseArtifactType>();
+        while (hasNext()) {
+            artifacts.add(next());
+        }
+        return artifacts;
+    }
+
+    @Override
+    public List<BaseArtifactType> pagedList(long startIndex, long endIndex) throws Exception {
+        // Get only the rows we're interested in.
+        List<BaseArtifactType> artifacts = new ArrayList<BaseArtifactType>();
+        int i = 0;
+        while (hasNext()) {
+           if (i >= startIndex && i <= endIndex) {
+               artifacts.add(next());
+            } else {
+                // burn it
+                jcrNodes.next();
+            }
+            i++;
+        }
+
+        return artifacts;
+    }
 
 }

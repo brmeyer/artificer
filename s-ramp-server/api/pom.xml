@@ -22,5 +22,11 @@
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-repository</artifactId>
     </dependency>
+
+    <!-- Include the following so that EJB clients have everything they need. -->
+    <!--<dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-repository-jcr</artifactId>
+    </dependency>-->
   </dependencies>
 </project>
