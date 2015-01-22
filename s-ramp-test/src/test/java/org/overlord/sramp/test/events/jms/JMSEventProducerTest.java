@@ -255,12 +255,12 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         final Properties env = new Properties();
         env.put(Context.INITIAL_CONTEXT_FACTORY, contextFactoryName);
         env.put(Context.PROVIDER_URL, providerUrl);
-        env.put(Context.SECURITY_PRINCIPAL, USERNAME);
+        env.put(Context.SECURITY_PRINCIPAL, "artificer");
         env.put(Context.SECURITY_CREDENTIALS, PASSWORD);
         Context context = new InitialContext(env);
         
         ConnectionFactory connectionFactory = (ConnectionFactory) context.lookup(connectionFactoryName);
-        Connection connection = connectionFactory.createConnection(USERNAME, PASSWORD);
+        Connection connection = connectionFactory.createConnection("artificer", PASSWORD);
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Topic topic = (Topic) context.lookup(topicName);
         MessageConsumer topicSubscriber = session.createConsumer(topic);

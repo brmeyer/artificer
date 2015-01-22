@@ -223,11 +223,12 @@ try {
 
     final ArtifactService artifactService =  (ArtifactService) context.lookup(
             "s-ramp-server/ArtifactService!" + ArtifactService.class.getName());
-    artifactService.login("admin", "artificer1!");
+    artifactService.login("artificer", "artificer1!");
     artifactService.create(artifact);
 
     final QueryService queryService =  (QueryService) context.lookup(
             "s-ramp-server/QueryService!" + QueryService.class.getName());
+    queryService.login("artificer", "artificer1!");
     ArtifactSet artifactSet = queryService.query("/s-ramp/ext/FooArtifactType");
     Iterator<BaseArtifactType> iterator = artifactSet.iterator();
     while (iterator.hasNext()) {
