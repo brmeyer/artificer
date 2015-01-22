@@ -25,7 +25,7 @@ public interface AbstractSet {
     /**
      * Returns the size of the artifact set.
      */
-    public long size();
+    public int size();
 
     /**
      * Called to close the artifact set when the caller is done with it.

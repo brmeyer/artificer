@@ -245,7 +245,8 @@ The complete list of services include the following.  Have a look at their javad
 * org.overlord.sramp.server.core.api.OntologyService
 * org.overlord.sramp.server.core.api.QueryService
 
-Note that you must call #login for each service, using your S-RAMP username and password!
+Note that you must call #login for each service, using the EJB/JMS username and password that you provided
+during installation!
 
 
 JMS Client

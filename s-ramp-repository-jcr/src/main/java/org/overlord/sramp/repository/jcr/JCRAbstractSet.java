@@ -29,18 +29,18 @@ public abstract class JCRAbstractSet implements AbstractSet {
 
     protected NodeIterator jcrNodes;
 
-    protected long totalSize;
+    protected int totalSize;
 
     public JCRAbstractSet(Session session, NodeIterator jcrNodes) throws Exception {
         this.session = session;
         this.jcrNodes = jcrNodes;
 
         // Do this here, rather than in #size().  If #pagedList is called, jcrNodes may be iterated through.
-        totalSize = jcrNodes.getSize();
+        totalSize = (int) jcrNodes.getSize();
     }
 
     @Override
-    public long size() {
+    public int size() {
         return totalSize;
     }
 

@@ -42,6 +42,7 @@ import org.overlord.sramp.repository.AuditManagerFactory;
 import org.overlord.sramp.repository.audit.AuditEntrySet;
 import org.overlord.sramp.server.ArtifactServiceImpl;
 import org.overlord.sramp.server.AuditServiceImpl;
+import org.overlord.sramp.server.core.api.PagedResult;
 import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,7 +115,7 @@ public class AuditResource extends AbstractResource {
 
         try {
             // Get all audit entries by artifact uuid
-            List<AuditEntry> entries = auditService.queryByArtifact(artifactUuid, startPage, startIndex, count);
+            PagedResult<AuditEntry> entries = auditService.queryByArtifact(artifactUuid, startPage, startIndex, count);
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES", artifactUuid), e); //$NON-NLS-1$
@@ -136,7 +137,7 @@ public class AuditResource extends AbstractResource {
             @QueryParam("count") Integer count) throws SrampAtomException {
         try {
             // Get all audit entries by user
-            List<AuditEntry> entries = auditService.queryByUser(username, startPage, startIndex, count);
+            PagedResult<AuditEntry> entries = auditService.queryByUser(username, startPage, startIndex, count);
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES_2", username), e); //$NON-NLS-1$
@@ -146,22 +147,22 @@ public class AuditResource extends AbstractResource {
 
     /**
      * Creates a {@link Feed} of audit entries.
-     * @param auditEntrySet
+     * @param auditEntries
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    private Feed createAuditFeed(List<AuditEntry> auditEntries) throws Exception {
+    private Feed createAuditFeed(PagedResult<AuditEntry> auditEntries) throws Exception {
         Feed feed = new Feed();
         feed.getExtensionAttributes().put(SrampConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
-//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntrySet.pageSize()));
-//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntrySet.startIndex()));
-//        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntrySet.size()));
+        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntries.getPageSize()));
+        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntries.getStartIndex()));
+        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntries.getTotalSize()));
         feed.setId(new URI("urn:uuid:" + UUID.randomUUID().toString())); //$NON-NLS-1$
         feed.setTitle("S-RAMP Audit Feed"); //$NON-NLS-1$
         feed.setSubtitle("All Audit Entries for Artifact"); //$NON-NLS-1$
         feed.setUpdated(new Date());
 
-        for (AuditEntry auditEntry : auditEntries) {
+        for (AuditEntry auditEntry : auditEntries.getResults()) {
             Entry entry = new Entry();
             entry.setId(new URI(auditEntry.getUuid()));
             entry.setPublished(auditEntry.getWhen().toGregorianCalendar().getTime());

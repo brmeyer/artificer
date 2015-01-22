@@ -16,7 +16,6 @@
 package org.overlord.sramp.server.core.api;
 
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.overlord.sramp.repository.audit.AuditEntrySet;
 
 import java.util.List;
 
@@ -31,11 +30,11 @@ public interface AuditService extends AbstractService {
 
     public List<AuditEntry> queryByArtifact(String artifactUuid) throws Exception;
 
-    public List<AuditEntry> queryByArtifact(String artifactUuid, Integer startPage, Integer startIndex, Integer count)
+    public PagedResult<AuditEntry> queryByArtifact(String artifactUuid, Integer startPage, Integer startIndex, Integer count)
             throws Exception;
 
     public List<AuditEntry> queryByUser(String username) throws Exception;
 
-    public List<AuditEntry> queryByUser(String username, Integer startPage, Integer startIndex, Integer count)
+    public PagedResult<AuditEntry> queryByUser(String username, Integer startPage, Integer startIndex, Integer count)
             throws Exception;
 }

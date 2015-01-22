@@ -19,6 +19,7 @@ import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.overlord.sramp.repository.AuditManager;
 import org.overlord.sramp.repository.audit.AuditEntrySet;
 import org.overlord.sramp.server.core.api.AuditService;
+import org.overlord.sramp.server.core.api.PagedResult;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -51,18 +52,10 @@ public class AuditServiceImpl extends AbstractServiceImpl implements AuditServic
     }
 
     @Override
-    public List<AuditEntry> queryByArtifact(String artifactUuid, Integer startPage, Integer startIndex, Integer count)
+    public PagedResult<AuditEntry> queryByArtifact(String artifactUuid, Integer startPage, Integer startIndex, Integer count)
             throws Exception {
         AuditManager auditManager = auditManager();
         AuditEntrySet results = auditManager.getArtifactAuditEntries(artifactUuid);
-        return doPaging(results, startPage, startIndex, count);
-    }
-
-    @Override
-    public List<AuditEntry> queryByUser(String username, Integer startPage, Integer startIndex, Integer count)
-            throws Exception {
-        AuditManager auditManager = auditManager();
-        AuditEntrySet results = auditManager.getUserAuditEntries(username);
         return doPaging(results, startPage, startIndex, count);
     }
 
@@ -73,7 +66,15 @@ public class AuditServiceImpl extends AbstractServiceImpl implements AuditServic
         return results.list();
     }
 
-    private List<AuditEntry> doPaging(AuditEntrySet results, Integer startPage, Integer startIndex, Integer count)
+    @Override
+    public PagedResult<AuditEntry> queryByUser(String username, Integer startPage, Integer startIndex, Integer count)
+            throws Exception {
+        AuditManager auditManager = auditManager();
+        AuditEntrySet results = auditManager.getUserAuditEntries(username);
+        return doPaging(results, startPage, startIndex, count);
+    }
+
+    private PagedResult<AuditEntry> doPaging(AuditEntrySet results, Integer startPage, Integer startIndex, Integer count)
             throws Exception {
         startIndex = startIndex(startPage, startIndex, count);
         if (count == null)
@@ -81,7 +82,8 @@ public class AuditServiceImpl extends AbstractServiceImpl implements AuditServic
         int startIdx = startIndex;
         int endIdx = startIdx + count - 1;
         try {
-            return results.pagedList(startIdx, endIdx);
+            List<AuditEntry> entries = results.pagedList(startIdx, endIdx);
+            return new PagedResult<AuditEntry>(entries, "", results.size(), startIndex, "", true);
         } finally {
             results.close();
         }

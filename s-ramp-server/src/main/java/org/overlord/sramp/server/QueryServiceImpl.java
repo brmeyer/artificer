@@ -20,6 +20,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
 import org.overlord.sramp.repository.QueryManager;
 import org.overlord.sramp.repository.query.ArtifactSet;
 import org.overlord.sramp.repository.query.SrampQuery;
+import org.overlord.sramp.server.core.api.PagedResult;
 import org.overlord.sramp.server.core.api.QueryService;
 
 import javax.ejb.Remote;
@@ -35,19 +36,23 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
 
     @Override
     public List<BaseArtifactType> query(String query) throws Exception {
-        ArtifactSet artifactSet = query(query, "name", true);
-        return artifactSet.list();
+        // Add on the "/s-ramp/" if it's missing
+        String xpath = query;
+        if (!xpath.startsWith("/s-ramp")) { //$NON-NLS-1$
+            if (query.startsWith("/")) //$NON-NLS-1$
+                xpath = "/s-ramp" + query; //$NON-NLS-1$
+            else
+                xpath = "/s-ramp/" + query; //$NON-NLS-1$
+        }
+
+        QueryManager queryManager = queryManager();
+        SrampQuery srampQuery = queryManager.createQuery(xpath, "name", true);
+        return srampQuery.executeQuery().list();
     }
 
     @Override
-    public List<BaseArtifactType> query(String query, Integer startPage, Integer startIndex, Integer count,
+    public PagedResult<BaseArtifactType> query(String query, Integer startPage, Integer startIndex, Integer count,
             String orderBy, Boolean ascending) throws Exception {
-        ArtifactSet artifactSet = query(query, orderBy, ascending);
-        return pagedList(artifactSet, startPage, startIndex, count);
-    }
-
-    // Separated off specifically for simple logic within the Atom resources.
-    public ArtifactSet query(String query, String orderBy, Boolean ascending) throws Exception {
         // Add on the "/s-ramp/" if it's missing
         String xpath = query;
         if (!xpath.startsWith("/s-ramp")) { //$NON-NLS-1$
@@ -64,12 +69,8 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
 
         QueryManager queryManager = queryManager();
         SrampQuery srampQuery = queryManager.createQuery(xpath, orderBy, ascending);
-        return srampQuery.executeQuery();
-    }
+        ArtifactSet artifactSet = srampQuery.executeQuery();
 
-    // Separated off specifically for simple logic within the Atom resources.
-    public List<BaseArtifactType> pagedList(ArtifactSet artifactSet, Integer startPage, Integer startIndex,
-            Integer count) throws Exception {
         startIndex = startIndex(startPage, startIndex, count);
         if (count == null)
             count = 100;
@@ -77,7 +78,8 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
         int startIdx = startIndex;
         int endIdx = startIdx + count - 1;
         try {
-            return artifactSet.pagedList(startIdx, endIdx);
+            List<BaseArtifactType> results = artifactSet.pagedList(startIdx, endIdx);
+            return new PagedResult<BaseArtifactType>(results, xpath, artifactSet.size(), startIndex, orderBy, ascending);
         } finally {
             artifactSet.close();
         }
