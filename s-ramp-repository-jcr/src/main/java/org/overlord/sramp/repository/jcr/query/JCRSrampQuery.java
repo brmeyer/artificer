@@ -58,14 +58,9 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
 
     private Session session;
 
-	/**
-	 * Constructor.
-	 * @param xpathTemplate
-	 * @param orderByProperty
-	 * @param orderAscending
-	 */
-	public JCRSrampQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) {
-		super(xpathTemplate, orderByProperty, orderAscending);
+	public JCRSrampQuery(String xpathTemplate, String orderByProperty, boolean orderAscending,
+            int limitCount, int limitOffset) {
+		super(xpathTemplate, orderByProperty, orderAscending, limitCount, limitOffset);
 	}
 
 	@Override
@@ -82,8 +77,8 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
 		    }
 			javax.jcr.query.QueryManager jcrQueryManager = session.getWorkspace().getQueryManager();
             String jcrOrderBy = null;
-            if (getOrderByProperty() != null) {
-                String jcrPropName = sOrderByMappings.get(getOrderByProperty());
+            if (orderByProperty != null) {
+                String jcrPropName = sOrderByMappings.get(orderByProperty);
                 if (jcrPropName != null) {
                     jcrOrderBy = jcrPropName;
                 }
@@ -92,8 +87,11 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
             queryModel.accept(visitor);
             if (jcrOrderBy != null) {
                 visitor.setOrder(jcrOrderBy);
-                visitor.setOrderAscending(isOrderAscending());
+                visitor.setOrderAscending(orderAscending);
             }
+
+            visitor.setLimitCount(limitCount);
+            visitor.setLimitOffset(limitOffset);
 
             javax.jcr.query.Query jcrQuery = visitor.buildQuery();
 

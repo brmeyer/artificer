@@ -27,26 +27,15 @@ import org.overlord.sramp.repository.query.SrampQuery;
  */
 public class JCRQueryManager extends JCRAbstractManager implements QueryManager {
 
-	/**
-	 * Default constructor.
-	 */
-	public JCRQueryManager() {
-	}
-
-	/**
-	 * @see org.overlord.sramp.common.repository.QueryManager#createQuery(java.lang.String, java.lang.String, boolean)
-	 */
 	@Override
-	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) {
-		return new JCRSrampQuery(xpathTemplate, orderByProperty, orderAscending);
+	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending,
+            int limitCount, int limitOffset) {
+		return new JCRSrampQuery(xpathTemplate, orderByProperty, orderAscending, limitCount, limitOffset);
 	}
 
-	/**
-	 * @see org.overlord.sramp.common.repository.QueryManager#createQuery(java.lang.String)
-	 */
 	@Override
 	public SrampQuery createQuery(String xpathTemplate) {
-		return createQuery(xpathTemplate, null, false);
+		return createQuery(xpathTemplate, null, false, 0, 0);
 	}
 
 }

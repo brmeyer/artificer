@@ -45,11 +45,14 @@ public interface QueryManager extends AbstractManager {
 	 * </pre>
 	 * @param xpathTemplate the templatized xpath
 	 * @param orderByProperty property name to use when sorting
-	 * @param orderAscending whether to sort ascending
+     * @param orderAscending whether to sort ascending
+     * @param limitCount
+     * @param limitOffset
 	 * @return a new {@link SrampQuery} object
 	 * @throws SrampException
 	 */
-	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) throws SrampException;
+	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending,
+            int limitCount, int limitOffset) throws SrampException;
 
 	/**
 	 * Create an s-ramp query from the given xpath template.  No order-by hints are given,

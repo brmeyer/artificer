@@ -61,6 +61,20 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
         Assert.assertEquals(artifact.getLastModifiedBy(), found.getLastModifiedBy());
     }
 
+    @Test
+     public void testQueryPaging() throws Exception {
+        // First, store some artifacts.
+        for (int i = 0; i < 20; i++) {
+            createDocument(i);
+        }
+
+        // Now query for it
+        SrampQuery query = queryManager.createQuery("/s-ramp/core/Document", "name", true, 10, 0);
+        ArtifactSet artifactSet = query.executeQuery();
+        Assert.assertNotNull(artifactSet);
+        Assert.assertEquals(10, artifactSet.size());
+    }
+
     /**
      * Tests querying by s-ramp properties.
      * @throws Exception

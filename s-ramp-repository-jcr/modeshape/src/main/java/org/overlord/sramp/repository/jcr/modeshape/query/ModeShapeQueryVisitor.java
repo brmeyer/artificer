@@ -126,6 +126,8 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
 
     private String order;
     private boolean orderAscending;
+    private int limitCount;
+    private int limitOffset;
 
     private List<Constraint> rootConstraints = new ArrayList<Constraint>();
     private List<Constraint> constraintsContext = rootConstraints;
@@ -170,6 +172,16 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
     }
 
     @Override
+    public void setLimitCount(int limitCount) {
+        this.limitCount = limitCount;
+    }
+
+    @Override
+    public void setLimitOffset(int limitOffset) {
+        this.limitOffset = limitOffset;
+    }
+
+    @Override
     public javax.jcr.query.Query buildQuery() throws SrampException {
         if (this.error != null) {
             throw this.error;
@@ -186,6 +198,10 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
         Column[] columns = new Column[1];
         columns[0] = factory.column(selectorContext, null, null);
         QueryObjectModel query = factory.createQuery(rootSource, compileAnd(rootConstraints), orderings, columns);
+        if (limitCount > 0) {
+            query.setLimit(limitCount);
+            query.setOffset(limitOffset);
+        }
         return query;
     }
 

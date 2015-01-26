@@ -67,7 +67,7 @@ public class JCRRelationshipContext implements RelationshipContext {
             builder.append("]");
         }
         String xpath = builder.toString();
-        JCRSrampQuery query = new JCRSrampQuery(xpath, "createdTimestamp", false);
+        JCRSrampQuery query = new JCRSrampQuery(xpath, "createdTimestamp", false, 0, 0);
         query.setSession(session);
         try {
             ArtifactSet artifactSet = query.executeQuery();

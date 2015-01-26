@@ -40,10 +40,12 @@ public abstract class AbstractSrampQueryImpl implements SrampQuery {
 
 	private static final XPathParser sParser = new XPathParser();
 
-	private String xpathTemplate;
 	private List<QueryReplacementParam<?>> replacementParams = new ArrayList<QueryReplacementParam<?>>();
-	private String orderByProperty;
-	private boolean orderAscending;
+    protected String xpathTemplate;
+    protected String orderByProperty;
+    protected boolean orderAscending;
+    protected int limitCount;
+    protected int limitOffset;
 
 	/**
 	 * Constructor.
@@ -51,52 +53,13 @@ public abstract class AbstractSrampQueryImpl implements SrampQuery {
 	 * @param orderByProperty
 	 * @param orderAscending
 	 */
-	public AbstractSrampQueryImpl(String xpathTemplate, String orderByProperty, boolean orderAscending) {
-		setXpathTemplate(xpathTemplate);
-		setOrderByProperty(orderByProperty);
-		setOrderAscending(orderAscending);
-	}
-
-	/**
-	 * @return the xpathTemplate
-	 */
-	protected String getXpathTemplate() {
-		return xpathTemplate;
-	}
-
-	/**
-	 * @param xpathTemplate the xpathTemplate to set
-	 */
-	protected void setXpathTemplate(String xpathTemplate) {
+	public AbstractSrampQueryImpl(String xpathTemplate, String orderByProperty, boolean orderAscending,
+            int limitCount, int limitOffset) {
 		this.xpathTemplate = xpathTemplate;
-	}
-
-	/**
-	 * @return the orderByProperty
-	 */
-	protected String getOrderByProperty() {
-		return orderByProperty;
-	}
-
-	/**
-	 * @param orderByProperty the orderByProperty to set
-	 */
-	protected void setOrderByProperty(String orderByProperty) {
-		this.orderByProperty = orderByProperty;
-	}
-
-	/**
-	 * @return the orderAscending
-	 */
-	protected boolean isOrderAscending() {
-		return orderAscending;
-	}
-
-	/**
-	 * @param orderAscending the orderAscending to set
-	 */
-	protected void setOrderAscending(boolean orderAscending) {
-		this.orderAscending = orderAscending;
+        this.orderByProperty = orderByProperty;
+        this.orderAscending = orderAscending;
+        this.limitCount = limitCount;
+        this.limitOffset = limitOffset;
 	}
 
 	/**
@@ -170,7 +133,6 @@ public abstract class AbstractSrampQueryImpl implements SrampQuery {
 	 */
 	@Override
 	public final ArtifactSet executeQuery() throws SrampException {
-		String xpathTemplate = getXpathTemplate();
 		String xpath = formatQuery(xpathTemplate, this.replacementParams);
 		Query queryModel = parseXPath(xpath);
 		validateQuery(queryModel);

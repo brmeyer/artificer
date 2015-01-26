@@ -192,7 +192,7 @@ public class MavenRepositoryService extends HttpServlet {
 
         try {
             QueryManager queryManager = QueryManagerFactory.newInstance();
-            SrampQuery srampQuery = queryManager.createQuery(queryBuilder.toString(), "createdTimestamp", false); //$NON-NLS-1$
+            SrampQuery srampQuery = queryManager.createQuery(queryBuilder.toString(), "createdTimestamp", false, 0, 0); //$NON-NLS-1$
 
             for (Object parameter : parameters) {
                 if (parameter instanceof String) {

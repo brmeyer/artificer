@@ -46,7 +46,7 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
         }
 
         QueryManager queryManager = queryManager();
-        SrampQuery srampQuery = queryManager.createQuery(xpath, "name", true);
+        SrampQuery srampQuery = queryManager.createQuery(xpath, "name", true, 0, 0);
         return srampQuery.executeQuery().list();
     }
 
@@ -66,20 +66,17 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
             orderBy = "name"; //$NON-NLS-1$
         if (ascending == null)
             ascending = true;
-
-        QueryManager queryManager = queryManager();
-        SrampQuery srampQuery = queryManager.createQuery(xpath, orderBy, ascending);
-        ArtifactSet artifactSet = srampQuery.executeQuery();
-
         startIndex = startIndex(startPage, startIndex, count);
         if (count == null)
             count = 100;
 
-        int startIdx = startIndex;
-        int endIdx = startIdx + count - 1;
+        QueryManager queryManager = queryManager();
+        SrampQuery srampQuery = queryManager.createQuery(xpath, orderBy, ascending, startIndex, count);
+        ArtifactSet artifactSet = srampQuery.executeQuery();
+
         try {
-            List<BaseArtifactType> results = artifactSet.pagedList(startIdx, endIdx);
-            return new PagedResult<BaseArtifactType>(results, xpath, artifactSet.size(), startIndex, orderBy, ascending);
+            List<BaseArtifactType> results = artifactSet.list();
+            return new PagedResult<BaseArtifactType>(results, xpath, totalSize, startIndex, orderBy, ascending);
         } finally {
             artifactSet.close();
         }

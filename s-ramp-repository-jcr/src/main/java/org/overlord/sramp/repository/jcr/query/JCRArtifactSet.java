@@ -105,22 +105,4 @@ public class JCRArtifactSet extends JCRAbstractSet implements ArtifactSet, Itera
         return artifacts;
     }
 
-    @Override
-    public List<BaseArtifactType> pagedList(long startIndex, long endIndex) throws Exception {
-        // Get only the rows we're interested in.
-        List<BaseArtifactType> artifacts = new ArrayList<BaseArtifactType>();
-        int i = 0;
-        while (hasNext()) {
-           if (i >= startIndex && i <= endIndex) {
-               artifacts.add(next());
-            } else {
-                // burn it
-                jcrNodes.next();
-            }
-            i++;
-        }
-
-        return artifacts;
-    }
-
 }

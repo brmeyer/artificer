@@ -31,6 +31,10 @@ public interface SrampToJcrSql2QueryVisitor extends XPathVisitor {
 
     public void setOrderAscending(boolean orderAscending);
 
+    public void setLimitCount(int limitCount);
+
+    public void setLimitOffset(int limitOffset);
+
     public Query buildQuery() throws SrampException;
 
 }
