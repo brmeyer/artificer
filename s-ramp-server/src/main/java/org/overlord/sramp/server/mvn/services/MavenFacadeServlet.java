@@ -61,7 +61,18 @@ public class MavenFacadeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
         try {
-            MavenGavInfo gavInfo = MavenGavInfo.fromUrl(req.getRequestURI());
+            String url = req.getRequestURI();
+
+            if (url.endsWith(MavenGavInfo.URL_CONTEXT_STR) || url.endsWith(MavenGavInfo.URL_CONTEXT_STR + "/")) {
+                // If the facade URL is simply being called with no GAV, it's vital we exit cleanly!  Ex: If the facade
+                // is used as a Nexus proxy repository, Nexus will call the URL to verify it exists.
+                return;
+            } else if (url.contains(".meta/")) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            MavenGavInfo gavInfo = MavenGavInfo.fromUrl(url);
 
             if (gavInfo.isMavenMetaData() && gavInfo.getVersion() == null) {
                 writeResponse(doGenerateArtifactDirMavenMetaData(gavInfo), gavInfo, resp);

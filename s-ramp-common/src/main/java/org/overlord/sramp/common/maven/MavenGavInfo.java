@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class MavenGavInfo {
 
-    private static final String URL_CONTEXT_STR = "maven/repository";
+    public static final String URL_CONTEXT_STR = "maven/repository";
 
 	/**
 	 * <p>Parses the resource name and returns the GAV information.  An example of
