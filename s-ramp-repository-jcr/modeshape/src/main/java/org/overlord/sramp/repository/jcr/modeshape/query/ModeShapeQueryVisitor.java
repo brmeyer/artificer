@@ -25,6 +25,8 @@ import org.modeshape.jcr.query.model.QueryObjectModelFactory;
 import org.modeshape.jcr.query.model.Selector;
 import org.modeshape.jcr.query.model.Source;
 import org.modeshape.jcr.query.model.StaticOperand;
+import org.modeshape.jcr.query.model.Visitor;
+import org.modeshape.jcr.query.model.Visitors;
 import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.common.SrampException;
@@ -129,6 +131,8 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
 
     private List<Constraint> rootConstraints = new ArrayList<Constraint>();
     private List<Constraint> constraintsContext = rootConstraints;
+    // TODO: Temporary until https://issues.jboss.org/browse/MODE-2421
+    private List<String> rawConstraints = new ArrayList<String>();
 
     private ClassificationHelper classificationHelper;
 
@@ -142,6 +146,8 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
 
     private int uniqueAliasCounter = 1;
     private SrampException error;
+
+    private boolean negate = false;
 
     /**
      * Default constructor.
@@ -185,8 +191,22 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
         }
         Column[] columns = new Column[1];
         columns[0] = factory.column(selectorContext, null, null);
+
         QueryObjectModel query = factory.createQuery(rootSource, compileAnd(rootConstraints), orderings, columns);
-        return query;
+
+        // TODO: Temporary until https://issues.jboss.org/browse/MODE-2421
+        String rawQuery = query.getStatement();
+        for (String rawConstraint : rawConstraints) {
+            // if any raw constraints were created, add them
+            rawQuery += " AND " + rawConstraint;
+        }
+
+//        return query;
+        try {
+            return queryManager.createQuery(rawQuery, JCRConstants.JCR_SQL2);
+        } catch (Exception e) {
+            throw new QueryExecutionException(e);
+        }
     }
 
     /**
@@ -275,7 +295,7 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
             constraintsContext = new ArrayList<Constraint>();
             node.getLeft().accept(this);
             node.getRight().accept(this);
-            oldConstraintsContext.add(compileAnd(constraintsContext));
+            addConstraint(compileAnd(constraintsContext), oldConstraintsContext);
             constraintsContext = oldConstraintsContext;
         }
     }
@@ -407,12 +427,9 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
 
             Argument argument = node.getArguments().get(0);
             if (argument.getExpr() != null) {
-                List<Constraint> oldConstraintsContext = constraintsContext;
-                constraintsContext = new ArrayList<Constraint>();
+                negate = true;
                 argument.getExpr().accept(this);
-                // Should have resulted in only 1 constraint -- negate it and add to the original list.
-                oldConstraintsContext.add(factory.not((constraintsContext.get(0))));
-                constraintsContext = oldConstraintsContext;
+                negate = false;
             } else {
                 // TODO: When would not() be given a literal?  That's what this implies.  As-is, it won't be negated...
                 argument.accept(this);
@@ -430,9 +447,9 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
             operation(getSelectorContext(), propertyName, QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, classification.toString());
         }
         if (isOr) {
-            oldConstraintsContext.add(compileOr(constraintsContext));
+            addConstraint(compileOr(constraintsContext), oldConstraintsContext);
         } else {
-            oldConstraintsContext.add(compileAnd(constraintsContext));
+            addConstraint(compileAnd(constraintsContext), oldConstraintsContext);
         }
         constraintsContext = oldConstraintsContext;
     }
@@ -470,7 +487,7 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
             constraintsContext = new ArrayList<Constraint>();
             node.getLeft().accept(this);
             node.getRight().accept(this);
-            oldConstraintsContext.add(compileOr(constraintsContext));
+            addConstraint(compileOr(constraintsContext), oldConstraintsContext);
             constraintsContext = oldConstraintsContext;
         }
     }
@@ -519,11 +536,19 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
      */
     @Override
     public void visit(RelationshipPath node) {
-        joinChild("sramp:relationship", relationshipContext, getSelectorContext());
-        if (targetContext != null) {
-            joinChild("sramp:target", targetContext, relationshipContext);
+        if (negate) {
+            // Ex: /s-ramp/wsdl/Part[xp2:not(element)]
+            // We can't simply do the join and negate the relationshipType= operation, as that would return Parts that
+            // have 1+ relationships of any type other than 'element'.  Instead, we need to us a subselect
+            in("sramp:relationship", relationshipContext, "sramp:relationshipType",
+                    getSelectorContext(), node.getRelationshipType());
+        } else {
+            joinChild("sramp:relationship", relationshipContext, getSelectorContext());
+            if (targetContext != null) {
+                joinChild("sramp:target", targetContext, relationshipContext);
+            }
+            operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, node.getRelationshipType());
         }
-        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, node.getRelationshipType());
     }
 
     /**
@@ -678,7 +703,7 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
 
     private void operation(DynamicOperand operand, String operator, Value value) {
         try {
-            constraintsContext.add(factory.comparison(operand, operator, factory.literal(value)));
+            addConstraint(factory.comparison(operand, operator, factory.literal(value)));
         } catch (RepositoryException e) {
             error = new QueryExecutionException(e);
         }
@@ -690,18 +715,45 @@ public class ModeShapeQueryVisitor implements SrampToJcrSql2QueryVisitor {
             for (int i = 0; i < values.length; i++) {
                 literalValues[i] = factory.literal((session.getValueFactory().createValue(values[i])));
             }
-            constraintsContext.add(factory.in(factory.propertyValue(selectorName, propertyName), literalValues));
+            addConstraint(factory.in(factory.propertyValue(selectorName, propertyName), literalValues));
         } catch (RepositoryException e) {
             error = new QueryExecutionException(e);
         }
     }
 
+    private void in(String subNodeType, String subSelectorName, String subPropertyName, String selectorName, String value) {
+        // We currently have to build this manually.  QOMF does not allow #in using 2 StaticOperands.
+        // See https://issues.jboss.org/browse/MODE-2421
+        StringBuilder in = new StringBuilder();
+        in.append("'" + value + "' ");
+        if (negate) {
+            in.append("NOT ");
+        }
+        in.append("IN (SELECT ")
+                .append(subSelectorName).append(".[").append(subPropertyName).append("]")
+                .append(" FROM [").append(subNodeType).append("] AS ").append(subSelectorName)
+                .append(" WHERE ISCHILDNODE(").append(subSelectorName).append(",").append(selectorName).append("))");
+        rawConstraints.add(in.toString());
+    }
+
     private void exists(String selectorName, String propertyName) {
-        constraintsContext.add(factory.propertyExistence(selectorName, propertyName));
+        addConstraint(factory.propertyExistence(selectorName, propertyName));
     }
 
     private void descendant(String selectorName, String ancestorPath) {
-        constraintsContext.add(factory.descendantNode(selectorName, ancestorPath));
+        addConstraint(factory.descendantNode(selectorName, ancestorPath));
+    }
+
+    private void addConstraint(Constraint constraint) {
+        addConstraint(constraint, constraintsContext);
+    }
+
+    private void addConstraint(Constraint constraint, List<Constraint> constraints) {
+        if (negate) {
+            constraints.add(factory.not(constraint));
+        } else {
+            constraints.add(constraint);
+        }
     }
 
     private Constraint compileAnd(List<Constraint> constraints) {

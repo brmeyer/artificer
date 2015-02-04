@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -93,6 +94,12 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
         artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(1, artifactSet.size());
+
+        // Get all the element style WSDL message parts
+        query = queryManager.createQuery("/s-ramp/wsdl/Part[xp2:not(element)]");
+        artifactSet = query.executeQuery();
+        Assert.assertNotNull(artifactSet);
+        Assert.assertEquals(2, artifactSet.size());
     }
 
     /**
