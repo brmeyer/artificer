@@ -102,8 +102,12 @@
     <property name="s-ramp.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
     <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-wildfly-adapter-dist.zip.path}" />
 
+    <property name="ejb-jms.password" value="artificer1!" />
+
     <ant antfile="../s-ramp-installer/src/main/resources/scripts/${appserver.id}.xml"
          inheritall="true" target="install" />
+
+    <copy file="src/test/resources/sramp.properties" todir="${s-ramp.appserver.dir}/standalone/configuration" overwrite="true"/>
   </target>
 
 </project>
