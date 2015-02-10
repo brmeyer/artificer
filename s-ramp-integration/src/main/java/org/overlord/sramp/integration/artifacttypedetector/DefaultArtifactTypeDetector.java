@@ -18,6 +18,11 @@ package org.overlord.sramp.integration.artifacttypedetector;
 import org.overlord.sramp.common.ArtifactContent;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.integration.ArchiveContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * @author Brett Meyer.
@@ -28,6 +33,19 @@ public class DefaultArtifactTypeDetector extends AbstractArtifactTypeDetector {
     public ArtifactType detect(ArtifactContent content) {
         String filename = content.getFilename().toLowerCase();
         if (filename.endsWith(".xml")) { //$NON-NLS-1$
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setNamespaceAware(true);
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(content.getInputStream());
+                Node root = doc.getFirstChild();
+                String name = root.getLocalName();
+                if (name.equalsIgnoreCase("policy")) {
+                    return ArtifactType.PolicyDocument();
+                }
+            } catch (Exception e) {
+                // TODO: throw something?
+            }
             return ArtifactType.XmlDocument();
         } else if (filename.endsWith(".wsdl")) { //$NON-NLS-1$
             return ArtifactType.WsdlDocument();

@@ -17,6 +17,8 @@ package org.overlord.sramp.integration.artifactbuilder;
 
 import org.overlord.sramp.common.query.xpath.StaticNamespaceContext;
 
+import java.io.IOException;
+
 /**
  * Creates derived content from a Policy document.  This will create the derived content as
  * defined in the Policy model found in the s-ramp specification.  The following derived
@@ -27,13 +29,21 @@ import org.overlord.sramp.common.query.xpath.StaticNamespaceContext;
  *   <li>PolicyAttachment</li>
  * </ul>
  *
- * @author eric.wittmann@redhat.com
+ * @author Brett Meyer
  */
 public class PolicyArtifactBuilder extends XmlArtifactBuilder {
 
 	@Override
 	protected void configureNamespaceMappings(StaticNamespaceContext namespaceContext) {
 		super.configureNamespaceMappings(namespaceContext);
-		namespaceContext.addMapping("wsp", "http://www.w3.org/ns/ws-policy"); //$NON-NLS-1$ //$NON-NLS-2$
+		// TODO: This may need re-thought if the namespace context can't support multiple possibilities for the same prefix.
+		namespaceContext.addMapping("wsp", "http://www.w3.org/ns/ws-policy");
+		namespaceContext.addMapping("wsp", "http://schemas.xmlsoap.org/ws/2004/09/policy");
+		namespaceContext.addMapping("sec", "http://schemas.xmlsoap.org/ws/2002/12/secext");
+	}
+
+	@Override
+	protected void derive() throws IOException {
+
 	}
 }
