@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Install S-RAMP from distro" default="install">
+<project name="Install Artificer from distro" default="install">
   <taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <classpath>
       <pathelement location="lib/ant-contrib-0.6.jar" />
@@ -15,12 +15,12 @@
   <property name="s-ramp-distro.overlord-commons-ant.jar" location="${s-ramp-distro.bindir}/overlord-commons-ant-${version.org.overlord.overlord-commons}.jar" />
   <property name="s-ramp-distro.s-ramp-installer.jar" location="${s-ramp-distro.bindir}/s-ramp-installer-${project.version}.jar" />
 
-  <!-- Install S-RAMP -->
+  <!-- Install Artificer -->
   <target name="install">
      
     <echo message=" " />
     <echo message="#######################################################" />
-    <echo message="# Installing S-RAMP.  Please tell us how you would    #" />
+    <echo message="# Installing Artificer.  Please tell us how you would    #" />
     <echo message="# like to proceed!                                    #" />
     <echo message="#######################################################" />
     <echo message=" " />
@@ -52,7 +52,7 @@
   <target name="install-jboss-wildfly-8-wrapper" if="s-ramp-distro.choices.platform.jboss-wildfly-8">
     <echo message=" " />
     <echo message="#######################################################" />
-    <echo message="# Installing S-RAMP into Wildfly 8 (great choice!).     #" />
+    <echo message="# Installing Artificer into Wildfly 8 (great choice!).     #" />
     <echo message="#######################################################" />
     <echo message=" " />
     <echo message=" Please tell us where Wildfly 8 is located (full path)." />
@@ -74,7 +74,7 @@
 
     <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/Wildfly/modeshape-distribution-${version.org.modeshape}-jboss-wf8-dist.zip" />
 
-    <!-- Call the S-RAMP installer -->
+    <!-- Call the Artificer installer -->
     <ant antfile="${s-ramp-distro.s-ramp-installer.dir}/build.xml" inheritall="true" target="install"
          dir="${s-ramp-distro.s-ramp-installer.dir}">
       <property name="appserver.id" value="jboss-wildfly-8" />
@@ -92,7 +92,7 @@
   <target name="install-jboss-eap-6-wrapper" if="s-ramp-distro.choices.platform.jboss-eap-6">
     <echo message=" " />
     <echo message="#######################################################" />
-    <echo message="# Installing S-RAMP into EAP 6 (great choice!).     #" />
+    <echo message="# Installing Artificer into EAP 6 (great choice!).     #" />
     <echo message="#######################################################" />
     <echo message=" " />
     <echo message=" Please tell us where JBoss EAP 6 is located (full path)." />
@@ -125,7 +125,7 @@
         </else>
     </if>
 
-    <!-- Call the S-RAMP installer -->
+    <!-- Call the Artificer installer -->
     <ant antfile="${s-ramp-distro.s-ramp-installer.dir}/build.xml" inheritall="true" target="install" 
          dir="${s-ramp-distro.s-ramp-installer.dir}">
       <property name="appserver.id" value="jboss-eap-6" />

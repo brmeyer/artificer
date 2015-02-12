@@ -52,7 +52,7 @@ public class ArtificerUIConfig {
                 refreshDelay,
                 "/META-INF/config/org.artificer.ui.server.api.properties", //$NON-NLS-1$
                 ArtificerApiClientAccessor.class);
-        String defaultSrampApiEndpoint = JBossServer.getBaseUrl() + "/s-ramp-server"; //$NON-NLS-1$
+        String defaultSrampApiEndpoint = JBossServer.getBaseUrl() + "/artificer-server"; //$NON-NLS-1$
         System.out.println(Messages.i18n.format("Config.Loaded", ArtificerUIConfig.config.getString(ARTIFICER_API_ENDPOINT, defaultSrampApiEndpoint))); //$NON-NLS-1$
     }
 

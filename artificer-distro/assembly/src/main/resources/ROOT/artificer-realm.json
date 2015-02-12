@@ -46,20 +46,20 @@
     },
     "applications": [
         {
-            "name": "s-ramp-ui",
+            "name": "artificer-ui",
             "enabled": true,
-            "baseUrl": "/s-ramp-ui",
+            "baseUrl": "/artificer-ui",
             "redirectUris": [
-                "/s-ramp-ui/*"
+                "/artificer-ui/*"
             ],
             "secret": "2b0ad840-ab4d-11e4-bcd8-0800200c9a66"
         },
         {
-            "name": "s-ramp-server",
+            "name": "artificer-server",
             "enabled": true,
-            "baseUrl": "/s-ramp-server",
+            "baseUrl": "/artificer-server",
             "redirectUris": [
-                "/s-ramp-server/*"
+                "/artificer-server/*"
             ],
             "secret": "6d274880-ab4d-11e4-bcd8-0800200c9a66"
         }

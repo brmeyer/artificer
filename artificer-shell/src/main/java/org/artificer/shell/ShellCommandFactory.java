@@ -169,8 +169,8 @@ public class ShellCommandFactory {
 
         // Register commands listed in the user's commands.ini config file
         String userHome = System.getProperty("user.home", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-        String commandsDirName = System.getProperty("s-ramp.shell.commandsDir", //$NON-NLS-1$
-                userHome + "/.s-ramp/commands"); //$NON-NLS-1$
+        String commandsDirName = System.getProperty("artificer.shell.commandsDir", //$NON-NLS-1$
+                userHome + "/.artificer/commands"); //$NON-NLS-1$
         File commandsDir = new File(commandsDirName);
         if (!commandsDir.exists()) {
             commandsDir.mkdirs();

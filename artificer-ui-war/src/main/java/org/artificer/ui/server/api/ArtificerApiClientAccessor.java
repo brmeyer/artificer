@@ -44,7 +44,7 @@ public class ArtificerApiClientAccessor {
      * Creates a new s-ramp client from configuration.
      */
     private static ArtificerAtomApiClient createClient() {
-    	String defaultSrampApiEndpoint = JBossServer.getBaseUrl() + "/s-ramp-server"; //$NON-NLS-1$
+    	String defaultSrampApiEndpoint = JBossServer.getBaseUrl() + "/artificer-server"; //$NON-NLS-1$
         String endpoint = ArtificerUIConfig.getConfig().getString(ArtificerUIConfig.ARTIFICER_API_ENDPOINT, defaultSrampApiEndpoint);
         boolean validating = "true".equals(ArtificerUIConfig.getConfig().getString(ArtificerUIConfig.ARTIFICER_API_VALIDATING, "true")); //$NON-NLS-1$ //$NON-NLS-2$
         AuthenticationProvider authProvider = null;

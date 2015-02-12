@@ -125,7 +125,7 @@ public class StoredQueryResource extends AbstractFeedResource {
             List<StoredQuery> storedQueries = queryService.getStoredQueries();
 
             Feed feed = new Feed();
-            feed.setTitle("S-RAMP stored queries feed"); //$NON-NLS-1$
+            feed.setTitle("S-RAMP Stored Queries Feed"); //$NON-NLS-1$
             feed.setUpdated(new Date());
 
             for (StoredQuery storedQuery : storedQueries) {

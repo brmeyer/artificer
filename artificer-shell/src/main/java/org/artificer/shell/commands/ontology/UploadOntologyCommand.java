@@ -69,7 +69,7 @@ public class UploadOntologyCommand extends BuiltInShellCommand {
                 throw new FileNotFoundException(path);
             argLine.append(file.getCanonicalPath());
         }
-        ArtificerAtomApiClient client = new ArtificerAtomApiClient("http://localhost:8080/s-ramp-server"); //$NON-NLS-1$
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient("http://localhost:8080/artificer-server"); //$NON-NLS-1$
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         ShellContext context = new SimpleShellContext();
         context.setVariable(clientVarName, client);

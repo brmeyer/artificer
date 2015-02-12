@@ -54,7 +54,7 @@ public abstract class AbstractUploadServlet extends HttpServlet {
 		File resourceTempFile = null;
 		OutputStream oStream = null;
 		try {
-			resourceTempFile = File.createTempFile("s-ramp-ui-upload", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
+			resourceTempFile = File.createTempFile("artificer-ui-upload", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 			oStream = FileUtils.openOutputStream(resourceTempFile);
             IOUtils.copy(resourceInputStream, oStream);
             return resourceTempFile;

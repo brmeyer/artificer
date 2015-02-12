@@ -125,15 +125,15 @@
   <!-- Security -->
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>s-ramp-ui</web-resource-name>
+      <web-resource-name>artificer-ui</web-resource-name>
       <url-pattern>/index.html</url-pattern>
     </web-resource-collection>
     <web-resource-collection>
-      <web-resource-name>s-ramp-rest</web-resource-name>
+      <web-resource-name>artificer-rest</web-resource-name>
       <url-pattern>/rest/*</url-pattern>
     </web-resource-collection>
     <web-resource-collection>
-      <web-resource-name>s-ramp-app</web-resource-name>
+      <web-resource-name>artificer-app</web-resource-name>
       <url-pattern>/app/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>

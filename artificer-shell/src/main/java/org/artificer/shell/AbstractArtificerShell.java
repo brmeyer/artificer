@@ -30,7 +30,7 @@ import org.artificer.shell.api.ShellCommand;
  */
 public abstract class AbstractArtificerShell {
 
-    protected static final String LOCALE_PROPERTY = "s-ramp.shell.locale"; //$NON-NLS-1$
+    protected static final String LOCALE_PROPERTY = "artificer.shell.locale"; //$NON-NLS-1$
 
 
 
@@ -107,7 +107,7 @@ public abstract class AbstractArtificerShell {
 				"          /\\__/ /      | |\\ \\| | | | |  | | |     \n" + //$NON-NLS-1$
 				"          \\____/       \\_| \\_\\_| |_|_|  |_|_|     \n" + //$NON-NLS-1$
 				"                                                  \n" + //$NON-NLS-1$
-				"  Overlord S-RAMP, Licensed under Apache License V2.0, Copyright 2014\n" + //$NON-NLS-1$
+				"  Artificer, Licensed under Apache License V2.0, Copyright 2014\n" + //$NON-NLS-1$
 				"  Locale: " + Locale.getDefault().toString().trim() + "\n" + //$NON-NLS-1$ //$NON-NLS-2$
 				"**********************************************************************" //$NON-NLS-1$
 				);

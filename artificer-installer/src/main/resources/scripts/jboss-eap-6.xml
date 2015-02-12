@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Install S-RAMP into JBoss EAP 6" default="install">
+<project name="Install Artificer into JBoss EAP 6" default="install">
 
   <!-- Configure properties for JBoss EAP 6 -->
   <target name="properties-jboss-eap-6">
@@ -15,11 +15,11 @@
     <property name="s-ramp.s-ramp-ui.war.path" location="bin/s-ramp-ui-war-eap6-${s-ramp.version}.war" />
   </target>
 
-  <!-- Install S-RAMP -->
+  <!-- Install Artificer -->
   <target name="install" depends="properties-jboss-eap-6">
     <echo message=" " />
     <echo message="#############################################" />
-    <echo message="# Installing S-RAMP into JBoss EAP 6. #" />
+    <echo message="# Installing Artificer into JBoss EAP 6. #" />
     <echo message="#############################################" />
 
     <echo>----------------------------------</echo>
@@ -38,7 +38,7 @@
     <unzip src="${s-ramp.keycloak.adapter}" dest="${s-ramp.appserver.dir}"/>
 
     <echo>-----------------------------------</echo>
-    <echo>Deploying S-RAMP and S-RAMP UI</echo>
+    <echo>Deploying Artificer and Artificer UI</echo>
     <echo>-----------------------------------</echo>
     <copy file="${s-ramp.s-ramp-server.war.path}"
           tofile="${s-ramp.jboss.deployments.dir}/s-ramp-server.war" overwrite="true" />
@@ -48,7 +48,7 @@
     <copy file="${s-ramp.updates.dir}/artificer-ui.properties" todir="${s-ramp.jboss.config.dir}" overwrite="true" />
 
     <echo>-----------------------------------</echo>
-    <echo>Configuring S-RAMP</echo>
+    <echo>Configuring Artificer</echo>
     <echo>-----------------------------------</echo>
     <antcall target="config-jboss-eap-6" />
 

@@ -12,22 +12,22 @@
     <xsl:element name="subsystem" namespace="{$currentNS}">
       <xsl:apply-templates select="./node()|./text()" />
       <!-- Secure Deployment Config -->
-      <xsl:if test="not(kc:secure-deployment[@name='s-ramp-ui.war'])">
+      <xsl:if test="not(kc:secure-deployment[@name='artificer-ui.war'])">
           <xsl:element name="secure-deployment" namespace="urn:jboss:domain:keycloak:1.0">
-            <xsl:attribute name="name">s-ramp-ui.war</xsl:attribute>
+            <xsl:attribute name="name">artificer-ui.war</xsl:attribute>
             <xsl:element name="realm" namespace="urn:jboss:domain:keycloak:1.0">artificer</xsl:element>
-            <xsl:element name="resource" namespace="urn:jboss:domain:keycloak:1.0">s-ramp-ui</xsl:element>
+            <xsl:element name="resource" namespace="urn:jboss:domain:keycloak:1.0">artificer-ui</xsl:element>
             <xsl:element name="credential" namespace="urn:jboss:domain:keycloak:1.0">
                 <xsl:attribute name="name">secret</xsl:attribute>
                 2b0ad840-ab4d-11e4-bcd8-0800200c9a66
             </xsl:element>
           </xsl:element>
       </xsl:if>
-      <xsl:if test="not(kc:secure-deployment[@name='s-ramp-server.war'])">
+      <xsl:if test="not(kc:secure-deployment[@name='artificer-server.war'])">
           <xsl:element name="secure-deployment" namespace="urn:jboss:domain:keycloak:1.0">
-            <xsl:attribute name="name">s-ramp-server.war</xsl:attribute>
+            <xsl:attribute name="name">artificer-server.war</xsl:attribute>
             <xsl:element name="realm" namespace="urn:jboss:domain:keycloak:1.0">artificer</xsl:element>
-            <xsl:element name="resource" namespace="urn:jboss:domain:keycloak:1.0">s-ramp-server</xsl:element>
+            <xsl:element name="resource" namespace="urn:jboss:domain:keycloak:1.0">artificer-server</xsl:element>
             <xsl:element name="credential" namespace="urn:jboss:domain:keycloak:1.0">
                 <xsl:attribute name="name">secret</xsl:attribute>
                 6d274880-ab4d-11e4-bcd8-0800200c9a66

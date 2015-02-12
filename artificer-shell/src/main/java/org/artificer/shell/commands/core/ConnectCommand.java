@@ -86,7 +86,7 @@ public class ConnectCommand extends BuiltInShellCommand {
      * Prompts the user to enter a username for authentication credentials.
      */
     private String promptForUsername() {
-        String username = System.getProperty("s-ramp.shell.username"); //$NON-NLS-1$
+        String username = System.getProperty("artificer.shell.username"); //$NON-NLS-1$
         if (username != null) {
             return username;
         }
@@ -97,7 +97,7 @@ public class ConnectCommand extends BuiltInShellCommand {
      * Prompts the user to enter a password for authentication credentials.
      */
     private String promptForPassword() {
-        String password = System.getProperty("s-ramp.shell.password"); //$NON-NLS-1$
+        String password = System.getProperty("artificer.shell.password"); //$NON-NLS-1$
         if (password != null) {
             return password;
         }
@@ -107,7 +107,7 @@ public class ConnectCommand extends BuiltInShellCommand {
 	@Override
 	public int tabCompletion(String lastArgument, List<CharSequence> candidates) {
 		if (getArguments().isEmpty()) {
-			candidates.add("http://localhost:8080/s-ramp-server"); //$NON-NLS-1$
+			candidates.add("http://localhost:8080/artificer-server"); //$NON-NLS-1$
 			return 0;
 		} else {
 			return -1;

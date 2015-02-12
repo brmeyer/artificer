@@ -1,7 +1,7 @@
 #!/bin/sh
 echo ""
 echo "######################################"
-echo "  Releasing Overlord S-RAMP"
+echo "  Releasing Artificer"
 echo "######################################"
 echo ""
 read -p "Release version: " RELEASE_VERSION

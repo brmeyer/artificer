@@ -57,7 +57,7 @@ public class ArtificerConfig {
         }
         //If that failed, try constructing it from the JBoss system parameters
         if (baseUrl==null){
-            baseUrl = JBossServer.getBaseUrl() + "/s-ramp-server" ; //$NON-NLS-1$
+            baseUrl = JBossServer.getBaseUrl() + "/artificer-server" ; //$NON-NLS-1$
         }
         return configuration.getString(ArtificerConstants.ARTIFICER_CONFIG_BASEURL, baseUrl);
     }

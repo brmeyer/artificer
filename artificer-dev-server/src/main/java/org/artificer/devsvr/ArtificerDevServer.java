@@ -91,7 +91,7 @@ public class ArtificerDevServer extends ErraiDevServer {
      */
     @Override
     protected String getErraiModuleId() {
-        return "s-ramp-ui";
+        return "artificer-ui";
     }
 
     /**
@@ -126,7 +126,7 @@ public class ArtificerDevServer extends ErraiDevServer {
      */
     @Override
     protected void addModules(DevServerEnvironment environment) {
-        environment.addModule("s-ramp-ui",
+        environment.addModule("artificer-ui",
                 new WebAppModuleFromIDEDiscoveryStrategy(ArtifactSummaryBean.class),
                 new ErraiWebAppModuleFromMavenDiscoveryStrategy(ArtifactSummaryBean.class));
     }
@@ -143,9 +143,9 @@ public class ArtificerDevServer extends ErraiDevServer {
          * ********* */
         ServletContextHandler artificerUI = new ServletContextHandler(ServletContextHandler.SESSIONS);
         artificerUI.setSecurityHandler(createSecurityHandler(true));
-        artificerUI.setContextPath("/s-ramp-ui");
+        artificerUI.setContextPath("/artificer-ui");
         artificerUI.setWelcomeFiles(new String[]{"index.html"});
-        artificerUI.setResourceBase(environment.getModuleDir("s-ramp-ui").getCanonicalPath());
+        artificerUI.setResourceBase(environment.getModuleDir("artificer-ui").getCanonicalPath());
         artificerUI.addFilter(GWTCacheControlFilter.class, "/app/*", EnumSet.of(DispatcherType.REQUEST));
         artificerUI.addFilter(GWTCacheControlFilter.class, "/rest/*", EnumSet.of(DispatcherType.REQUEST));
         artificerUI.addFilter(GWTCacheControlFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
@@ -168,7 +168,7 @@ public class ArtificerDevServer extends ErraiDevServer {
         // File resources
         ServletHolder resources = new ServletHolder(new MultiDefaultServlet());
         resources.setInitParameter("resourceBase", "/");
-        resources.setInitParameter("resourceBases", environment.getModuleDir("s-ramp-ui").getCanonicalPath());
+        resources.setInitParameter("resourceBases", environment.getModuleDir("artificer-ui").getCanonicalPath());
         resources.setInitParameter("dirAllowed", "true");
         resources.setInitParameter("pathInfoOnly", "false");
         String[] fileTypes = new String[] { "html", "js", "css", "png", "gif" };
@@ -181,7 +181,7 @@ public class ArtificerDevServer extends ErraiDevServer {
          * ************* */
         ServletContextHandler artificerServer = new ServletContextHandler(ServletContextHandler.SESSIONS);
         artificerServer.setSecurityHandler(createSecurityHandler(false));
-        artificerServer.setContextPath("/s-ramp-server");
+        artificerServer.setContextPath("/artificer-server");
         artificerServer.addEventListener(new ArtificerLifeCycle());
         ServletHolder resteasyServerServlet = new ServletHolder(new HttpServletDispatcher());
         resteasyServerServlet.setInitParameter("javax.ws.rs.Application", ArtificerApplication.class.getName());
@@ -193,9 +193,9 @@ public class ArtificerDevServer extends ErraiDevServer {
         // TODO enable JSP support to test the repository listing
 
         artificerServer.addFilter(BasicAuthFilter.class, "/s-ramp/*", EnumSet.of(DispatcherType.REQUEST))
-                .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
+                .setInitParameter("allowedIssuers", "/artificer-ui,/dtgov,/dtgov-ui");
         artificerServer.addFilter(MavenRepositoryAuthFilter.class, "/maven/repository/*", EnumSet.of(DispatcherType.REQUEST))
-                .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
+                .setInitParameter("allowedIssuers", "/artificer-ui,/dtgov,/dtgov-ui");
         artificerServer.addFilter(org.artificer.server.filters.LocaleFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         artificerServer.addFilter(ServletCredentialsFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
@@ -252,9 +252,9 @@ public class ArtificerDevServer extends ErraiDevServer {
     protected void postStart(DevServerEnvironment environment) throws Exception {
         System.out.println("----------  Seeding the Repository  ---------------");
 
-        ArtificerAtomApiClient client = new ArtificerAtomApiClient("http://localhost:"+serverPort()+"/s-ramp-server", "seeder", "seeder", true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient("http://localhost:"+serverPort()+"/artificer-server", "seeder", "seeder", true);
 
-        String seedType = System.getProperty("s-ramp-dev-server.seed-type", "none");
+        String seedType = System.getProperty("artificer-dev-server.seed-type", "none");
         if ("switchyard".equals(seedType)) {
             doSwitchYardSeed(client);
         } else if ("standard".equals(seedType)) {
@@ -264,7 +264,7 @@ public class ArtificerDevServer extends ErraiDevServer {
         }
 
         System.out.println("----------  DONE  ---------------");
-        System.out.println("Now try:  \n  http://localhost:"+serverPort()+"/s-ramp-ui/index.html");
+        System.out.println("Now try:  \n  http://localhost:"+serverPort()+"/artificer-ui/index.html");
         System.out.println("---------------------------------");
     }
 

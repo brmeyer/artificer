@@ -189,7 +189,7 @@ public class OntologyResource extends AbstractResource {
 			List<ArtificerOntology> ontologies = ontologyService.get();
 
 			Feed feed = new Feed();
-			feed.setTitle("S-RAMP ontology feed"); //$NON-NLS-1$
+			feed.setTitle("S-RAMP Ontology Feed"); //$NON-NLS-1$
 			feed.setUpdated(new Date());
 
 			for (ArtificerOntology ontology : ontologies) {

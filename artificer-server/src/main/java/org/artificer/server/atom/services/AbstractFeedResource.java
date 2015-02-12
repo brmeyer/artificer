@@ -96,7 +96,7 @@ public abstract class AbstractFeedResource extends AbstractResource {
 	@SuppressWarnings("unchecked")
     private Feed createFeed(PagedResult<BaseArtifactType> pagedResult, Set<String> propNames, String baseUrl) throws Exception {
 		Feed feed = new Feed();
-		feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
+		feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_PROVIDER_QNAME, "Artificer"); //$NON-NLS-1$
         feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(pagedResult.getPageSize()));
         feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_START_INDEX_QNAME, String.valueOf(pagedResult.getStartIndex()));
         feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(pagedResult.getTotalSize()));

@@ -1,5 +1,5 @@
 {
-    "name" : "S-RAMP-Repository",
+    "name" : "Artificer-Repository",
     "jndiName" : "",
     "workspaces" : {
         "predefined" : ["otherWorkspace"],

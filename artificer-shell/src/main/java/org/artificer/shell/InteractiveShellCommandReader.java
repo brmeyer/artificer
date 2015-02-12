@@ -70,14 +70,14 @@ public class InteractiveShellCommandReader extends AbstractShellCommandReader im
 	 * Creates the ANSI compatible prompt.
 	 */
 	private String defaultAnsiPrompt() {
-		return "\033[1m\033[31ms-ramp>\033[0m "; //$NON-NLS-1$
+		return "\033[1m\033[31martificer>\033[0m "; //$NON-NLS-1$
 	}
 
 	/**
 	 * Creates the ANSI compatible prompt.
 	 */
 	private String connectedAnsiPrompt() {
-		return "\033[1m\033[32ms-ramp>\033[0m "; //$NON-NLS-1$
+		return "\033[1m\033[32martificer>\033[0m "; //$NON-NLS-1$
 	}
 
 	@Override

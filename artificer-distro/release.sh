@@ -1,7 +1,7 @@
 #!/bin/sh
 echo ""
 echo "######################################"
-echo "  Releasing S-RAMP Distro (Community)"
+echo "  Releasing Artificer Distro (Community)"
 echo "######################################"
 echo ""
 read -p "Release Version: " RELEASE_VERSION

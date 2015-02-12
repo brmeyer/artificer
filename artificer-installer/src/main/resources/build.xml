@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Install S-RAMP and S-RAMP-UI" default="install">
+<project name="Install Artificer and Artificer-UI" default="install">
 
   <!-- Override properties by putting them in s-ramp-build.properties -->
   <property name="s-ramp.build.properties" location="s-ramp-build.properties" />
@@ -17,11 +17,11 @@
   <property name="s-ramp.keycloak.adapter" location="" />
   <!-- ****************************************************** -->
 
-  <!-- Install S-RAMP -->
+  <!-- Install Artificer -->
   <target name="install">
     <echo message=" " />
     <echo message="#############################################" />
-    <echo message="# Running the S-RAMP installer.             #" />
+    <echo message="# Running the Artificer installer.             #" />
     <echo message="#############################################" />
 
     <property name="s-ramp.script.dir" location="scripts" />
@@ -29,7 +29,7 @@
 
     <echo message=" " />
     <echo message="############################################" />
-    <echo message="# S-RAMP installer completed successfully! #" />
+    <echo message="# Artificer installer completed successfully! #" />
     <echo message="############################################" />
     <echo message=" " />
   </target>

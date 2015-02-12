@@ -23,7 +23,7 @@ if not exist "%JAVA_HOME%\bin\java.exe" goto noJava
 
 :noJava
 echo The JAVA_HOME environment variable is not defined correctly.
-echo This environment variable is needed to run the S-RAMP shell.
+echo This environment variable is needed to run the Artificer shell.
 goto end
 
 :end
