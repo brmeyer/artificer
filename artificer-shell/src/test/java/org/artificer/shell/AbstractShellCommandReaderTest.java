@@ -48,14 +48,14 @@ public class AbstractShellCommandReaderTest {
         filtered = AbstractShellCommandReader.interpolate(line, properties);
         Assert.assertEquals("maven:deploy /home/test/dtgov-workflows.jar org.overlord.dtgov:dtgov-workflows:1.2.1-SNAPSHOT KieJarArchive", filtered); //$NON-NLS-1$
 
-        line = "connect ${sramp.endpoint:http://localhost:8080/s-ramp-server} ${sramp.username:admin} ${sramp.password:admin123}"; //$NON-NLS-1$
+        line = "connect ${artificer.endpoint:http://localhost:8080/s-ramp-server} ${sramp.username:admin} ${sramp.password:admin123}"; //$NON-NLS-1$
         properties.clear();
         filtered = AbstractShellCommandReader.interpolate(line, properties);
         Assert.assertEquals("connect http://localhost:8080/s-ramp-server admin admin123", filtered); //$NON-NLS-1$
-        properties.put("sramp.endpoint", "http://localhost:8181/sramp"); //$NON-NLS-1$ //$NON-NLS-2$
-        properties.put("sramp.username", "bwayne"); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put("artificer.endpoint", "http://localhost:8181/sramp"); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put("artificer.username", "bwayne"); //$NON-NLS-1$ //$NON-NLS-2$
         filtered = AbstractShellCommandReader.interpolate(line, properties);
-        Assert.assertEquals("connect http://localhost:8181/sramp bwayne admin123", filtered); //$NON-NLS-1$
+        Assert.assertEquals("connect http://localhost:8181/artificer bwayne admin123", filtered); //$NON-NLS-1$
     }
 
 }

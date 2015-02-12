@@ -61,12 +61,12 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
     private static final String WILDFLY_INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
     private static final String WILDFLY_PROVIDER_URL = "http-remoting://localhost:8080";
     private static final String WILDFLY_CONNECTIONFACTORY_JNDI = "jms/RemoteConnectionFactory";
-    private static final String WILDFLY_TOPIC_JNDI = "jms/sramp/events/topic";
+    private static final String WILDFLY_TOPIC_JNDI = "jms/artificer/events/topic";
     
     private static final String EAP_INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
     private static final String EAP_PROVIDER_URL = "remote://localhost:4447";
     private static final String EAP_CONNECTIONFACTORY_JNDI = "jms/RemoteConnectionFactory";
-    private static final String EAP_TOPIC_JNDI = "jms/sramp/events/topic";
+    private static final String EAP_TOPIC_JNDI = "jms/artificer/events/topic";
     
     private List<TextMessage> textMessages;
 
@@ -109,7 +109,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:artifactCreated
         TextMessage textMessage = textMessages.get(0);
         assertNotNull(textMessage);
-        assertEquals("sramp:artifactCreated", textMessage.getJMSType());
+        assertEquals("artificer:artifactCreated", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         ExtendedArtifactType eventArtifact = mapper.readValue(textMessage.getText(), ExtendedArtifactType.class);
         assertNotNull(eventArtifact);
@@ -120,7 +120,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:artifactUpdated
         textMessage = textMessages.get(1);
         assertNotNull(textMessage);
-        assertEquals("sramp:artifactUpdated", textMessage.getJMSType());
+        assertEquals("artificer:artifactUpdated", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         ArtifactUpdateEvent updateEvent = mapper.readValue(textMessage.getText(), ArtifactUpdateEvent.class);
         assertNotNull(updateEvent);
@@ -136,7 +136,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:artifactDeleted
         textMessage = textMessages.get(2);
         assertNotNull(textMessage);
-        assertEquals("sramp:artifactDeleted", textMessage.getJMSType());
+        assertEquals("artificer:artifactDeleted", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         eventArtifact = mapper.readValue(textMessage.getText(), ExtendedArtifactType.class);
         assertNotNull(eventArtifact);
@@ -193,7 +193,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:ontologyCreated
         TextMessage textMessage = textMessages.get(0);
         assertNotNull(textMessage);
-        assertEquals("sramp:ontologyCreated", textMessage.getJMSType());
+        assertEquals("artificer:ontologyCreated", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         ArtificerOntology eventOntology = mapper.readValue(textMessage.getText(), ArtificerOntology.class);
         assertNotNull(eventOntology);
@@ -208,7 +208,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:ontologyUpdated
         textMessage = textMessages.get(1);
         assertNotNull(textMessage);
-        assertEquals("sramp:ontologyUpdated", textMessage.getJMSType());
+        assertEquals("artificer:ontologyUpdated", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         OntologyUpdateEvent updateEvent = mapper.readValue(textMessage.getText(), OntologyUpdateEvent.class);
         assertNotNull(updateEvent);
@@ -222,7 +222,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         // sramp:ontologyDeleted
         textMessage = textMessages.get(2);
         assertNotNull(textMessage);
-        assertEquals("sramp:ontologyDeleted", textMessage.getJMSType());
+        assertEquals("artificer:ontologyDeleted", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
         eventOntology = mapper.readValue(textMessage.getText(), ArtificerOntology.class);
         assertNotNull(eventOntology);

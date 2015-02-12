@@ -43,7 +43,7 @@ public class ListOntologiesCommand extends BuiltInShellCommand {
 		QName feedVarName = new QName("ontology", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+			print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
 			return false;
 		}
 		try {

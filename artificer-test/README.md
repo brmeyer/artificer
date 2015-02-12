@@ -11,7 +11,7 @@ This module contains a robust suite of integration tests, based on Arquillian an
 
 By default, the following assumptions are made by the installer and tests.  However, if you want to manually run a single test *outside* of Arquillian (ex: in your IDE), the values can be overridden by the given system properties.
 
-- host: localhost (sramp.test.host)
-- port: 8080 (sramp.test.port)
-- user: admin (sramp.test.username)
-- password: artificer1! (sramp.test.password)
+- host: localhost (artificer.test.host)
+- port: 8080 (artificer.test.port)
+- user: admin (artificer.test.username)
+- password: artificer1! (artificer.test.password)

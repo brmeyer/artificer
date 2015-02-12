@@ -56,7 +56,7 @@ public class StoredQueryCommandUtil {
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         ArtificerAtomApiClient client = (ArtificerAtomApiClient) context.getVariable(clientVarName);
         if (client == null) {
-            command.print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            command.print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
         }
         return client;
     }

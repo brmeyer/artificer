@@ -277,7 +277,7 @@ public class ArtificerArchive {
 		try {
 			File archiveFile = null;
 			try {
-				archiveFile = File.createTempFile("s-ramp-archive", ".sramp"); //$NON-NLS-1$ //$NON-NLS-2$
+				archiveFile = File.createTempFile("artificer-archive", ".sramp"); //$NON-NLS-1$ //$NON-NLS-2$
 				FileOutputStream outputStream = FileUtils.openOutputStream(archiveFile);
 				ZipOutputStream zipOutputStream = null;
 				try {

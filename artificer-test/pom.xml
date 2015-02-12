@@ -506,7 +506,7 @@
                 <configuration>
                   <tasks>
                     <ant antfile="${basedir}/src/test/resources/install-container.xml" target="install-wildfly8" />
-                    <ant antfile="${basedir}/src/test/resources/install-sramp.xml" target="install-sramp-wildfly8" />
+                    <ant antfile="${basedir}/src/test/resources/install-artificer.xml" target="install-artificer-wildfly8" />
                   </tasks>
                 </configuration>
               </execution>

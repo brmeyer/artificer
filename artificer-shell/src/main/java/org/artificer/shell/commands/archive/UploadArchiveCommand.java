@@ -58,7 +58,7 @@ public class UploadArchiveCommand extends AbstractArchiveCommand {
             return false;
         }
         if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
             return false;
         }
         return true;

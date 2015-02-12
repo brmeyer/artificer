@@ -192,7 +192,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	private <T> void handlePotentialServerError(ClientResponse<T> response) throws Exception {
 		String contentType = String.valueOf(response.getMetadata().getFirst(HttpHeaderNames.CONTENT_TYPE));
 		if (response.getStatus() == 500) {
-			Exception error = new Exception(Messages.i18n.format("UNKNOWN_SRAMP_ERROR")); //$NON-NLS-1$
+			Exception error = new Exception(Messages.i18n.format("UNKNOWN_ARTIFICER_ERROR")); //$NON-NLS-1$
 			if (MediaType.APPLICATION_SRAMP_ATOM_EXCEPTION.equals(contentType)) {
 				try {
 					ArtificerAtomException entity = response.getEntity(ArtificerAtomException.class);

@@ -5,7 +5,7 @@
   <property name="s-ramp.updates.dir" location="${basedir}/../s-ramp-installer/src/main/resources/updates" />
   <property name="overlord-commons.ant.jar" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}" />
 
-  <target name="install-sramp-eap61">
+  <target name="install-artificer-eap61">
     <property name="appserver.id" value="jboss-eap-6" />
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.1" />
     
@@ -25,7 +25,7 @@
         inheritall="true" target="install" />
   </target>
 
-  <target name="install-sramp-eap62">
+  <target name="install-artificer-eap62">
     <property name="appserver.id" value="jboss-eap-6" />
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.2" />
 
@@ -45,7 +45,7 @@
         inheritall="true" target="install" />
   </target>
 
-  <target name="install-sramp-eap63">
+  <target name="install-artificer-eap63">
     <property name="appserver.id" value="jboss-eap-6" />
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.3" />
 
@@ -65,7 +65,7 @@
          inheritall="true" target="install" />
   </target>
 
-  <target name="install-sramp-wildfly8">
+  <target name="install-artificer-wildfly8">
     <property name="appserver.id" value="jboss-wildfly-8" />
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/wildfly-8.2.0.Final" />
 
@@ -86,7 +86,7 @@
     <ant antfile="${basedir}/../s-ramp-installer/src/main/resources/scripts/${appserver.id}.xml"
          inheritall="true" target="install" />
 
-    <copy file="${basedir}/src/test/resources/sramp.properties" todir="${s-ramp.appserver.dir}/standalone/configuration" overwrite="true"/>
+    <copy file="${basedir}/src/test/resources/artificer.properties" todir="${s-ramp.appserver.dir}/standalone/configuration" overwrite="true"/>
   </target>
 
 </project>

@@ -39,7 +39,7 @@ public class DisconnectCommand extends BuiltInShellCommand {
 		QName varName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(varName);
 		if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
 			return false;
 		}
 		getContext().removeVariable(varName);

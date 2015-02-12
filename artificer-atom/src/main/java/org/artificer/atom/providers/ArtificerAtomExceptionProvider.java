@@ -149,7 +149,7 @@ public class ArtificerAtomExceptionProvider implements ExceptionMapper<Artificer
 		String stackTrace = buffer.toString();
 		String msg = httpHeaders == null ? null : httpHeaders.getFirst("Error-Message"); //$NON-NLS-1$
 		if (msg == null) {
-			msg = Messages.i18n.format("UNKNOWN_SRAMP_ERROR"); //$NON-NLS-1$
+			msg = Messages.i18n.format("UNKNOWN_ARTIFICER_ERROR"); //$NON-NLS-1$
 		}
 		ArtificerAtomException error = new ArtificerAtomException(msg, stackTrace);
 		return error;

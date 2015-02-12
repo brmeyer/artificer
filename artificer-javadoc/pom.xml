@@ -78,13 +78,13 @@
                 <copy todir="${project.build.directory}/sources">
                   <fileset dir="..">
                     <!-- APIs + packages for arguments and return types -->
-                    <include name="**/src/main/java/org/overlord/sramp/client/**/*.java" />
-                    <include name="**/src/main/java/org/overlord/sramp/atom/archive/**/*.java" />
-                    <include name="**/src/main/java/org/overlord/sramp/common/**/*.java" />
-                    <include name="**/src/main/java/org/overlord/sramp/shell/api/*.java" />
+                    <include name="**/src/main/java/org/artificer/client/**/*.java" />
+                    <include name="**/src/main/java/org/artificer/atom/archive/**/*.java" />
+                    <include name="**/src/main/java/org/artificer/common/**/*.java" />
+                    <include name="**/src/main/java/org/artificer/shell/api/*.java" />
                     
-                    <include name="**/src/main/java/org/overlord/sramp/atom/client/**/*.java" />
-                    <include name="**/src/main/java/org/overlord/sramp/atom/err/**/*.java" />
+                    <include name="**/src/main/java/org/artificer/atom/client/**/*.java" />
+                    <include name="**/src/main/java/org/artificer/atom/err/**/*.java" />
                     
                     <exclude name="**/i18n/**" />
                     <exclude name="**/internal/**" />
@@ -103,7 +103,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
-            <id>sramp-javadoc</id>
+            <id>artificer-javadoc</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>

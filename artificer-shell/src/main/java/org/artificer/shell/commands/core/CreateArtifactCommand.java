@@ -54,7 +54,7 @@ public class CreateArtifactCommand extends BuiltInShellCommand {
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
             return false;
         }
 

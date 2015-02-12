@@ -21,7 +21,7 @@ CP=$PARENTDIR/target/s-ramp-atom-0.0.2-SNAPSHOT-classes.jar
 ########## CONFIG PARAMS ############################
 
 echo Generating java classes in $JAVADIR using $CURDIR/jaxb-bindings.xml ...
-xjc $XSDDIR/*.xsd -b $CURDIR/jaxb-bindings.xml -d $JAVADIR  -p org.overlord.sramp.atom.services.brms > tmpOutputFile
+xjc $XSDDIR/*.xsd -b $CURDIR/jaxb-bindings.xml -d $JAVADIR  -p org.artificer.atom.services.brms > tmpOutputFile
 
 echo Commenting out serialVersionUID ...
 index=0

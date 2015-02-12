@@ -50,7 +50,7 @@ public class DeleteCommand extends BuiltInShellCommand {
 
 		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+			print(Messages.i18n.format("MissingArtificerConnection")); //$NON-NLS-1$
 			return false;
 		}
 

@@ -48,9 +48,9 @@ public class ArchivePackageDemo {
 	public static void main(String[] args) throws Exception {
 		System.out.println("\n*** Running S-RAMP Archive Package Demo ***\n");
 
-        String endpoint = System.getProperty("sramp.endpoint");
-        String username = System.getProperty("sramp.auth.username");
-        String password = System.getProperty("sramp.auth.password");
+        String endpoint = System.getProperty("artificer.endpoint");
+        String username = System.getProperty("artificer.auth.username");
+        String password = System.getProperty("artificer.auth.password");
         if (endpoint == null || endpoint.trim().length() == 0) {
             endpoint = DEFAULT_ENDPOINT;
         }

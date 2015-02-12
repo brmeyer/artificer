@@ -36,7 +36,7 @@ public class ArtificerConfig {
             refreshDelay = new Long(refreshDelayStr);
         }
 
-        configuration = ConfigurationFactory.createConfig(configFile, "sramp.properties", refreshDelay, null, null); //$NON-NLS-1$
+        configuration = ConfigurationFactory.createConfig(configFile, "artificer.properties", refreshDelay, null, null); //$NON-NLS-1$
     }
 
     /**
@@ -105,7 +105,7 @@ public class ArtificerConfig {
      * @return the name of the JCR repository being used
      */
     public static String getJCRRepositoryName() {
-        return getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_JCR_REPO_NAME, "sramp"); //$NON-NLS-1$
+        return getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_JCR_REPO_NAME, "artificer"); //$NON-NLS-1$
     }
 
     /**

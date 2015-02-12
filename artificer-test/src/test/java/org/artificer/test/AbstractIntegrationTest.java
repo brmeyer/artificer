@@ -50,15 +50,15 @@ public abstract class AbstractIntegrationTest {
 
     // Note: Running Arquillian in its as-client mode by leaving off the @Deployment.
 
-    private static final String HOST = System.getProperty("sramp.test.host", "localhost"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String HOST = System.getProperty("artificer.test.host", "localhost"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final int PORT = Integer.parseInt(System.getProperty("sramp.test.port", "8080")); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final int PORT = Integer.parseInt(System.getProperty("artificer.test.port", "8080")); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final String BASE_URL = "http://" + HOST + ":" + PORT + "/s-ramp-server"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    protected static final String USERNAME = System.getProperty("sramp.test.username", "admin"); //$NON-NLS-1$ //$NON-NLS-2$
+    protected static final String USERNAME = System.getProperty("artificer.test.username", "admin"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    protected static final String PASSWORD = System.getProperty("sramp.test.password", "artificer1!"); //$NON-NLS-1$ //$NON-NLS-2$
+    protected static final String PASSWORD = System.getProperty("artificer.test.password", "artificer1!"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @After
     public void cleanup() {

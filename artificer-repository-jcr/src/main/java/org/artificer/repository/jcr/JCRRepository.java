@@ -125,7 +125,7 @@ public class JCRRepository {
      * @throws Exception
      */
     private URL getModeshapeConfigurationUrl() throws Exception {
-        String configUrl = ArtificerConfig.getConfigProperty("sramp.modeshape.config.url", null);
+        String configUrl = ArtificerConfig.getConfigProperty("artificer.modeshape.config.url", null);
         if (configUrl == null) {
             return null;
         }

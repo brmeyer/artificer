@@ -64,7 +64,7 @@ public class StdInShellCommandReader extends AbstractShellCommandReader {
 	@Override
 	protected String readLine() throws IOException {
 		if (!stdinReader.ready()) {
-			System.out.print("sramp> "); //$NON-NLS-1$
+			System.out.print("artificer> "); //$NON-NLS-1$
 		}
 		return stdinReader.readLine();
 	}

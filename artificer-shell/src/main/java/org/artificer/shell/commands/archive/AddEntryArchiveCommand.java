@@ -77,7 +77,7 @@ public class AddEntryArchiveCommand extends AbstractArchiveCommand {
 			archive.addEntry(archivePathArg, artifact, contentStream);
 			print(Messages.i18n.format("AddEntry.Added", archivePathArg)); //$NON-NLS-1$
         } catch (ArtificerArchiveException e) {
-            print(Messages.i18n.format("AddEntry.SrampArchiveException", e.getLocalizedMessage())); //$NON-NLS-1$
+            print(Messages.i18n.format("AddEntry.ArtificerArchiveException", e.getLocalizedMessage())); //$NON-NLS-1$
         } finally {
 			IOUtils.closeQuietly(contentStream);
 		}

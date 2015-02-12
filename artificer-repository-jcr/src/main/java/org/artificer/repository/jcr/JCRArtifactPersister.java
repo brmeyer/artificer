@@ -350,7 +350,7 @@ public final class JCRArtifactPersister {
      * @throws Exception
      */
     public static File saveToTempFile(Node jcrContentNode) throws Exception {
-        File file = File.createTempFile("sramp", ".jcr");
+        File file = File.createTempFile("artificer", ".jcr");
         Binary binary = null;
         InputStream content = null;
         OutputStream tempFileOS = null;
