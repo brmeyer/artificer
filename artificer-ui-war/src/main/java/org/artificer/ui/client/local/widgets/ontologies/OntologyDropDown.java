@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.ListBox;
  * Drop-down for choosing an ontology.
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog-ontology-selector")
+@Templated("/org/artificer/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog-ontology-selector")
 @Dependent
 public class OntologyDropDown extends Composite implements HasChangeHandlers {
 

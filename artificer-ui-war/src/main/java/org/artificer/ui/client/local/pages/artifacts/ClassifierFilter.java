@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifacts.html#classifier-filter")
+@Templated("/org/artificer/ui/client/local/site/artifacts.html#classifier-filter")
 @Dependent
 public class ClassifierFilter extends Composite implements HasClickHandlers, HasValue<Set<String>> {
 

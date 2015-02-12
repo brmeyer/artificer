@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.TextBox;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifacts.html#sramp-filter-sidebar")
+@Templated("/org/artificer/ui/client/local/site/artifacts.html#sramp-filter-sidebar")
 @Dependent
 public class ArtifactFilters extends Composite implements HasValue<ArtifactFilterBean> {
 

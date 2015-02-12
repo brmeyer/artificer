@@ -47,7 +47,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/growl-dialog.html#growl-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/growl-dialog.html#growl-dialog")
 @Dependent
 public class NotificationWidget extends Composite implements MouseInEvent.HasMouseInHandlers, MouseOutEvent.HasMouseOutHandlers {
 

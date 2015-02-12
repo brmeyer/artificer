@@ -55,7 +55,7 @@ import com.google.gwt.user.client.ui.HasValue;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog")
 @Dependent
 public class ModifyClassifiersDialog extends ModalDialog implements HasValue<List<String>>, IServiceInvocationHandler<List<OntologyBean>> {
 

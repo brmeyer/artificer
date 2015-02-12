@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/classifier-dialog.html#ontology-selector-node")
+@Templated("/org/artificer/ui/client/local/site/dialogs/classifier-dialog.html#ontology-selector-node")
 @Dependent
 public class OntologySelectorNode extends Composite {
 

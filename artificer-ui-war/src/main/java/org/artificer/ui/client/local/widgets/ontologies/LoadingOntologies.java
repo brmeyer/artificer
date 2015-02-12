@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Composite;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifacts.html#classifier-filter-spinner")
+@Templated("/org/artificer/ui/client/local/site/artifacts.html#classifier-filter-spinner")
 @Dependent
 public class LoadingOntologies extends Composite {
 

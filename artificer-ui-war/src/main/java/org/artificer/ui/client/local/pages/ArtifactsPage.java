@@ -58,7 +58,7 @@ import com.google.gwt.user.client.ui.TextBox;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifacts.html#page")
+@Templated("/org/artificer/ui/client/local/site/artifacts.html#page")
 @Page(path="artifacts")
 @Dependent
 public class ArtifactsPage extends AbstractPage {

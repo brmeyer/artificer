@@ -49,7 +49,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/classifier-dialog.html#classifier-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/classifier-dialog.html#classifier-dialog")
 @Dependent
 public class ClassifierFilterSelectionDialog extends ModalDialog implements HasValueChangeHandlers<Set<String>> {
 

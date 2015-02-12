@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Composite;
  * "Loading all ontologies" spinner.
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog-spinner-all")
+@Templated("/org/artificer/ui/client/local/site/dialogs/modify-classifiers-dialog.html#modify-classifiers-dialog-spinner-all")
 @Dependent
 public class LoadingAllOntologies extends Composite {
 

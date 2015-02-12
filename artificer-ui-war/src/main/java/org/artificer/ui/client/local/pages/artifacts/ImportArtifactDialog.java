@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Button;
  * A modal dialog used to import artifacts into S-RAMP.
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/import-dialog.html#import-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/import-dialog.html#import-dialog")
 @Dependent
 public class ImportArtifactDialog extends ModalDialog {
 

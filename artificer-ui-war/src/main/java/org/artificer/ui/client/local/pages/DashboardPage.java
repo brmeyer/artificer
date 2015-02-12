@@ -30,7 +30,7 @@ import org.jboss.errai.ui.shared.api.annotations.Templated;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dashboard.html#page")
+@Templated("/org/artificer/ui/client/local/site/dashboard.html#page")
 @Page(path="dashboard", role=DefaultPage.class)
 @Dependent
 public class DashboardPage extends AbstractPage {

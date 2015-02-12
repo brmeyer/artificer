@@ -52,7 +52,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
  *
  * @author Brett meyer
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/ontologies.html#sramp-ontology-item")
+@Templated("/org/artificer/ui/client/local/site/ontologies.html#sramp-ontology-item")
 @Dependent
 public class OntologySummaryPanelItem extends Composite implements HasValue<OntologySummaryBean>, HasClickHandlers {
     

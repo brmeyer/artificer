@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.TextBox;
  * A single custom property filter in the UI (Artifacts page).
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifacts.html#filter-custom-property")
+@Templated("/org/artificer/ui/client/local/site/artifacts.html#filter-custom-property")
 @Dependent
 public class CustomPropertyFilter extends Composite implements HasValue<String> {
 

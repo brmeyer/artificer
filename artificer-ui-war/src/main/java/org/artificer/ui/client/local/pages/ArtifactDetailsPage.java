@@ -76,7 +76,7 @@ import com.google.gwt.user.client.ui.Label;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/artifact-details.html#page")
+@Templated("/org/artificer/ui/client/local/site/artifact-details.html#page")
 @Page(path="details")
 @Dependent
 public class ArtifactDetailsPage extends AbstractPage {

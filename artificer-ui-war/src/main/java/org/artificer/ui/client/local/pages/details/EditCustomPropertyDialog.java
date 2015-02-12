@@ -42,7 +42,7 @@ import com.google.gwt.user.client.ui.TextArea;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/edit-property-dialog.html#edit-property-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/edit-property-dialog.html#edit-property-dialog")
 @Dependent
 public class EditCustomPropertyDialog extends ModalDialog implements HasValueChangeHandlers<String> {
 

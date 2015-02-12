@@ -53,7 +53,7 @@ import com.google.gwt.user.client.ui.Button;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/ontologies.html#page")
+@Templated("/org/artificer/ui/client/local/site/ontologies.html#page")
 @Page(path="ontologies")
 @Dependent
 public class OntologiesPage extends AbstractPage {

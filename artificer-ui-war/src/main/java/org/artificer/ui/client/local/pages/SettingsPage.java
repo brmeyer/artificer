@@ -25,7 +25,7 @@ import org.jboss.errai.ui.shared.api.annotations.Templated;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/settings.html#page")
+@Templated("/org/artificer/ui/client/local/site/settings.html#page")
 @Page(path="settings")
 @Dependent
 public class SettingsPage extends AbstractPage {

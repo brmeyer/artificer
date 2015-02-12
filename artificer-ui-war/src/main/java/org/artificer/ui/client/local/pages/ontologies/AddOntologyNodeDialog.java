@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.TextBox;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/add-ontology-node-dialog.html#add-ontology-node-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/add-ontology-node-dialog.html#add-ontology-node-dialog")
 @Dependent
 public class AddOntologyNodeDialog extends ModalDialog implements HasValueChangeHandlers<OntologyClassBean> {
 

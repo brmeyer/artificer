@@ -25,7 +25,7 @@ import org.overlord.commons.gwt.client.local.widgets.ModalDialog;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/logged-out-dialog.html#logged-out-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/logged-out-dialog.html#logged-out-dialog")
 @Dependent
 public class LoggedOutDialog extends ModalDialog {
 

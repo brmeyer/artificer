@@ -47,7 +47,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/ontologies.html#sramp-ontology-tier-item")
+@Templated("/org/artificer/ui/client/local/site/ontologies.html#sramp-ontology-tier-item")
 @Dependent
 public class OntologyEditorTierItem extends Composite implements HasValue<OntologyClassBean>, HasClickHandlers {
     

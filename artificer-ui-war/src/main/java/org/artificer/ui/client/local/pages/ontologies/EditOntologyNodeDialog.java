@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.TextBox;
  *
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/edit-ontology-node-dialog.html#edit-ontology-node-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/edit-ontology-node-dialog.html#edit-ontology-node-dialog")
 @Dependent
 public class EditOntologyNodeDialog extends ModalDialog implements HasValueChangeHandlers<OntologyClassBean> {
 

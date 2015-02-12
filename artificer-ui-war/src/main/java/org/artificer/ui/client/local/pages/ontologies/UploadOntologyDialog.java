@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Button;
  * A modal dialog used to upload an ontology to S-RAMP.
  * @author eric.wittmann@redhat.com
  */
-@Templated("/org/overlord/sramp/ui/client/local/site/dialogs/upload-ontology-dialog.html#upload-ontology-dialog")
+@Templated("/org/artificer/ui/client/local/site/dialogs/upload-ontology-dialog.html#upload-ontology-dialog")
 @Dependent
 public class UploadOntologyDialog extends ModalDialog {
 
