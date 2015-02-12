@@ -15,13 +15,13 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampConflictException;
+import org.artificer.common.error.ArtificerConflictException;
 import org.artificer.common.i18n.Messages;
 
 /**
  * @author Brett Meyer.
  */
-public class CustomPropertyConstraintException extends SrampConflictException {
+public class CustomPropertyConstraintException extends ArtificerConflictException {
 
     public CustomPropertyConstraintException(String uuid) {
         super(Messages.i18n.format("CUSTOM_PROPERTY_CONSTRAINT", uuid));

@@ -18,11 +18,11 @@ package org.artificer.demos.simpleclient;
 import java.io.InputStream;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * A simple S-RAMP client demo. This class strives to demonstrate how to use the S-RAMP client.
@@ -60,7 +60,7 @@ public class SimpleClientDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -92,7 +92,7 @@ public class SimpleClientDemo {
 
 				// Update the artifact meta-data (set the version and add a custom property)
 				artifact.setVersion("1.1");
-	            SrampModelUtils.setCustomProperty(artifact, "from-demo", SimpleClientDemo.class.getSimpleName());
+	            ArtificerModelUtils.setCustomProperty(artifact, "from-demo", SimpleClientDemo.class.getSimpleName());
 
 				// Tell the server about the updated meta-data
 				System.out.print("\tUpdating meta-data for artifact " + file + "...");

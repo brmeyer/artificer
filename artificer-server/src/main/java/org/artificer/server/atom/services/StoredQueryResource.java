@@ -21,11 +21,11 @@ import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Link;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomConstants;
-import org.artificer.atom.SrampAtomUtils;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampException;
+import org.artificer.atom.ArtificerAtomConstants;
+import org.artificer.atom.ArtificerAtomUtils;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.error.StoredQueryConflictException;
 import org.artificer.common.error.StoredQueryNotFoundException;
 import org.slf4j.Logger;
@@ -63,10 +63,10 @@ public class StoredQueryResource extends AbstractFeedResource {
 	@POST
     @Consumes(MediaType.APPLICATION_ATOM_XML_ENTRY)
     @Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
-    public Entry create(@Context HttpServletRequest request, Entry atomEntry) throws SrampAtomException, SrampException {
+    public Entry create(@Context HttpServletRequest request, Entry atomEntry) throws ArtificerAtomException, ArtificerException {
         try {
-            String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
-            StoredQuery storedQuery = SrampAtomUtils.unwrapStoredQuery(atomEntry);
+            String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
+            StoredQuery storedQuery = ArtificerAtomUtils.unwrapStoredQuery(atomEntry);
             storedQuery = queryService.createStoredQuery(storedQuery);
 
             return wrapStoredQuery(storedQuery, baseUrl);
@@ -76,16 +76,16 @@ public class StoredQueryResource extends AbstractFeedResource {
             throw e;
         } catch (Exception e) {
             logError(logger, Messages.i18n.format("ERROR_CREATING_STOREDQUERY"), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
 	@PUT
 	@Path("{queryName}")
 	@Consumes(MediaType.APPLICATION_ATOM_XML_ENTRY)
-	public void update(@PathParam("queryName") String queryName, Entry atomEntry) throws SrampAtomException, SrampException {
+	public void update(@PathParam("queryName") String queryName, Entry atomEntry) throws ArtificerAtomException, ArtificerException {
 		try {
-		    StoredQuery storedQuery = SrampAtomUtils.unwrapStoredQuery(atomEntry);
+		    StoredQuery storedQuery = ArtificerAtomUtils.unwrapStoredQuery(atomEntry);
             queryService.updateStoredQuery(queryName, storedQuery);
 		} catch (StoredQueryNotFoundException e) {
             // Simply re-throw.  Don't allow the following catch it -- SrampNotFoundException is mapped to a unique
@@ -93,7 +93,7 @@ public class StoredQueryResource extends AbstractFeedResource {
             throw e;
         } catch (Throwable e) {
 			logError(logger, Messages.i18n.format("ERROR_UPDATING_STOREDQUERY", queryName), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
 
@@ -101,9 +101,9 @@ public class StoredQueryResource extends AbstractFeedResource {
 	@Path("{queryName}")
 	@Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
 	public Entry get(@Context HttpServletRequest request, @PathParam("queryName") String queryName)
-	        throws SrampAtomException, SrampException {
+	        throws ArtificerAtomException, ArtificerException {
 		try {
-		    String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+		    String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
             StoredQuery storedQuery = queryService.getStoredQuery(queryName);
 
             return wrapStoredQuery(storedQuery, baseUrl);
@@ -113,15 +113,15 @@ public class StoredQueryResource extends AbstractFeedResource {
             throw e;
         } catch (Throwable e) {
 			logError(logger, Messages.i18n.format("ERROR_GETTING_STOREDQUERY", queryName), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML_FEED)
-    public Feed list(@Context HttpServletRequest request) throws SrampAtomException {
+    public Feed list(@Context HttpServletRequest request) throws ArtificerAtomException {
         try {
-            String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+            String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
             List<StoredQuery> storedQueries = queryService.getStoredQueries();
 
             Feed feed = new Feed();
@@ -135,7 +135,7 @@ public class StoredQueryResource extends AbstractFeedResource {
             return feed;
         } catch (Exception e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_STOREDQUERIES"), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
@@ -149,9 +149,9 @@ public class StoredQueryResource extends AbstractFeedResource {
             @QueryParam("count") Integer count,
             @QueryParam("orderBy") String orderBy,
             @QueryParam("ascending") Boolean asc)
-            throws SrampAtomException, SrampException {
+            throws ArtificerAtomException, ArtificerException {
         try {
-            String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+            String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
             StoredQuery storedQuery = queryService.getStoredQuery(queryName);
             
             // TODO: It may be possible to introduce certain optimizations...
@@ -162,17 +162,17 @@ public class StoredQueryResource extends AbstractFeedResource {
             // Simply re-throw.  Don't allow the following catch it -- SrampNotFoundException is mapped to a unique
             // HTTP response type.
             throw e;
-        } catch (SrampAtomException e) {
+        } catch (ArtificerAtomException e) {
             throw e;
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_EXECUTING_STOREDQUERY", queryName), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
 	@DELETE
 	@Path("{queryName}")
-	public void delete(@PathParam("queryName") String queryName) throws SrampAtomException, SrampException {
+	public void delete(@PathParam("queryName") String queryName) throws ArtificerAtomException, ArtificerException {
 		try {
             queryService.deleteStoredQuery(queryName);
 		} catch (StoredQueryNotFoundException e) {
@@ -181,12 +181,12 @@ public class StoredQueryResource extends AbstractFeedResource {
             throw e;
         } catch (Throwable e) {
 			logError(logger, Messages.i18n.format("ERROR_DELETING_STOREDQUERY", queryName), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
     
     private Entry wrapStoredQuery(StoredQuery storedQuery, String baseUrl) throws Exception {
-        Entry entry = SrampAtomUtils.wrapStoredQuery(storedQuery);
+        Entry entry = ArtificerAtomUtils.wrapStoredQuery(storedQuery);
         // TODO
 //        entry.setPublished();
 //        entry.setUpdated();
@@ -211,7 +211,7 @@ public class StoredQueryResource extends AbstractFeedResource {
         // Note: The spec technically requires this for a POST, but it seems useful in other contexts.
         Link linkToResults = new Link();
         linkToResults.setType(MediaType.APPLICATION_ATOM_XML_FEED_TYPE);
-        linkToResults.setRel(SrampAtomConstants.X_S_RAMP_QUERY_RESULTS);
+        linkToResults.setRel(ArtificerAtomConstants.X_S_RAMP_QUERY_RESULTS);
         linkToResults.setHref(new URI(atomLink + "/results")); //$NON-NLS-1$
         entry.getLinks().add(linkToResults);
         

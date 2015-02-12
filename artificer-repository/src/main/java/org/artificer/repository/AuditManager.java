@@ -16,8 +16,8 @@
 package org.artificer.repository;
 
 import org.artificer.repository.audit.AuditEntrySet;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.artificer.common.SrampException;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.artificer.common.ArtificerException;
 
 
 /**
@@ -31,9 +31,9 @@ public interface AuditManager extends AbstractManager {
      * Adds an audit entry for an artifact by UUID.
      * @param artifactUuid
      * @param entry
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public AuditEntry addAuditEntry(String artifactUuid, AuditEntry entry) throws SrampException;
+    public AuditEntry addAuditEntry(String artifactUuid, AuditEntry entry) throws ArtificerException;
 
     /**
      * Gets the full audit entry given the UUID of both the artifact in question and the
@@ -41,7 +41,7 @@ public interface AuditManager extends AbstractManager {
      * @param artifactUuid
      * @param auditEntryUuid
      */
-    public AuditEntry getArtifactAuditEntry(String artifactUuid, String auditEntryUuid) throws SrampException;
+    public AuditEntry getArtifactAuditEntry(String artifactUuid, String auditEntryUuid) throws ArtificerException;
 
     /**
      * Gets all of the audit entries for a particular artifact.  This is mostly what
@@ -50,15 +50,15 @@ public interface AuditManager extends AbstractManager {
      * any resources.
      *
      * @param artifactUuid
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public AuditEntrySet getArtifactAuditEntries(String artifactUuid) throws SrampException;
+    public AuditEntrySet getArtifactAuditEntries(String artifactUuid) throws ArtificerException;
 
     /**
      * Gets
      * @param username
      * @return
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public AuditEntrySet getUserAuditEntries(String username) throws SrampException;
+    public AuditEntrySet getUserAuditEntries(String username) throws ArtificerException;
 }

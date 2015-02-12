@@ -15,7 +15,7 @@
  */
 package org.artificer.repository.jcr;
 
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 
 public class JCRConstants {
@@ -40,13 +40,13 @@ public class JCRConstants {
     public static final String JCR_SQL2 = "JCR-SQL2";
 
     public static final String SRAMP                            = "sramp";
-	public static final String SRAMP_NS                         = SrampConstants.SRAMP_NS;
+	public static final String SRAMP_NS                         = ArtificerConstants.SRAMP_NS;
 	public static final String SRAMP_PROPERTIES                 = "sramp-properties";
 	public static final String SRAMP_PROPERTIES_NS              = SRAMP_NS + "#properties";
 	public static final String SRAMP_RELATIONSHIPS               = "sramp-relationships";
 	public static final String SRAMP_RELATIONSHIPS_NS           = SRAMP_NS + "#relationships";
     public static final String SRAMP_AUDIT                      = "audit";
-    public static final String SRAMP_AUDIT_NS                   = SrampConstants.SRAMP_AUDIT_NS;
+    public static final String SRAMP_AUDIT_NS                   = ArtificerConstants.SRAMP_AUDIT_NS;
     public static final String SRAMP_OTHER_ATTRIBUTES           = "sramp-other-attributes";
     public static final String SRAMP_OTHER_ATTRIBUTES_NS        = SRAMP_NS + "#otherAttributes";
 

@@ -39,12 +39,12 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.atom.providers.SrampAtomExceptionProvider;
+import org.artificer.atom.ArtificerAtomUtils;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.atom.providers.ArtificerAtomExceptionProvider;
 import org.artificer.client.ClientRequest;
-import org.artificer.common.SrampConstants;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.ArtificerModelUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -85,9 +85,9 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		try {
 			request.post(String.class);
 			Assert.fail("Expected an error here."); //$NON-NLS-1$
-		} catch (SrampAtomException e) {
+		} catch (ArtificerAtomException e) {
 			Assert.assertEquals("Failed to create artifact because \"ElementDeclaration\" is a derived type.", e.getMessage()); //$NON-NLS-1$
-			String stack = SrampAtomExceptionProvider.getRootStackTrace(e);
+			String stack = ArtificerAtomExceptionProvider.getRootStackTrace(e);
 			Assert.assertTrue(stack.contains("ArtifactResource.create")); //$NON-NLS-1$
 		}
 	}
@@ -111,7 +111,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals(artifactFileName, entry.getTitle());
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof Document);
 			Document doc = (Document) arty;
 			Assert.assertEquals(artifactFileName, doc.getName());
@@ -127,7 +127,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		ClientResponse<Entry> response = request.get(Entry.class);
 
 		Entry entry = response.getEntity();
-		BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+		BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 		Assert.assertTrue(arty instanceof Document);
 		Document doc = (Document) arty;
 		Assert.assertEquals(artifactFileName, doc.getName());
@@ -162,14 +162,14 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         artifact.setName("Extended Artifact Name"); //$NON-NLS-1$
         artifact.setDescription("Extended Artifact Description"); //$NON-NLS-1$
         ClientRequest request = clientRequest("/s-ramp/ext/FooApplication"); //$NON-NLS-1$
-        Entry requestEntry = SrampAtomUtils.wrapSrampArtifact(artifact);
+        Entry requestEntry = ArtificerAtomUtils.wrapSrampArtifact(artifact);
         request.body(MediaType.APPLICATION_ATOM_XML_ENTRY, requestEntry);
 
         ClientResponse<Entry> response = request.post(Entry.class);
 
         Entry responseEntry = response.getEntity();
         Assert.assertEquals("Extended Artifact Name", responseEntry.getTitle()); //$NON-NLS-1$
-        BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(responseEntry);
+        BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(responseEntry);
         Assert.assertTrue(arty instanceof ExtendedArtifactType);
         ExtendedArtifactType extArty = (ExtendedArtifactType) arty;
         Assert.assertEquals("Extended Artifact Name", extArty.getName()); //$NON-NLS-1$
@@ -181,7 +181,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         response = request.get(Entry.class);
 
         Entry entry = response.getEntity();
-        arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+        arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         Assert.assertTrue(arty instanceof ExtendedArtifactType);
         extArty = (ExtendedArtifactType) arty;
         Assert.assertEquals("Extended Artifact Name", extArty.getName()); //$NON-NLS-1$
@@ -207,13 +207,13 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
             Entry entry = response.getEntity();
             Assert.assertEquals(artifactFileName, entry.getTitle());
-            BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+            BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
             Assert.assertTrue(arty instanceof ExtendedDocument);
             ExtendedDocument doc = (ExtendedDocument) arty;
             Assert.assertEquals(artifactFileName, doc.getName());
             Assert.assertEquals("BrmsPkgDocument", doc.getExtendedType()); //$NON-NLS-1$
-            Assert.assertEquals(Long.valueOf(17043), Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME)));
-            Assert.assertEquals("application/octet-stream", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+            Assert.assertEquals(Long.valueOf(17043), Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME)));
+            Assert.assertEquals("application/octet-stream", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
             uuid = doc.getUuid();
         } finally {
             IOUtils.closeQuietly(contentStream);
@@ -224,13 +224,13 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         ClientResponse<Entry> response = request.get(Entry.class);
 
         Entry entry = response.getEntity();
-        BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+        BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         Assert.assertTrue(arty instanceof ExtendedDocument);
         ExtendedDocument doc = (ExtendedDocument) arty;
         Assert.assertEquals(artifactFileName, doc.getName());
-        Assert.assertEquals(Long.valueOf(17043), Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME)));
+        Assert.assertEquals(Long.valueOf(17043), Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME)));
         Assert.assertEquals("defaultPackage.pkg", doc.getName()); //$NON-NLS-1$
-        Assert.assertEquals("application/octet-stream", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+        Assert.assertEquals("application/octet-stream", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
     }
 
     /**
@@ -252,13 +252,13 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
             Entry entry = response.getEntity();
             Assert.assertEquals(artifactFileName, entry.getTitle());
-            BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+            BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
             Assert.assertTrue(arty instanceof ExtendedDocument);
             ExtendedDocument doc = (ExtendedDocument) arty;
             Assert.assertEquals(artifactFileName, doc.getName());
             Assert.assertEquals("JpgDocument", doc.getExtendedType()); //$NON-NLS-1$
-            Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME)));
-            Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+            Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME)));
+            Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
             uuid = doc.getUuid();
         } finally {
             IOUtils.closeQuietly(contentStream);
@@ -269,13 +269,13 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         ClientResponse<Entry> response = request.get(Entry.class);
 
         Entry entry = response.getEntity();
-        BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+        BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         Assert.assertTrue(arty instanceof ExtendedDocument);
         ExtendedDocument doc = (ExtendedDocument) arty;
         Assert.assertEquals(artifactFileName, doc.getName());
-        Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME)));
+        Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME)));
         Assert.assertEquals("photo.jpg", doc.getName()); //$NON-NLS-1$
-        Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+        Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
 
         //Obtain the content for visual inspection
         ClientRequest request2 = clientRequest("/s-ramp/ext/JpgDocument/" + uuid + "/media"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -312,14 +312,14 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
             Entry entry = response.getEntity();
             Assert.assertEquals(artifactFileName, entry.getTitle());
-            BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+            BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
             Assert.assertTrue(arty instanceof ExtendedDocument);
             ExtendedDocument doc = (ExtendedDocument) arty;
             Assert.assertEquals(artifactFileName, doc.getName());
             Assert.assertEquals("BpmnDocument", doc.getExtendedType()); //$NON-NLS-1$
-            long size = Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME));
+            long size = Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME));
             Assert.assertTrue(size >= 12482L);
-            Assert.assertEquals("application/xml", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+            Assert.assertEquals("application/xml", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
             uuid = doc.getUuid();
         } finally {
             IOUtils.closeQuietly(contentStream);
@@ -330,12 +330,12 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         ClientResponse<Entry> response = request.get(Entry.class);
 
         Entry entry = response.getEntity();
-        BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+        BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         Assert.assertTrue(arty instanceof ExtendedDocument);
         ExtendedDocument doc = (ExtendedDocument) arty;
         Assert.assertEquals(artifactFileName, doc.getName());
         Assert.assertEquals("Evaluation.bpmn", doc.getName()); //$NON-NLS-1$
-        Assert.assertEquals("application/xml", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+        Assert.assertEquals("application/xml", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
 
         ClientResponse<String> content = request.get(String.class);
         String c = content.getEntity();
@@ -362,14 +362,14 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
             Entry entry = response.getEntity();
             Assert.assertEquals(artifactFileName, entry.getTitle());
-            BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+            BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
             Assert.assertTrue(arty instanceof ExtendedDocument);
             ExtendedDocument doc = (ExtendedDocument) arty;
             Assert.assertEquals(artifactFileName, doc.getName());
             Assert.assertEquals("WslaDocument", doc.getExtendedType()); //$NON-NLS-1$
-            long size = Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME));
+            long size = Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME));
             Assert.assertTrue(size >= 6556L);
-            Assert.assertEquals("application/xml", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+            Assert.assertEquals("application/xml", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
             uuid = doc.getUuid();
         } finally {
             IOUtils.closeQuietly(contentStream);
@@ -380,12 +380,12 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         ClientResponse<Entry> response = request.get(Entry.class);
 
         Entry entry = response.getEntity();
-        BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+        BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         Assert.assertTrue(arty instanceof ExtendedDocument);
         ExtendedDocument doc = (ExtendedDocument) arty;
         Assert.assertEquals(artifactFileName, doc.getName());
         Assert.assertEquals("Sample.wsla", doc.getName()); //$NON-NLS-1$
-        Assert.assertEquals("application/xml", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+        Assert.assertEquals("application/xml", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
 
         ClientResponse<String> content = request.get(String.class);
         String c = content.getEntity();
@@ -414,7 +414,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals(artifactFileName, entry.getTitle());
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof WsdlDocument);
 			WsdlDocument doc = (WsdlDocument) arty;
 			Assert.assertEquals(artifactFileName, doc.getName());
@@ -430,7 +430,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		request = clientRequest("/s-ramp/wsdl/WsdlDocument/" + uuid); //$NON-NLS-1$
 		ClientResponse<Entry> response = request.get(Entry.class);
 		Entry entry = response.getEntity();
-		BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+		BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 		Assert.assertNotNull(arty);
 		Assert.assertTrue(arty instanceof WsdlDocument);
 		WsdlDocument wsdlDoc = (WsdlDocument) arty;
@@ -440,7 +440,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		ClientRequest frequest = clientRequest("/s-ramp/wsdl/Message"); //$NON-NLS-1$
 		ClientResponse<Feed> fresponse = frequest.get(Feed.class);
 		Feed feed = fresponse.getEntity();
-		Object totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+		Object totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         int total = Integer.parseInt(String.valueOf(totalResultsAttr));
 		Assert.assertNotNull(feed);
 		Assert.assertEquals(2, total);
@@ -456,7 +456,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		request = clientRequest("/s-ramp/wsdl/Message/" + findReqMsgUuid); //$NON-NLS-1$
 		response = request.get(Entry.class);
 		entry = response.getEntity();
-		arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+		arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 		Assert.assertNotNull(arty);
 		Assert.assertTrue(arty instanceof Message);
 		Message message = (Message) arty;
@@ -540,7 +540,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals("newartifact.wsdl", entry.getTitle()); //$NON-NLS-1$
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof WsdlDocument);
 			WsdlDocument doc = (WsdlDocument) arty;
 			Assert.assertEquals("newartifact.wsdl", doc.getName()); //$NON-NLS-1$
@@ -573,7 +573,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
         request = clientRequest("/s-ramp/xsd/ElementDeclaration"); //$NON-NLS-1$
         ClientResponse<Feed> response = request.get(Feed.class);
         Feed feed = response.getEntity();
-        Object totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        Object totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         int total = Integer.parseInt(String.valueOf(totalResultsAttr));
         Assert.assertEquals(2, total);
         // TODO: This needs reworked.  Depending on what other tests have run and what's in the repo, the query may
@@ -705,11 +705,11 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 	 */
 	private void doUpdateXsdEntry(Entry entry) throws Exception {
 		// First, make a change to the entry.
-		XsdDocument xsdDocument = (XsdDocument) SrampAtomUtils.unwrapSrampArtifact(entry);
+		XsdDocument xsdDocument = (XsdDocument) ArtificerAtomUtils.unwrapSrampArtifact(entry);
 		String uuid = xsdDocument.getUuid();
 		xsdDocument.setDescription("** Updated description! **"); //$NON-NLS-1$
-		SrampModelUtils.setCustomProperty(xsdDocument, "my.property", "Hello World"); //$NON-NLS-1$ //$NON-NLS-2$
-		SrampModelUtils.addGenericRelationship(xsdDocument, "NoTargetRel", null); //$NON-NLS-1$
+		ArtificerModelUtils.setCustomProperty(xsdDocument, "my.property", "Hello World"); //$NON-NLS-1$ //$NON-NLS-2$
+		ArtificerModelUtils.addGenericRelationship(xsdDocument, "NoTargetRel", null); //$NON-NLS-1$
 
 		Artifact arty = new Artifact();
 		arty.setXsdDocument(xsdDocument);
@@ -731,10 +731,10 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		Artifact srampArtifactWrapper = entry.getAnyOtherJAXBObject(Artifact.class);
 		XsdDocument xsdDocument = srampArtifactWrapper.getXsdDocument();
 		Assert.assertEquals("** Updated description! **", xsdDocument.getDescription()); //$NON-NLS-1$
-		Assert.assertEquals("Hello World", SrampModelUtils.getCustomProperty(xsdDocument, "my.property")); //$NON-NLS-1$ //$NON-NLS-2$
-		Assert.assertNull(SrampModelUtils.getCustomProperty(xsdDocument, "my.missing.property")); //$NON-NLS-1$
-		Assert.assertNotNull(SrampModelUtils.getGenericRelationship(xsdDocument, "NoTargetRel")); //$NON-NLS-1$
-		Assert.assertNull(SrampModelUtils.getGenericRelationship(xsdDocument, "MissingRel")); //$NON-NLS-1$
+		Assert.assertEquals("Hello World", ArtificerModelUtils.getCustomProperty(xsdDocument, "my.property")); //$NON-NLS-1$ //$NON-NLS-2$
+		Assert.assertNull(ArtificerModelUtils.getCustomProperty(xsdDocument, "my.missing.property")); //$NON-NLS-1$
+		Assert.assertNotNull(ArtificerModelUtils.getGenericRelationship(xsdDocument, "NoTargetRel")); //$NON-NLS-1$
+		Assert.assertNull(ArtificerModelUtils.getGenericRelationship(xsdDocument, "MissingRel")); //$NON-NLS-1$
 	}
 
 	/**
@@ -743,7 +743,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 	 * @throws Exception
 	 */
 	private void doUpdateXsdContent(Entry entry) throws Exception {
-		XsdDocument xsdDocument = (XsdDocument) SrampAtomUtils.unwrapSrampArtifact(entry);
+		XsdDocument xsdDocument = (XsdDocument) ArtificerAtomUtils.unwrapSrampArtifact(entry);
 		String uuid = xsdDocument.getUuid();
 		ClientRequest request = clientRequest("/s-ramp/xsd/XsdDocument/" + uuid + "/media"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -798,7 +798,7 @@ public class ArtifactResourceTest extends AbstractResourceTest {
 		try {
 			request.get(String.class);
 			Assert.fail("Expected an 'Artifact not found.' error here."); //$NON-NLS-1$
-		} catch (SrampAtomException e) {
+		} catch (ArtificerAtomException e) {
 			Assert.assertTrue(e.getMessage().contains("not in the repository")); //$NON-NLS-1$
 		}
 	}

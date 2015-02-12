@@ -15,14 +15,14 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.error.ArtificerServerException;
 
 /**
  * Exception thrown when an s-ramp query fails.
  *
  * @author eric.wittmann@redhat.com
  */
-public class QueryExecutionException extends SrampServerException {
+public class QueryExecutionException extends ArtificerServerException {
 
     private static final long serialVersionUID = QueryExecutionException.class.hashCode();
 

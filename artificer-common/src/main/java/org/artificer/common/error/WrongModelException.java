@@ -22,7 +22,7 @@ import org.artificer.common.i18n.Messages;
  * 
  * @author Brett Meyer
  */
-public class WrongModelException extends SrampUserException {
+public class WrongModelException extends ArtificerUserException {
 
     private static final long serialVersionUID = -1006199656016992864L;
 

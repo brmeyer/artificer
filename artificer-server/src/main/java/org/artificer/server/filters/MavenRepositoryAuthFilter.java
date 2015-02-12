@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.artificer.common.SrampConfig;
+import org.artificer.common.ArtificerConfig;
 import org.artificer.server.i18n.Messages;
 
 /**
@@ -69,8 +69,8 @@ public class MavenRepositoryAuthFilter implements Filter {
         String authHeader = req.getHeader("Authorization"); //$NON-NLS-1$
         Creds credentials = parseAuthorizationHeader(authHeader);
         if  (credentials == null) {
-            SimplePrincipal principal = new SimplePrincipal(SrampConfig.getMavenReadOnlyUsername());
-            principal.addRole("readonly." + SrampConfig.getJCRRepositoryName()); //$NON-NLS-1$
+            SimplePrincipal principal = new SimplePrincipal(ArtificerConfig.getMavenReadOnlyUsername());
+            principal.addRole("readonly." + ArtificerConfig.getJCRRepositoryName()); //$NON-NLS-1$
             doFilterChain(request, response, chain, principal);
         } else {
             if (login(credentials, req, (HttpServletResponse) response)) {

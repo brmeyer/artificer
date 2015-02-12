@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.integration.java.model.JavaModel;
@@ -40,7 +40,7 @@ public class SwitchYardArtifactTypeDetectorTest extends AbstractClientTest {
 	@Test
 	public void testSwitchYardIntegration() throws Exception {
 	    InputStream stream = getClass().getResourceAsStream("switchyard-quickstart-bean-service.jar"); //$NON-NLS-1$
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
 	    try {
             BaseArtifactType artifact = client.uploadArtifact(stream, "switchyard-quickstart-bean-service.jar");
 

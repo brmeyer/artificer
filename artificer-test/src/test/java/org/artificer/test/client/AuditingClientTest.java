@@ -15,11 +15,11 @@
  */
 package org.artificer.test.client;
 
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 import org.junit.Assert;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.audit.AuditEntrySummary;
 import org.artificer.client.audit.AuditResultSet;
 
@@ -37,7 +37,7 @@ public class AuditingClientTest extends AbstractClientTest {
 
     @Test
     public void testAuditing() throws Exception {
-        SrampAtomApiClient client = client(); 
+        ArtificerAtomApiClient client = client();
         
         // Get all audit entries by user (later used for a delta)
         AuditResultSet resultSet = client.getAuditTrailForUser(getUsername()); 

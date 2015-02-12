@@ -34,14 +34,14 @@ import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Source;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.ArtificerAtomUtils;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.atom.mappers.OntologyToRdfMapper;
 import org.artificer.atom.mappers.RdfToOntologyMapper;
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.ontology.OntologyConflictException;
 import org.artificer.common.ontology.OntologyNotFoundException;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.server.OntologyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,16 +72,16 @@ public class OntologyResource extends AbstractResource {
     /**
      * S-RAMP atom POST to add an ontology to the repository.
      * @param rdf
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @POST
     @Path("ontology")
     @Consumes(MediaType.APPLICATION_RDF_XML)
     @Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
-	public Entry create(RDF rdf) throws SrampAtomException, SrampException {
-        SrampOntology ontology;
+	public Entry create(RDF rdf) throws ArtificerAtomException, ArtificerException {
+        ArtificerOntology ontology;
         try {
-            ontology = new SrampOntology();
+            ontology = new ArtificerOntology();
             rdf2o.map(rdf, ontology);
 
             ontology = ontologyService.create(ontology);
@@ -89,14 +89,14 @@ public class OntologyResource extends AbstractResource {
 			RDF responseRDF = new RDF();
 			o2rdf.map(ontology, responseRDF);
 
-			return SrampAtomUtils.wrapOntology(ontology, responseRDF);
+			return ArtificerAtomUtils.wrapOntology(ontology, responseRDF);
         } catch (OntologyConflictException e) {
             // Simply re-throw.  Don't allow the following catch it -- ArtifactAlreadyExistsException is mapped to a
             // unique HTTP response type.
             throw e;
         } catch (Exception e) {
         	logError(logger, Messages.i18n.format("ERROR_CREATING_ONTOLOGY"), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
         }
     }
 
@@ -104,15 +104,15 @@ public class OntologyResource extends AbstractResource {
      * Called to update a single ontology by providing a new OWL RDF document.
      * @param uuid
      * @param rdf
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @PUT
     @Path("ontology/{uuid}")
     @Consumes(MediaType.APPLICATION_RDF_XML)
-    public void update(@PathParam("uuid") String uuid, RDF rdf) throws SrampAtomException, SrampException {
-        SrampOntology ontology;
+    public void update(@PathParam("uuid") String uuid, RDF rdf) throws ArtificerAtomException, ArtificerException {
+        ArtificerOntology ontology;
         try {
-            ontology = new SrampOntology();
+            ontology = new ArtificerOntology();
             rdf2o.map(rdf, ontology);
             ontology.setUuid(uuid);
 
@@ -126,7 +126,7 @@ public class OntologyResource extends AbstractResource {
             throw e;
         } catch (Exception e) {
         	logError(logger, Messages.i18n.format("ERROR_UPDATING_ONTOLOGY", uuid), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
         }
     }
 
@@ -134,37 +134,37 @@ public class OntologyResource extends AbstractResource {
      * Called to get a single ontology by its UUID.  This returns an Atom Entry document
      * wrapping the OWL RDF.
      * @param uuid
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @GET
     @Path("ontology/{uuid}")
     @Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
-	public Entry get(@PathParam("uuid") String uuid) throws SrampAtomException, SrampException {
+	public Entry get(@PathParam("uuid") String uuid) throws ArtificerAtomException, ArtificerException {
     	try {
-			SrampOntology ontology = ontologyService.get(uuid);
+			ArtificerOntology ontology = ontologyService.get(uuid);
 
 			RDF responseRDF = new RDF();
 			o2rdf.map(ontology, responseRDF);
 
-			return SrampAtomUtils.wrapOntology(ontology, responseRDF);
+			return ArtificerAtomUtils.wrapOntology(ontology, responseRDF);
         } catch (OntologyNotFoundException e) {
             // Simply re-throw.  Don't allow the following catch it -- ArtifactNotFoundException is mapped to a unique
             // HTTP response type.
             throw e;
         } catch (Exception e) {
         	logError(logger, Messages.i18n.format("ERROR_GETTING_ONTOLOGY", uuid), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
         }
     }
 
     /**
      * Called to delete a single s-ramp ontology.
      * @param uuid
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @DELETE
     @Path("ontology/{uuid}")
-	public void delete(@PathParam("uuid") String uuid) throws SrampAtomException, SrampException {
+	public void delete(@PathParam("uuid") String uuid) throws ArtificerAtomException, ArtificerException {
     	try {
     	    ontologyService.delete(uuid);
         } catch (OntologyNotFoundException e) {
@@ -173,7 +173,7 @@ public class OntologyResource extends AbstractResource {
             throw e;
         } catch (Exception e) {
         	logError(logger, Messages.i18n.format("ERROR_DELETING_ONTOLOGY", uuid), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
         }
     }
 
@@ -184,16 +184,16 @@ public class OntologyResource extends AbstractResource {
 	@GET
 	@Path("ontology")
 	@Produces(MediaType.APPLICATION_ATOM_XML_FEED)
-	public Feed list() throws SrampAtomException {
+	public Feed list() throws ArtificerAtomException {
     	try {
-			List<SrampOntology> ontologies = ontologyService.get();
+			List<ArtificerOntology> ontologies = ontologyService.get();
 
 			Feed feed = new Feed();
 			feed.setTitle("S-RAMP ontology feed"); //$NON-NLS-1$
 			feed.setUpdated(new Date());
 
-			for (SrampOntology ontology : ontologies) {
-		    	Entry entry = SrampAtomUtils.wrapOntology(ontology, null);
+			for (ArtificerOntology ontology : ontologies) {
+		    	Entry entry = ArtificerAtomUtils.wrapOntology(ontology, null);
 				Source source = new Source();
 				source.setBase(new URI(ontology.getBase()));
 				source.setId(new URI(ontology.getId()));
@@ -205,7 +205,7 @@ public class OntologyResource extends AbstractResource {
 			return feed;
         } catch (Exception e) {
         	logError(logger, Messages.i18n.format("ERROR_GETTING_ONTOLOGIES"), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
         }
 	}
 

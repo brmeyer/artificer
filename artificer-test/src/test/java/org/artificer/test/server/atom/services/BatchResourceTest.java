@@ -30,11 +30,11 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
-import org.artificer.atom.archive.SrampArchive;
+import org.artificer.atom.ArtificerAtomUtils;
+import org.artificer.atom.archive.ArtificerArchive;
 import org.artificer.atom.beans.HttpResponseBean;
 import org.artificer.client.ClientRequest;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -57,7 +57,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 
 	@Test
 	public void testZipPackage() throws Exception {
-		SrampArchive archive = null;
+		ArtificerArchive archive = null;
 		InputStream xsd1ContentStream = null;
 		InputStream xsd2ContentStream = null;
 		File zipFile = null;
@@ -66,7 +66,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 
 		try {
 			// Create a test s-ramp archive
-			archive = new SrampArchive();
+			archive = new ArtificerArchive();
 			xsd1ContentStream = this.getClass().getResourceAsStream("/sample-files/xsd/PO.xsd"); //$NON-NLS-1$
 			BaseArtifactType metaData = new XsdDocument();
 			metaData.setArtifactType(BaseArtifactEnum.XSD_DOCUMENT);
@@ -98,7 +98,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 				HttpResponseBean rbean = part.getBody(HttpResponseBean.class, null);
 				Assert.assertEquals(201, rbean.getCode());
 				Entry entry = (Entry) rbean.getBody();
-				BaseArtifactType artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+				BaseArtifactType artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 				artyMap.put(id, artifact);
 			}
 
@@ -118,7 +118,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 		} finally {
 			IOUtils.closeQuietly(xsd1ContentStream);
 			IOUtils.closeQuietly(xsd2ContentStream);
-			SrampArchive.closeQuietly(archive);
+			ArtificerArchive.closeQuietly(archive);
 			IOUtils.closeQuietly(zipStream);
 			FileUtils.deleteQuietly(zipFile);
 		}
@@ -143,7 +143,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 	 */
 	@Test
 	public void testZipPackage_Multi() throws Exception {
-		SrampArchive archive = null;
+		ArtificerArchive archive = null;
 		InputStream xsd1ContentStream = null;
 		InputStream wsdlContentStream = null;
 		File zipFile = null;
@@ -159,7 +159,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 
 		try {
 			// Create a test s-ramp archive
-			archive = new SrampArchive();
+			archive = new ArtificerArchive();
 
 			// A new XSD document
 			xsd1ContentStream = this.getClass().getResourceAsStream("/sample-files/xsd/PO.xsd"); //$NON-NLS-1$
@@ -172,12 +172,12 @@ public class BatchResourceTest extends AbstractResourceTest {
 			wsdlContentStream = this.getClass().getResourceAsStream("/sample-files/wsdl/sample-updated.wsdl"); //$NON-NLS-1$
 			metaData = wsdlDoc;
 			metaData.setVersion("2.0"); //$NON-NLS-1$
-			SrampModelUtils.setCustomProperty(metaData, "foo", "bar"); //$NON-NLS-1$ //$NON-NLS-2$
+			ArtificerModelUtils.setCustomProperty(metaData, "foo", "bar"); //$NON-NLS-1$ //$NON-NLS-2$
 			archive.addEntry("wsdl/sample.wsdl", metaData, wsdlContentStream); //$NON-NLS-1$
 			// Update an existing XML document (meta-data only)
 			metaData = xmlDoc;
 			metaData.setVersion("3.0"); //$NON-NLS-1$
-			SrampModelUtils.setCustomProperty(metaData, "far", "baz"); //$NON-NLS-1$ //$NON-NLS-2$
+			ArtificerModelUtils.setCustomProperty(metaData, "far", "baz"); //$NON-NLS-1$ //$NON-NLS-2$
 			archive.addEntry("core/PO.xml", metaData, null); //$NON-NLS-1$
 
 			zipFile = archive.pack();
@@ -211,7 +211,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 			Assert.assertEquals(201, httpResp.getCode());
 			Assert.assertEquals("Created", httpResp.getStatus()); //$NON-NLS-1$
 			Entry entry = (Entry) httpResp.getBody();
-			BaseArtifactType artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertEquals("PO.xsd", artifact.getName()); //$NON-NLS-1$
 			Assert.assertNull(artifact.getVersion());
 			Long size = ((XsdDocument) artifact).getContentSize();
@@ -223,7 +223,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 			Assert.assertEquals(200, httpResp.getCode());
 			Assert.assertEquals("OK", httpResp.getStatus()); //$NON-NLS-1$
 			entry = (Entry) httpResp.getBody();
-			artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+			artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertEquals("sample.wsdl", artifact.getName()); //$NON-NLS-1$
 			Assert.assertEquals("2.0", artifact.getVersion()); //$NON-NLS-1$
 			wsdlUuid = artifact.getUuid();
@@ -233,14 +233,14 @@ public class BatchResourceTest extends AbstractResourceTest {
 			Assert.assertEquals(200, httpResp.getCode());
 			Assert.assertEquals("OK", httpResp.getStatus()); //$NON-NLS-1$
 			entry = (Entry) httpResp.getBody();
-			artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+			artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertEquals("PO.xml", artifact.getName()); //$NON-NLS-1$
 			Assert.assertEquals("3.0", artifact.getVersion()); //$NON-NLS-1$
 			xmlUuid = artifact.getUuid();
 		} finally {
 			IOUtils.closeQuietly(xsd1ContentStream);
 			IOUtils.closeQuietly(wsdlContentStream);
-			SrampArchive.closeQuietly(archive);
+			ArtificerArchive.closeQuietly(archive);
 			IOUtils.closeQuietly(zipStream);
 			FileUtils.deleteQuietly(zipFile);
 		}
@@ -255,7 +255,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 		for (Entry entry : feed.getEntries()) {
 		    String uuid = entry.getId().toString().replace("urn:uuid:", "");
 			request = clientRequest("/s-ramp/xsd/XsdDocument/" + uuid); //$NON-NLS-1$
-			BaseArtifactType artifact = SrampAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
+			BaseArtifactType artifact = ArtificerAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
 			artyMap.put(artifact.getUuid(), artifact);
 		}
 		request = clientRequest("/s-ramp/wsdl/WsdlDocument"); //$NON-NLS-1$
@@ -265,7 +265,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 		for (Entry entry : feed.getEntries()) {
 		    String uuid = entry.getId().toString().replace("urn:uuid:", "");
             request = clientRequest("/s-ramp/wsdl/WsdlDocument/" + uuid); //$NON-NLS-1$
-			BaseArtifactType artifact = SrampAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
+			BaseArtifactType artifact = ArtificerAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
 			artyMap.put(artifact.getUuid(), artifact);
 		}
 		request = clientRequest("/s-ramp/core/XmlDocument"); //$NON-NLS-1$
@@ -275,7 +275,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 		for (Entry entry : feed.getEntries()) {
 		    String uuid = entry.getId().toString().replace("urn:uuid:", "");
             request = clientRequest("/s-ramp/core/XmlDocument/" + uuid); //$NON-NLS-1$
-			BaseArtifactType artifact = SrampAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
+			BaseArtifactType artifact = ArtificerAtomUtils.unwrapSrampArtifact(request.get(Entry.class).getEntity());
 			artyMap.put(artifact.getUuid(), artifact);
 		}
 
@@ -314,7 +314,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals(artifactFileName, entry.getTitle());
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof XmlDocument);
 			XmlDocument doc = (XmlDocument) arty;
 			Assert.assertEquals(artifactFileName, doc.getName());
@@ -344,7 +344,7 @@ public class BatchResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals(artifactFileName, entry.getTitle());
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof WsdlDocument);
 			WsdlDocument doc = (WsdlDocument) arty;
 			Assert.assertEquals(artifactFileName, doc.getName());

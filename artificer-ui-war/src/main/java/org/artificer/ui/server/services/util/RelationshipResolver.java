@@ -17,7 +17,7 @@ package org.artificer.ui.server.services.util;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Target;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.common.visitors.RelationshipArtifactVisitor;
@@ -31,7 +31,7 @@ import org.artificer.ui.client.shared.beans.ArtifactRelationshipsIndexBean;
  */
 public class RelationshipResolver {
 
-    private SrampAtomApiClient client;
+    private ArtificerAtomApiClient client;
     private ArtifactRelationshipsIndexBean indexedRelationships;
 
     /**
@@ -39,7 +39,7 @@ public class RelationshipResolver {
      * @param client
      * @param indexedRelationships
      */
-    public RelationshipResolver(SrampAtomApiClient client, ArtifactRelationshipsIndexBean indexedRelationships) {
+    public RelationshipResolver(ArtificerAtomApiClient client, ArtifactRelationshipsIndexBean indexedRelationships) {
         this.client = client;
         this.indexedRelationships = indexedRelationships;
     }

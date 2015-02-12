@@ -19,8 +19,8 @@ import org.apache.commons.io.IOUtils;
 import org.artificer.server.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.maven.MavenGavInfo;
 import org.artificer.common.maven.MavenUtil;
 import org.artificer.server.ArtifactServiceImpl;
@@ -52,7 +52,7 @@ import java.util.Set;
 public class MavenFacadeServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MavenFacadeServlet.class);
-    private static final boolean SNAPSHOT_ALLOWED = SrampConfig.isSnapshotAllowed();
+    private static final boolean SNAPSHOT_ALLOWED = ArtificerConfig.isSnapshotAllowed();
 
     private final ArtifactServiceImpl artifactService = new ArtifactServiceImpl();
     private final QueryServiceImpl queryService = new QueryServiceImpl();
@@ -154,7 +154,7 @@ public class MavenFacadeServlet extends HttpServlet {
         LinkedHashSet<String> versions = new LinkedHashSet<String>();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         for (BaseArtifactType artifact : artifacts) {
-            String version = SrampModelUtils.getCustomProperty(artifact, "maven.version");
+            String version = ArtificerModelUtils.getCustomProperty(artifact, "maven.version");
             if (versions.add(version)) {
                 latest = version;
                 if (!version.endsWith("-SNAPSHOT")) {
@@ -212,8 +212,8 @@ public class MavenFacadeServlet extends HttpServlet {
         Set<String> processed = new HashSet<String>();
         Calendar latestDate = null;
         for (BaseArtifactType artifact : artifacts) {
-            String extension = SrampModelUtils.getCustomProperty(artifact, "maven.type");
-            String classifier = SrampModelUtils.getCustomProperty(artifact, "maven.classifier");
+            String extension = ArtificerModelUtils.getCustomProperty(artifact, "maven.type");
+            String classifier = ArtificerModelUtils.getCustomProperty(artifact, "maven.classifier");
             String value = gavInfo.getVersion();
             Calendar updatedDate = artifact.getLastModifiedTimestamp().toGregorianCalendar();
             String updated = updatedFormat.format(updatedDate.getTime());
@@ -284,7 +284,7 @@ public class MavenFacadeServlet extends HttpServlet {
             return null;
         }
 
-        return SrampModelUtils.getCustomProperty(artifact, hashPropName);
+        return ArtificerModelUtils.getCustomProperty(artifact, hashPropName);
     }
 
     /**
@@ -315,7 +315,7 @@ public class MavenFacadeServlet extends HttpServlet {
                 // If no classifier in the GAV info, only return the artifact that also has no classifier
                 // TODO replace this with "not(@maven.classifer)" in the query, then force the result set to return 2 items (expecting only 1)
                 if (gavInfo.getClassifier() == null) {
-                    String artyClassifier = SrampModelUtils.getCustomProperty(artifact, "maven.classifier");
+                    String artyClassifier = ArtificerModelUtils.getCustomProperty(artifact, "maven.classifier");
                     if (artyClassifier == null) {
                         return artifact;
                     }
@@ -390,7 +390,7 @@ public class MavenFacadeServlet extends HttpServlet {
         // Re-fetch the artifact meta-data in case it changed on the server since we uploaded it.
         MavenGavInfo primaryGavInfo = gavWithoutHash(req, hashExtensionLength);
         BaseArtifactType artifact = findExistingArtifactByGAV(primaryGavInfo);
-        SrampModelUtils.setCustomProperty(artifact, hashPropName, hashValue);
+        ArtificerModelUtils.setCustomProperty(artifact, hashPropName, hashValue);
 
         // The meta-data has been updated in the local/temp archive - now send it to the remote repo
         artifactService.updateMetaData(artifact);
@@ -424,17 +424,17 @@ public class MavenFacadeServlet extends HttpServlet {
     }
 
     private void updateGavProperties(final MavenGavInfo gavInfo, BaseArtifactType artifact) throws Exception {
-        SrampModelUtils.setCustomProperty(artifact, "maven.groupId", gavInfo.getGroupId());
-        SrampModelUtils.setCustomProperty(artifact, "maven.artifactId", gavInfo.getArtifactId());
-        SrampModelUtils.setCustomProperty(artifact, "maven.version", gavInfo.getVersion());
+        ArtificerModelUtils.setCustomProperty(artifact, "maven.groupId", gavInfo.getGroupId());
+        ArtificerModelUtils.setCustomProperty(artifact, "maven.artifactId", gavInfo.getArtifactId());
+        ArtificerModelUtils.setCustomProperty(artifact, "maven.version", gavInfo.getVersion());
         artifact.setVersion(gavInfo.getVersion());
         if (gavInfo.getClassifier() != null) {
-            SrampModelUtils.setCustomProperty(artifact, "maven.classifier", gavInfo.getClassifier());
+            ArtificerModelUtils.setCustomProperty(artifact, "maven.classifier", gavInfo.getClassifier());
         }
         if (gavInfo.getSnapshotId() != null && !gavInfo.getSnapshotId().equals("")) {
-            SrampModelUtils.setCustomProperty(artifact, "maven.snapshot.id", gavInfo.getSnapshotId());
+            ArtificerModelUtils.setCustomProperty(artifact, "maven.snapshot.id", gavInfo.getSnapshotId());
         }
-        SrampModelUtils.setCustomProperty(artifact, "maven.type", gavInfo.getType());
+        ArtificerModelUtils.setCustomProperty(artifact, "maven.type", gavInfo.getType());
 
         artifactService.updateMetaData(artifact);
     }

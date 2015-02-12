@@ -17,7 +17,7 @@ package org.artificer.repository.jcr.audit;
 
 import org.artificer.repository.audit.AuditEntrySet;
 import org.artificer.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 import org.artificer.repository.jcr.JCRAbstractSet;
 
 import javax.jcr.Node;

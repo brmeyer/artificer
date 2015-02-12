@@ -17,7 +17,7 @@ package org.artificer.shell.commands.archive;
 
 import java.util.Collection;
 
-import org.artificer.atom.archive.SrampArchiveEntry;
+import org.artificer.atom.archive.ArtificerArchiveEntry;
 import org.artificer.shell.i18n.Messages;
 
 
@@ -47,10 +47,10 @@ public class ListArchiveCommand extends AbstractArchiveCommand {
         if (!validate()) {
 	        return false;
 		}
-		Collection<SrampArchiveEntry> entries = archive.getEntries();
+		Collection<ArtificerArchiveEntry> entries = archive.getEntries();
 		print(Messages.i18n.format("ENTRY_PATH")); //$NON-NLS-1$
 		print("  ----------"); //$NON-NLS-1$
-		for (SrampArchiveEntry entry : entries) {
+		for (ArtificerArchiveEntry entry : entries) {
 			String modifier = null;
 			if (entry.hasContent()) {
 				modifier = "  C "; //$NON-NLS-1$

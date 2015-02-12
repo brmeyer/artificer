@@ -16,13 +16,13 @@
 package org.artificer.common;
 
 
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 import org.artificer.common.i18n.Messages;
 
 /**
  * @author Brett Meyer
  */
-public class FilenameRequiredException extends SrampUserException {
+public class FilenameRequiredException extends ArtificerUserException {
 
     public FilenameRequiredException() {
         super(Messages.i18n.format("FILENAME_REQUIRED"));

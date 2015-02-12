@@ -18,9 +18,9 @@ package org.artificer.shell.util;
 import java.io.File;
 import java.util.List;
 
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.archive.SrampArchiveEntry;
-import org.artificer.atom.archive.SrampArchiveException;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.archive.ArtificerArchiveEntry;
+import org.artificer.atom.archive.ArtificerArchiveException;
 import org.artificer.shell.CompletionConstants;
 
 /**
@@ -30,7 +30,7 @@ import org.artificer.shell.CompletionConstants;
  */
 public class FileEntryPathCompleter {
 
-    private final SrampArchive archive;
+    private final ArtificerArchive archive;
 
     /**
      * Instantiates a new file entry path completer.
@@ -38,7 +38,7 @@ public class FileEntryPathCompleter {
      * @param archive
      *            the archive
      */
-    public FileEntryPathCompleter(SrampArchive archive) {
+    public FileEntryPathCompleter(ArtificerArchive archive) {
         this.archive = archive;
     }
 
@@ -56,7 +56,7 @@ public class FileEntryPathCompleter {
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
         if(archive!=null){
             try {
-                for(SrampArchiveEntry entry:archive.getEntries()){
+                for(ArtificerArchiveEntry entry:archive.getEntries()){
                     if(entry.getPath().startsWith(buffer)){
                         if (entry.getPath().indexOf(File.separator, buffer.length()) != -1) {
                             candidates.add(entry.getPath().substring(0,
@@ -67,7 +67,7 @@ public class FileEntryPathCompleter {
 
                     }
                 }
-            } catch (SrampArchiveException e) {
+            } catch (ArtificerArchiveException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

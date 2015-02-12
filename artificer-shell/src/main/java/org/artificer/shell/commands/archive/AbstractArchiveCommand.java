@@ -19,8 +19,8 @@ import java.io.File;
 
 import javax.xml.namespace.QName;
 
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.BuiltInShellCommand;
 
@@ -31,11 +31,11 @@ import org.artificer.shell.BuiltInShellCommand;
  */
 public abstract class AbstractArchiveCommand extends BuiltInShellCommand {
 
-    protected SrampArchive archive;
+    protected ArtificerArchive archive;
 
     protected QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    protected SrampAtomApiClient client;
+    protected ArtificerAtomApiClient client;
 
     protected QName varName = new QName("archive", "active-archive"); //$NON-NLS-1$ //$NON-NLS-2$;
 
@@ -98,10 +98,10 @@ public abstract class AbstractArchiveCommand extends BuiltInShellCommand {
     public boolean initialize() throws Exception {
         if (getContext() != null) {
             if (getContext().getVariable(varName) != null) {
-                archive = (SrampArchive) getContext().getVariable(varName);
+                archive = (ArtificerArchive) getContext().getVariable(varName);
             }
             if (getContext().getVariable(clientVarName) != null) {
-                client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+                client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
             }
 
         }

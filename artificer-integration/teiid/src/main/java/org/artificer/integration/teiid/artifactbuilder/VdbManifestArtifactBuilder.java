@@ -28,7 +28,7 @@ import org.artificer.integration.teiid.model.VdbSchemaSource;
 import org.artificer.integration.teiid.model.VdbTranslator;
 import org.artificer.integration.teiid.model.VdbValidationError;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.*;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.XmlArtifactBuilder;
 import org.artificer.integration.teiid.Messages;
 import org.artificer.integration.teiid.Utils;
@@ -105,8 +105,8 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
        // setup relationships between sources and translators
         if (!Utils.isEmpty(this.sources) && !Utils.isEmpty(this.translators)) {
             for (final BaseArtifactType sourceArtifact : this.sources) {
-                final String translatorName = SrampModelUtils.getCustomProperty(sourceArtifact,
-                                                                                VdbSchemaSource.PropertyId.TRANSLATOR_NAME);
+                final String translatorName = ArtificerModelUtils.getCustomProperty(sourceArtifact,
+                        VdbSchemaSource.PropertyId.TRANSLATOR_NAME);
 
                 if (!Utils.isEmpty(translatorName)) {
                     for (final BaseArtifactType translatorArtifact : this.translators) {
@@ -150,16 +150,16 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
                 { // any authenticated
                     final String anyAuthenticated = dataPolicy.getAttribute(VdbDataPolicy.ManifestId.ANY_AUTHENTICATED);
-                    SrampModelUtils.setCustomProperty(dataPolicyArtifact,
-                                                      VdbDataPolicy.PropertyId.ANY_AUTHENTICATED,
-                                                      anyAuthenticated);
+                    ArtificerModelUtils.setCustomProperty(dataPolicyArtifact,
+                            VdbDataPolicy.PropertyId.ANY_AUTHENTICATED,
+                            anyAuthenticated);
                 }
 
                 { // create temp tables
                     final String creatable = dataPolicy.getAttribute(VdbDataPolicy.ManifestId.TEMP_TABLE_CREATABLE);
-                    SrampModelUtils.setCustomProperty(dataPolicyArtifact,
-                                                      VdbDataPolicy.PropertyId.TEMP_TABLE_CREATABLE,
-                                                      creatable);
+                    ArtificerModelUtils.setCustomProperty(dataPolicyArtifact,
+                            VdbDataPolicy.PropertyId.TEMP_TABLE_CREATABLE,
+                            creatable);
                 }
 
                 // description
@@ -192,9 +192,9 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                             }
                         }
 
-                        SrampModelUtils.setCustomProperty(dataPolicyArtifact,
-                                                          VdbDataPolicy.PropertyId.ROLE_NAMES,
-                                                          mappedNames.toString());
+                        ArtificerModelUtils.setCustomProperty(dataPolicyArtifact,
+                                VdbDataPolicy.PropertyId.ROLE_NAMES,
+                                mappedNames.toString());
                     }
                 }
 
@@ -369,7 +369,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                 final Element prop = (Element)props.item(propIndex);
                 final String name = prop.getAttribute(Propertied.XmlId.NAME);
                 final String value = prop.getAttribute(Propertied.XmlId.VALUE);
-                SrampModelUtils.setCustomProperty(artifact, name, value);
+                ArtificerModelUtils.setCustomProperty(artifact, name, value);
             }
 
             if (LOGGER.isDebugEnabled()) {
@@ -411,7 +411,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                     final String visible = schema.getAttribute(VdbSchema.ManifestId.VISIBLE);
 
                     if (!Utils.isEmpty(visible)) {
-                        SrampModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.VISIBLE, visible);
+                        ArtificerModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.VISIBLE, visible);
                     }
                 }
 
@@ -419,7 +419,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                     final String path = schema.getAttribute(VdbSchema.ManifestId.PATH);
 
                     if (!Utils.isEmpty(path)) {
-                        SrampModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.PATH_IN_VDB, path);
+                        ArtificerModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.PATH_IN_VDB, path);
                     }
                 }
 
@@ -430,7 +430,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                         type = VdbSchema.DEFAULT_TYPE.name();
                     }
 
-                    SrampModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.TYPE, type);
+                    ArtificerModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.TYPE, type);
                 }
 
                 { // metadata
@@ -442,7 +442,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
                     if (element != null) {
                         final String metadataType = element.getAttribute(VdbSchema.ManifestId.METADATA_TYPE);
-                        SrampModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.METADATA_TYPE, metadataType);
+                        ArtificerModelUtils.setCustomProperty(schemaArtifact, VdbSchema.PropertyId.METADATA_TYPE, metadataType);
                     }
                 }
 
@@ -491,12 +491,12 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
                 { // JNDI name
                     final String jndiName = source.getAttribute(VdbSchemaSource.ManifestId.JNDI_NAME);
-                    SrampModelUtils.setCustomProperty(sourceArtifact, VdbSchemaSource.PropertyId.JNDI_NAME, jndiName);
+                    ArtificerModelUtils.setCustomProperty(sourceArtifact, VdbSchemaSource.PropertyId.JNDI_NAME, jndiName);
                 }
 
                 { // translator
                     final String translatorName = source.getAttribute(VdbSchemaSource.ManifestId.TRANSLATOR_NAME);
-                    SrampModelUtils.setCustomProperty(sourceArtifact, VdbSchemaSource.PropertyId.TRANSLATOR_NAME, translatorName);
+                    ArtificerModelUtils.setCustomProperty(sourceArtifact, VdbSchemaSource.PropertyId.TRANSLATOR_NAME, translatorName);
                 }
 
                 if (LOGGER.isDebugEnabled()) {
@@ -547,20 +547,20 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
                 { // severity
                     final String severity = errorElement.getAttribute(VdbValidationError.ManifestId.SEVERITY);
-                    SrampModelUtils.setCustomProperty(errorArtifact, VdbValidationError.PropertyId.SEVERITY, severity);
+                    ArtificerModelUtils.setCustomProperty(errorArtifact, VdbValidationError.PropertyId.SEVERITY, severity);
                 }
 
                 { // message
                     final String message = errorElement.getTextContent();
-                    SrampModelUtils.setCustomProperty(errorArtifact, VdbValidationError.PropertyId.MESSAGE, message);
+                    ArtificerModelUtils.setCustomProperty(errorArtifact, VdbValidationError.PropertyId.MESSAGE, message);
                 }
 
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("VdbManifestArtifactBuilder:model artifact '{}' has validation error with severity '{}', path '{}', and message '{}'", //$NON-NLS-1$
                                  new Object[] {schemaArtifact.getName(),
-                                     SrampModelUtils.getCustomProperty(errorArtifact, VdbValidationError.PropertyId.SEVERITY),
+                                     ArtificerModelUtils.getCustomProperty(errorArtifact, VdbValidationError.PropertyId.SEVERITY),
                                      errorArtifact.getName(),
-                                     SrampModelUtils.getCustomProperty(errorArtifact, VdbValidationError.PropertyId.MESSAGE)});
+                                     ArtificerModelUtils.getCustomProperty(errorArtifact, VdbValidationError.PropertyId.MESSAGE)});
                 }
 
                 // add the relationship from schema to validation error
@@ -603,7 +603,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
                 { // type
                     final String type = translator.getAttribute(VdbTranslator.ManifestId.TYPE);
-                    SrampModelUtils.setCustomProperty(translatorArtifact, VdbTranslator.PropertyId.TYPE, type);
+                    ArtificerModelUtils.setCustomProperty(translatorArtifact, VdbTranslator.PropertyId.TYPE, type);
                 }
 
                 // properties
@@ -671,9 +671,9 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
                         importDataPolicies = Boolean.toString(VdbImport.DEFAULT_IMPORT_DATA_POLICIES);
                     }
 
-                    SrampModelUtils.setCustomProperty(vdbImportArtifact,
-                                                      VdbImport.PropertyId.IMPORT_DATA_POLICIES,
-                                                      importDataPolicies);
+                    ArtificerModelUtils.setCustomProperty(vdbImportArtifact,
+                            VdbImport.PropertyId.IMPORT_DATA_POLICIES,
+                            importDataPolicies);
                 }
 
                 if (LOGGER.isDebugEnabled()) {
@@ -723,7 +723,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
 
         if (element != null) {
             final String value = element.getTextContent();
-            SrampModelUtils.setCustomProperty(artifact, propertyName, value);
+            ArtificerModelUtils.setCustomProperty(artifact, propertyName, value);
         }
 
         return element;
@@ -739,7 +739,7 @@ public final class VdbManifestArtifactBuilder extends XmlArtifactBuilder {
             version = Vdb.DEFAULT_VERSION;
         }
 
-        SrampModelUtils.setCustomProperty(artifact, propertyName, version);
+        ArtificerModelUtils.setCustomProperty(artifact, propertyName, version);
 
         // set artifact version if not already set
         if (Utils.isEmpty(artifact.getVersion())) {

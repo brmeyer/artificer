@@ -20,7 +20,7 @@ import org.artificer.common.i18n.Messages;
 /**
  * @author Brett Meyer.
  */
-public class ContentNotFoundException extends SrampNotFoundException {
+public class ContentNotFoundException extends ArtificerNotFoundException {
 
     public ContentNotFoundException(String uuid) {
         super(Messages.i18n.format("CONTENT_NOT_FOUND", uuid)); //$NON-NLS-1$

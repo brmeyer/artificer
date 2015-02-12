@@ -23,7 +23,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author Brett Meyer
  */
-public class ReservedNameException extends SrampConflictException {
+public class ReservedNameException extends ArtificerConflictException {
 
     private static final long serialVersionUID = -3535532386495478538L;
 

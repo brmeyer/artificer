@@ -19,8 +19,8 @@
       <xsl:apply-templates select="@* | *" />
       <xsl:element name="subsystem" namespace="urn:jboss:domain:modeshape:2.0">
         <xsl:element name="repository" namespace="urn:jboss:domain:modeshape:2.0">
-          <xsl:attribute name="name">sramp</xsl:attribute>
-          <xsl:attribute name="cache-name">sramp</xsl:attribute>
+          <xsl:attribute name="name">artificer</xsl:attribute>
+          <xsl:attribute name="cache-name">artificer</xsl:attribute>
           <xsl:attribute name="cache-container">modeshape</xsl:attribute>
           <xsl:attribute name="use-anonymous-upon-failed-authentication">false</xsl:attribute>
           <xsl:attribute name="anonymous-roles">readonly</xsl:attribute>
@@ -40,7 +40,7 @@
       <xsl:element name="cache-container" namespace="{$currentNS}">
         <xsl:attribute name="name">modeshape</xsl:attribute>
         <xsl:element name="local-cache" namespace="{$currentNS}">
-          <xsl:attribute name="name">sramp</xsl:attribute>
+          <xsl:attribute name="name">artificer</xsl:attribute>
           <xsl:element name="locking" namespace="{$currentNS}">
             <xsl:attribute name="isolation">READ_COMMITTED</xsl:attribute>
           </xsl:element>
@@ -53,7 +53,7 @@
             <xsl:attribute name="max-entries">10000</xsl:attribute>
           </xsl:element>
           <xsl:element name="string-keyed-jdbc-store" namespace="{$currentNS}">
-            <xsl:attribute name="datasource">java:jboss/datasources/srampDS</xsl:attribute>
+            <xsl:attribute name="datasource">java:jboss/datasources/artificerDS</xsl:attribute>
             <xsl:attribute name="passivation">false</xsl:attribute>
             <xsl:attribute name="purge">false</xsl:attribute>
             <xsl:element name="string-keyed-table" namespace="{$currentNS}">

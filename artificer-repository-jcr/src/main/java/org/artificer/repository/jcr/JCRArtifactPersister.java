@@ -28,12 +28,12 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampException;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.audit.AuditEntryTypes;
 import org.artificer.common.audit.AuditItemTypes;
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.integration.ExtensionFactory;
 import org.artificer.integration.artifactbuilder.ArtifactBuilder;
@@ -133,7 +133,7 @@ public final class JCRArtifactPersister {
     }
 
     public void persistArtifactRelationships() throws Exception {
-        if (SrampModelUtils.isDocumentArtifact(primaryArtifact)) {
+        if (ArtificerModelUtils.isDocumentArtifact(primaryArtifact)) {
             RelationshipContext relationshipContext = new JCRRelationshipContext(session);
             for (ArtifactBuilder artifactBuilder : artifactBuilders) {
                 artifactBuilder.buildRelationships(relationshipContext);
@@ -168,7 +168,7 @@ public final class JCRArtifactPersister {
 
         Node artifactNode = null;
         try {
-            boolean isDocumentArtifact = SrampModelUtils.isDocumentArtifact(primaryArtifact);
+            boolean isDocumentArtifact = ArtificerModelUtils.isDocumentArtifact(primaryArtifact);
             if (!isDocumentArtifact) {
                 artifactNode = JCRUtils.createNode(session.getRootNode(), artifactPath, "nt:folder", JCRConstants.SRAMP_NON_DOCUMENT_TYPE);
             } else {
@@ -207,7 +207,7 @@ public final class JCRArtifactPersister {
         visitor.throwError();
 
         log.debug(Messages.i18n.format("SAVED_JCR_NODE", name, uuid));
-        if (SrampConfig.isAuditingEnabled()) {
+        if (ArtificerConfig.isAuditingEnabled()) {
             auditCreateArtifact(artifactNode);
         }
 
@@ -246,26 +246,26 @@ public final class JCRArtifactPersister {
         }
     }
     
-    private void persistPrimaryArtifactRelationships() throws SrampException {
+    private void persistPrimaryArtifactRelationships() throws ArtificerException {
         try {
             // Update the JCR node again, this time with any relationships resolved by the linker
             ArtifactToJCRNodeVisitor visitor = new ArtifactToJCRNodeVisitor(ArtifactType.valueOf(primaryArtifact),
                     primaryArtifactNode, referenceFactory, classificationHelper);
             ArtifactVisitorHelper.visitArtifact(visitor, primaryArtifact);
             visitor.throwError();
-        } catch (SrampException e) {
+        } catch (ArtificerException e) {
             throw e;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 
-    private void persistDerivedArtifacts() throws SrampException {
+    private void persistDerivedArtifacts() throws ArtificerException {
         try {
             // Persist each of the derived nodes
             for (BaseArtifactType derivedArtifact : derivedArtifacts) {
                 if (derivedArtifact.getUuid() == null) {
-                    throw new SrampServerException(Messages.i18n.format("MISSING_DERIVED_UUID", derivedArtifact.getName()));
+                    throw new ArtificerServerException(Messages.i18n.format("MISSING_DERIVED_UUID", derivedArtifact.getName()));
                 }
                 ArtifactType derivedArtifactType = ArtifactType.valueOf(derivedArtifact);
                 String jcrMixinName = derivedArtifactType.getArtifactType().getApiType().value();
@@ -299,7 +299,7 @@ public final class JCRArtifactPersister {
                 visitor.throwError();
 
                 // Audit the create event for the derived node
-                if (SrampConfig.isAuditingEnabled() && SrampConfig.isDerivedArtifactAuditingEnabled()) {
+                if (ArtificerConfig.isAuditingEnabled() && ArtificerConfig.isDerivedArtifactAuditingEnabled()) {
                     auditCreateArtifact(derivedArtifactNode);
                 }
 
@@ -307,14 +307,14 @@ public final class JCRArtifactPersister {
 
                 referenceFactory.trackNode(derivedArtifact.getUuid(), derivedArtifactNode);
             }
-        } catch (SrampException e) {
+        } catch (ArtificerException e) {
             throw e;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 
-    private void persistDerivedArtifactsRelationships() throws SrampException {
+    private void persistDerivedArtifactsRelationships() throws ArtificerException {
         try {
             // Persist each of the derived nodes
             for (BaseArtifactType derivedArtifact : derivedArtifacts) {
@@ -332,10 +332,10 @@ public final class JCRArtifactPersister {
 
                 log.debug(Messages.i18n.format("SAVED_RELATIONSHIPS", derivedArtifact.getName()));
             }
-        } catch (SrampException e) {
+        } catch (ArtificerException e) {
             throw e;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 

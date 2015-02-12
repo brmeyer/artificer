@@ -31,10 +31,10 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Artifact;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.artificer.atom.visitors.ArtifactContentTypeVisitor;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 
 /**
  * A standard servlet that makes it easy to download artifact content.
@@ -59,7 +59,7 @@ public class ArtifactDownloadServlet extends AbstractDownloadServlet {
 			IOException {
         HttpServletResponse httpResponse = resp;
 		try {
-			SrampAtomApiClient client = SrampApiClientAccessor.getClient();
+			ArtificerAtomApiClient client = ArtificerApiClientAccessor.getClient();
 			String uuid = req.getParameter("uuid"); //$NON-NLS-1$
             String type = req.getParameter("type"); //$NON-NLS-1$
             String as = req.getParameter("as"); //$NON-NLS-1$
@@ -88,7 +88,7 @@ public class ArtifactDownloadServlet extends AbstractDownloadServlet {
      * @param artifact
      * @throws Exception
      */
-    protected void doDownloadContent(HttpServletResponse httpResponse, SrampAtomApiClient client,
+    protected void doDownloadContent(HttpServletResponse httpResponse, ArtificerAtomApiClient client,
             ArtifactType artyType, BaseArtifactType artifact) throws Exception {
         InputStream artifactContent = null;
         // Set the content-disposition
@@ -121,7 +121,7 @@ public class ArtifactDownloadServlet extends AbstractDownloadServlet {
      * @param artifact
      * @throws Exception
      */
-    private void doDownloadMetaData(HttpServletResponse httpResponse, SrampAtomApiClient client,
+    private void doDownloadMetaData(HttpServletResponse httpResponse, ArtificerAtomApiClient client,
             ArtifactType artyType, BaseArtifactType artifact) throws Exception {
         JAXBContext jaxbContext = JAXBContext.newInstance(Artifact.class);
         Artifact wrapper = new Artifact();

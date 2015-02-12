@@ -18,7 +18,7 @@ package org.artificer.repository.jcr.artifactbuilder;
 import org.apache.commons.lang.StringUtils;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.XmlArtifactBuilder;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -50,14 +50,14 @@ public class ExtendedArtifactTestArtifactBuilder extends XmlArtifactBuilder {
                 credit.setExtendedType(StringUtils.capitalize(type) + "Credit");
                 credit.setName(name);
 
-                SrampModelUtils.setCustomProperty(credit, "part", part);
-                SrampModelUtils.setCustomProperty(credit, "year", year);
+                ArtificerModelUtils.setCustomProperty(credit, "part", part);
+                ArtificerModelUtils.setCustomProperty(credit, "year", year);
 
                 getDerivedArtifacts().add(credit);
 
                 // Set a relationship from original artifact to the listener
                 credit.setUuid(UUID.randomUUID().toString());
-                SrampModelUtils.addGenericRelationship(getPrimaryArtifact(), "hasCredit", credit.getUuid());
+                ArtificerModelUtils.addGenericRelationship(getPrimaryArtifact(), "hasCredit", credit.getUuid());
             }
         } catch (Exception e) {
             throw new IOException(e);

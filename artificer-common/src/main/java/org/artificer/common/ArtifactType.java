@@ -198,11 +198,11 @@ public class ArtifactType implements Serializable {
                 artifactType.setMimeType(((DocumentArtifactType)artifact).getContentType());
             }
             if (artifactType.isExtendedType()) {
-                if ((artifact.getOtherAttributes().keySet().contains(SrampConstants.SRAMP_CONTENT_TYPE_QNAME))) {
-                    String contentTypeStr = artifact.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME);
+                if ((artifact.getOtherAttributes().keySet().contains(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME))) {
+                    String contentTypeStr = artifact.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME);
                     artifactType.setMimeType(contentTypeStr);
                 }
-                String extendedDerived = artifact.getOtherAttributes().get(SrampConstants.SRAMP_DERIVED_QNAME);
+                String extendedDerived = artifact.getOtherAttributes().get(ArtificerConstants.SRAMP_DERIVED_QNAME);
                 artifactType.setExtendedDerivedType("true".equals(extendedDerived)); //$NON-NLS-1$
             }
             if (artifactType.getArtifactType() == ArtifactTypeEnum.ExtendedArtifactType) {
@@ -220,13 +220,13 @@ public class ArtifactType implements Serializable {
             if (artifactTypeEnum.getTypeClass().equals(artifact.getClass())) {
                 ArtifactType artifactType = new ArtifactType(artifactTypeEnum, null);
                 if (artifactTypeEnum == ArtifactTypeEnum.ExtendedArtifactType || artifactTypeEnum == ArtifactTypeEnum.ExtendedDocument) {
-                    if ((artifact.getOtherAttributes().keySet().contains(SrampConstants.SRAMP_CONTENT_TYPE_QNAME))) {
-                        String contentTypeStr = artifact.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME);
+                    if ((artifact.getOtherAttributes().keySet().contains(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME))) {
+                        String contentTypeStr = artifact.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME);
                         artifactType.setMimeType(contentTypeStr);
                     }
                     String extendedType = (artifact instanceof ExtendedArtifactType) ? ((ExtendedArtifactType) artifact)
                             .getExtendedType() : ((ExtendedDocument) artifact).getExtendedType();
-                    String extendedDerived = artifact.getOtherAttributes().get(SrampConstants.SRAMP_DERIVED_QNAME);
+                    String extendedDerived = artifact.getOtherAttributes().get(ArtificerConstants.SRAMP_DERIVED_QNAME);
                     artifactType.setExtendedType(extendedType);
                     artifactType.setExtendedDerivedType("true".equals(extendedDerived)); //$NON-NLS-1$
                 }
@@ -249,11 +249,11 @@ public class ArtifactType implements Serializable {
                 ((DocumentArtifactType) baseArtifactType).setContentType(getMimeType());
             }
             if (getArtifactType() == ArtifactTypeEnum.ExtendedArtifactType) {
-                baseArtifactType.getOtherAttributes().put(SrampConstants.SRAMP_CONTENT_TYPE_QNAME, getMimeType());
+                baseArtifactType.getOtherAttributes().put(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME, getMimeType());
                 ((ExtendedArtifactType) baseArtifactType).setExtendedType(getExtendedType());
             }
             if (getArtifactType() == ArtifactTypeEnum.ExtendedDocument) {
-                baseArtifactType.getOtherAttributes().put(SrampConstants.SRAMP_CONTENT_TYPE_QNAME, getMimeType());
+                baseArtifactType.getOtherAttributes().put(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME, getMimeType());
                 ((ExtendedDocument) baseArtifactType).setExtendedType(getExtendedType());
             }
             return baseArtifactType;

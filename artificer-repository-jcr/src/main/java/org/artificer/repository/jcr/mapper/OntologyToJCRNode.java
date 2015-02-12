@@ -21,10 +21,10 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.ontology.OntologyUpdateException;
-import org.artificer.common.ontology.SrampOntology;
-import org.artificer.common.ontology.SrampOntology.SrampOntologyClass;
+import org.artificer.common.ontology.ArtificerOntology;
+import org.artificer.common.ontology.ArtificerOntology.ArtificerOntologyClass;
 import org.artificer.repository.jcr.JCRConstants;
 import org.artificer.repository.jcr.i18n.Messages;
 
@@ -47,14 +47,14 @@ public final class OntologyToJCRNode {
 	 * @param jcrNode
 	 * @throws RepositoryException
 	 */
-	public void write(SrampOntology ontology, Node jcrNode) throws RepositoryException {
+	public void write(ArtificerOntology ontology, Node jcrNode) throws RepositoryException {
 		jcrNode.setProperty(JCRConstants.SRAMP_UUID, ontology.getUuid());
 		jcrNode.setProperty(JCRConstants.SRAMP_LABEL, ontology.getLabel());
 		jcrNode.setProperty(JCRConstants.SRAMP_COMMENT, ontology.getComment());
 		jcrNode.setProperty(JCRConstants.SRAMP_BASE, ontology.getBase());
 		jcrNode.setProperty(JCRConstants.SRAMP_ID, ontology.getId());
 
-		for (SrampOntology.SrampOntologyClass sclass : ontology.getRootClasses()) {
+		for (ArtificerOntologyClass sclass : ontology.getRootClasses()) {
 			addClass(jcrNode, sclass);
 		}
 	}
@@ -65,14 +65,14 @@ public final class OntologyToJCRNode {
 	 * @param sclass
 	 * @throws RepositoryException
 	 */
-	private void addClass(Node parentNode, SrampOntology.SrampOntologyClass sclass) throws RepositoryException {
+	private void addClass(Node parentNode, ArtificerOntologyClass sclass) throws RepositoryException {
 		Node classNode = parentNode.addNode(sclass.getId(), JCRConstants.SRAMP_CLASS);
 		classNode.setProperty(JCRConstants.SRAMP_URI, sclass.getUri().toString());
 		classNode.setProperty(JCRConstants.SRAMP_ID, sclass.getId());
 		classNode.setProperty(JCRConstants.SRAMP_LABEL, sclass.getLabel());
 		classNode.setProperty(JCRConstants.SRAMP_COMMENT, sclass.getComment());
 
-		for (SrampOntology.SrampOntologyClass childClass : sclass.getChildren()) {
+		for (ArtificerOntologyClass childClass : sclass.getChildren()) {
 			addClass(classNode, childClass);
 		}
 	}
@@ -83,9 +83,9 @@ public final class OntologyToJCRNode {
      * @param ontology
      * @param ontologyJcrNode
      * @throws RepositoryException
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public void update(SrampOntology ontology, Node ontologyJcrNode) throws RepositoryException, SrampException {
+    public void update(ArtificerOntology ontology, Node ontologyJcrNode) throws RepositoryException, ArtificerException {
         String base = ontologyJcrNode.getProperty(JCRConstants.SRAMP_BASE).getString();
         if (!base.equals(ontology.getBase())) {
             throw new OntologyUpdateException(Messages.i18n.format("CANNOT_CHANGE_ONTOLOGY_BASE"));
@@ -106,7 +106,7 @@ public final class OntologyToJCRNode {
         }
 
         // Now add/update any root classes
-        for (SrampOntology.SrampOntologyClass sclass : ontology.getRootClasses()) {
+        for (ArtificerOntologyClass sclass : ontology.getRootClasses()) {
             addOrUpdateClass(ontologyJcrNode, sclass);
         }
 
@@ -119,7 +119,7 @@ public final class OntologyToJCRNode {
      * @param sclass
      * @throws RepositoryException
      */
-    private void addOrUpdateClass(Node parentNode, SrampOntologyClass sclass) throws RepositoryException {
+    private void addOrUpdateClass(Node parentNode, ArtificerOntologyClass sclass) throws RepositoryException {
         if (parentNode.hasNode(sclass.getId())) {
             Node classNode = parentNode.getNode(sclass.getId());
             classNode.setProperty(JCRConstants.SRAMP_LABEL, sclass.getLabel());
@@ -134,7 +134,7 @@ public final class OntologyToJCRNode {
                 }
             }
             // Now add/update any classes that are in common
-            for (SrampOntology.SrampOntologyClass childClass : sclass.getChildren()) {
+            for (ArtificerOntologyClass childClass : sclass.getChildren()) {
                 addOrUpdateClass(classNode, childClass);
             }
         } else {
@@ -147,8 +147,8 @@ public final class OntologyToJCRNode {
      * @param sclass
      * @param classId
      */
-    private boolean hasClass(List<SrampOntologyClass> classes, String classId) {
-        for (SrampOntologyClass childClass : classes) {
+    private boolean hasClass(List<ArtificerOntologyClass> classes, String classId) {
+        for (ArtificerOntologyClass childClass : classes) {
             if (childClass.getId().equals(classId)) {
                 return true;
             }

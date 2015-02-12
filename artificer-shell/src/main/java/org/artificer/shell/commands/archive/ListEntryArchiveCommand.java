@@ -23,8 +23,8 @@ import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileEntryPathCompleter;
 import org.artificer.shell.util.PrintArtifactMetaDataVisitor;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.archive.SrampArchiveEntry;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.archive.ArtificerArchiveEntry;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 
 /**
@@ -48,7 +48,7 @@ public class ListEntryArchiveCommand extends AbstractArchiveCommand {
         if (!validate(archivePathArg)) {
             return false;
         } else {
-			SrampArchiveEntry entry = archive.getEntry(archivePathArg);
+			ArtificerArchiveEntry entry = archive.getEntry(archivePathArg);
             if (entry != null) {
                 BaseArtifactType metaData = entry.getMetaData();
                 print(Messages.i18n.format("ENTRY", archivePathArg)); //$NON-NLS-1$
@@ -70,7 +70,7 @@ public class ListEntryArchiveCommand extends AbstractArchiveCommand {
 
         if (getArguments().isEmpty()) {
             QName varName = new QName("archive", "active-archive"); //$NON-NLS-1$ //$NON-NLS-2$
-            SrampArchive archive = (SrampArchive) getContext().getVariable(varName);
+            ArtificerArchive archive = (ArtificerArchive) getContext().getVariable(varName);
             FileEntryPathCompleter delegate = new FileEntryPathCompleter(archive);
             return delegate.complete(lastArgument, lastArgument.length(), candidates);
         }

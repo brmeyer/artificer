@@ -28,8 +28,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.artificer.client.SrampAtomApiClient;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.client.ArtificerAtomApiClient;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 import org.artificer.ui.server.i18n.Messages;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
@@ -67,7 +67,7 @@ public class OntologyDownloadServlet extends AbstractDownloadServlet {
             IOException {
         HttpServletResponse httpResponse = resp;
         try {
-            SrampAtomApiClient client = SrampApiClientAccessor.getClient();
+            ArtificerAtomApiClient client = ArtificerApiClientAccessor.getClient();
             String uuid = req.getParameter("uuid"); //$NON-NLS-1$
             if (StringUtils.isNotEmpty(uuid)) {
                 doDownloadContent(httpResponse, client, uuid);
@@ -94,7 +94,7 @@ public class OntologyDownloadServlet extends AbstractDownloadServlet {
      * @throws Exception
      *             the exception
      */
-    protected void doDownloadContent(HttpServletResponse httpResponse, SrampAtomApiClient client, String uuid)
+    protected void doDownloadContent(HttpServletResponse httpResponse, ArtificerAtomApiClient client, String uuid)
             throws Exception {
         InputStream ontologyContent = null;
 

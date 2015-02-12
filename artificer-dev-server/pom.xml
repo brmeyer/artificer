@@ -190,7 +190,7 @@
               </execution>
             </executions>
             <configuration>
-              <mainClass>org.artificer.devsvr.SrampDevServer</mainClass>
+              <mainClass>org.artificer.devsvr.ArtificerDevServer</mainClass>
             </configuration>
           </plugin>
         </plugins>

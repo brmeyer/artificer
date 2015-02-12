@@ -16,7 +16,7 @@
 
 package org.artificer.ui.client.local.util;
 
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.artificer.ui.server.servlets.ArtifactUploadServlet;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -66,9 +66,9 @@ public class UploadResult extends JavaScriptObject {
     /**
      * Gets the error.
      */
-    public final SrampUiException getError() {
+    public final ArtificerUiException getError() {
         String errorMessage = get("exception-message"); //$NON-NLS-1$
-        SrampUiException error = new SrampUiException(errorMessage);
+        ArtificerUiException error = new ArtificerUiException(errorMessage);
         return error;
     }
 

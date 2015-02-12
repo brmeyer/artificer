@@ -20,7 +20,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.artificer.atom.MediaType;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.common.visitors.HierarchicalArtifactVisitor;
 
 /**
@@ -71,8 +71,8 @@ public class ArtifactContentTypeVisitor extends HierarchicalArtifactVisitor {
 	protected void visitExtendedDocument(ExtendedDocument artifact) {
 	    //grab the content type from an any-attribute
         setContentType(MediaType.APPLICATION_OCTET_STREAM_TYPE);
-	    if ((artifact.getOtherAttributes().keySet().contains(SrampConstants.SRAMP_CONTENT_TYPE_QNAME))) {
-	        String contentTypeStr = artifact.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME);
+	    if ((artifact.getOtherAttributes().keySet().contains(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME))) {
+	        String contentTypeStr = artifact.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME);
 	        if (contentTypeStr != null) {
 	            setContentType(MediaType.valueOf(contentTypeStr));
 	        }

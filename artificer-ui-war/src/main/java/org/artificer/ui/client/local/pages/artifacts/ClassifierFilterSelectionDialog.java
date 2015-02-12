@@ -29,7 +29,7 @@ import org.artificer.ui.client.local.widgets.ontologies.LoadingOntology;
 import org.artificer.ui.client.local.widgets.ontologies.OntologySelectorWithToolbar;
 import org.artificer.ui.client.shared.beans.OntologyBean;
 import org.artificer.ui.client.shared.beans.OntologySummaryBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
@@ -101,8 +101,8 @@ public class ClassifierFilterSelectionDialog extends ModalDialog implements HasV
             public void onError(Throwable error) {
                 String errorTitle = i18n.format("classifier-filter-sel-dialog.error.title"); //$NON-NLS-1$
                 String errorMsg = i18n.format("classifier-filter-sel-dialog.error.msg", ontology.getLabel()); //$NON-NLS-1$
-                if (error instanceof SrampUiException) {
-                    notificationService.sendErrorNotification(errorTitle, errorMsg, (SrampUiException) error);
+                if (error instanceof ArtificerUiException) {
+                    notificationService.sendErrorNotification(errorTitle, errorMsg, (ArtificerUiException) error);
                 } else {
                     notificationService.sendErrorNotification(errorTitle, errorMsg, null);
                 }

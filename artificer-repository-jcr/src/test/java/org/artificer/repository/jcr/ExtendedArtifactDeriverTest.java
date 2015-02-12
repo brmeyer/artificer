@@ -22,7 +22,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.artificer.common.ArtifactContent;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.query.ArtificerQuery;
 
 import java.io.InputStream;
 
@@ -49,7 +49,7 @@ public class ExtendedArtifactDeriverTest extends AbstractNoAuditingJCRPersistenc
         Assert.assertEquals(ExtendedDocument.class, artifact.getClass());
 
         // Four derived ActingCredit artifacts should have been created.
-        SrampQuery query = queryManager.createQuery("/s-ramp/ext/ActingCredit");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/ext/ActingCredit");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertEquals(4, artifactSet.size());
 

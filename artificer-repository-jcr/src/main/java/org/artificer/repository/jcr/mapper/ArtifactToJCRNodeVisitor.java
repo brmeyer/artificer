@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.artificer.repository.jcr.JCRConstants;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.*;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.visitors.HierarchicalArtifactVisitor;
 import org.artificer.repository.jcr.ClassificationHelper;
 
@@ -1090,9 +1090,9 @@ public class ArtifactToJCRNodeVisitor extends HierarchicalArtifactVisitor {
 		 * Creates a reference value to another JCR node.
          * @param uuid UUID of target artifact
 		 * @return a reference Value
-		 * @throws SrampException
+		 * @throws org.artificer.common.ArtificerException
 		 */
-		public Value createReference(String uuid) throws SrampException;
+		public Value createReference(String uuid) throws ArtificerException;
 	}
 
 }

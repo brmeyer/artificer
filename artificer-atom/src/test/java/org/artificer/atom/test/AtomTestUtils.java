@@ -18,7 +18,7 @@ package org.artificer.atom.test;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import org.artificer.atom.archive.SrampArchive;
+import org.artificer.atom.archive.ArtificerArchive;
 
 /**
  * Some utility methods helpful when testing.
@@ -34,7 +34,7 @@ public class AtomTestUtils {
 	 * @return the archive's private working directory
 	 * @throws Exception
 	 */
-	public static File getArchiveWorkDir(SrampArchive archive) throws Exception {
+	public static File getArchiveWorkDir(ArtificerArchive archive) throws Exception {
 		Field field = archive.getClass().getDeclaredField("workDir"); //$NON-NLS-1$
 		boolean oldAccessible = field.isAccessible();
 		field.setAccessible(true);

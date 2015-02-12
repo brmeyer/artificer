@@ -15,7 +15,7 @@
  */
 package org.artificer.common.ontology;
 
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 import org.artificer.common.i18n.Messages;
 
 /**
@@ -24,7 +24,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class InvalidClassifiedByException extends SrampUserException {
+public class InvalidClassifiedByException extends ArtificerUserException {
 
     private static final long serialVersionUID = 8277077613160811686L;
 

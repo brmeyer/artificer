@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.artificer.ui.client.shared.beans.ArtifactBean;
 import org.artificer.ui.client.shared.beans.ArtifactRelationshipsIndexBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 /**
  * Provides a way to get and set Artifact meta data.
@@ -39,52 +39,52 @@ public interface IArtifactService {
     /**
      * Gets the full meta data for an artifact (by UUID).
      * @param uuid
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @GET
     @Path("{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArtifactBean get(@PathParam("uuid") String uuid) throws SrampUiException;
+    public ArtifactBean get(@PathParam("uuid") String uuid) throws ArtificerUiException;
 
     /**
      * Gets the full document content for an artifact (by UUID).
      * @param uuid
      * @param artifactType
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @GET
     @Path("content/{uuid}/{artifactType}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getDocumentContent(@PathParam("uuid") String uuid, @PathParam("artifactType") String artifactType)
-            throws SrampUiException;
+            throws ArtificerUiException;
 
     /**
      * Gets all of the relationships (resolved) for an artifact.
      * @param uuid
      * @param artifactType
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("relationships/{uuid}/{artifactType}")
     public ArtifactRelationshipsIndexBean getRelationships(@PathParam("uuid") String uuid,
-            @PathParam("artifactType") String artifactType) throws SrampUiException;
+            @PathParam("artifactType") String artifactType) throws ArtificerUiException;
 
     /**
      * Called to update the given artifact bean.
      * @param artifact
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(ArtifactBean artifact) throws SrampUiException;
+    public void update(ArtifactBean artifact) throws ArtificerUiException;
 
     /**
      * Called to delete an artifact.
      * @param artifact
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @DELETE
-    public void delete(ArtifactBean artifact) throws SrampUiException;
+    public void delete(ArtifactBean artifact) throws ArtificerUiException;
 
 }

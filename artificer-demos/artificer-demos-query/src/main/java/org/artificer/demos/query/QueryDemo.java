@@ -15,8 +15,8 @@
  */
 package org.artificer.demos.query;
 
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.QueryResultSet;
 
 /**
@@ -53,7 +53,7 @@ public class QueryDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -73,13 +73,13 @@ public class QueryDemo {
     		// Additionally, each artifact has a custom property named "standard" with either
     		// the value "wsrm" or "wsrmp" as appropriate.  This should give us some meta-data
     		// on which to search.
-    		SrampArchive archive = new SrampArchive(QueryDemo.class.getResourceAsStream("archive-package.sramp"));
+    		ArtificerArchive archive = new ArtificerArchive(QueryDemo.class.getResourceAsStream("archive-package.sramp"));
     		try {
     			System.out.print("Uploading some content to the S-RAMP repository...");
     			client.uploadBatch(archive);
     			System.out.println("done!");
     		} finally {
-    			SrampArchive.closeQuietly(archive);
+    			ArtificerArchive.closeQuietly(archive);
     		}
         }
 

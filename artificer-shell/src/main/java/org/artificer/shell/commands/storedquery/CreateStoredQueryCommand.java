@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 
 /**
  * CLI command to create a new stored query in the S-RAMP repository.
@@ -37,7 +37,7 @@ public class CreateStoredQueryCommand extends BuiltInShellCommand {
         String query = this.requiredArgument(1, Messages.i18n.format("StoredQuery.Query.Mandatory")); //$NON-NLS-1$
         String propertyNames = this.optionalArgument(2);
 
-        SrampAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
+        ArtificerAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
         if (client == null) {
             return false;
         }

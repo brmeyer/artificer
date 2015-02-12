@@ -23,7 +23,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.repository.jcr.JCRConstants;
 
 /**
@@ -39,7 +39,7 @@ public class JCRNodeToOntology {
 	 * @param jcrNode
 	 * @throws RepositoryException
 	 */
-	public void read(SrampOntology ontology, Node jcrNode) throws RepositoryException {
+	public void read(ArtificerOntology ontology, Node jcrNode) throws RepositoryException {
 		ontology.setUuid(JCRMapperUtil.getPropertyString(jcrNode, JCRConstants.SRAMP_UUID));
 		ontology.setLabel(JCRMapperUtil.getPropertyString(jcrNode, JCRConstants.SRAMP_LABEL));
 		ontology.setComment(JCRMapperUtil.getPropertyString(jcrNode, JCRConstants.SRAMP_COMMENT));
@@ -59,7 +59,7 @@ public class JCRNodeToOntology {
 		NodeIterator nodes = jcrNode.getNodes();
 		while (nodes.hasNext()) {
 			Node childNode = nodes.nextNode();
-			SrampOntology.SrampOntologyClass sclass = readClass(childNode);
+			ArtificerOntology.ArtificerOntologyClass sclass = readClass(childNode);
 			sclass.setParent(null);
 			ontology.getRootClasses().add(sclass);
 		}
@@ -71,8 +71,8 @@ public class JCRNodeToOntology {
 	 * @param jcrNode
 	 * @throws RepositoryException
 	 */
-	private SrampOntology.SrampOntologyClass readClass(Node jcrNode) throws RepositoryException {
-		SrampOntology.SrampOntologyClass rval = new SrampOntology.SrampOntologyClass();
+	private ArtificerOntology.ArtificerOntologyClass readClass(Node jcrNode) throws RepositoryException {
+		ArtificerOntology.ArtificerOntologyClass rval = new ArtificerOntology.ArtificerOntologyClass();
 
 		try {
 			rval.setUri(new URI(JCRMapperUtil.getPropertyString(jcrNode, JCRConstants.SRAMP_URI)));
@@ -86,7 +86,7 @@ public class JCRNodeToOntology {
 		NodeIterator nodes = jcrNode.getNodes();
 		while (nodes.hasNext()) {
 			Node childNode = nodes.nextNode();
-			SrampOntology.SrampOntologyClass sclass = readClass(childNode);
+			ArtificerOntology.ArtificerOntologyClass sclass = readClass(childNode);
 			sclass.setParent(rval);
 			rval.getChildren().add(sclass);
 		}

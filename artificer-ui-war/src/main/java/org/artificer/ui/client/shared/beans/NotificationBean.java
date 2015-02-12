@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.jboss.errai.common.client.api.annotations.Portable;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 /**
  * A notification - can be sent either from the client or the server.
@@ -37,7 +37,7 @@ public class NotificationBean implements Serializable {
     private String title;
     private String message;
     private transient Object messageWidget;
-    private SrampUiException exception;
+    private ArtificerUiException exception;
 
     /**
      * Constructor.
@@ -90,14 +90,14 @@ public class NotificationBean implements Serializable {
     /**
      * @return the exception
      */
-    public SrampUiException getException() {
+    public ArtificerUiException getException() {
         return exception;
     }
 
     /**
      * @param exception the exception to set
      */
-    public void setException(SrampUiException exception) {
+    public void setException(ArtificerUiException exception) {
         this.exception = exception;
     }
 

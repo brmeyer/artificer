@@ -30,7 +30,7 @@ import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.ArtifactTypeEnum;
 import org.artificer.common.ArtifactVerifier;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.error.ArtifactNotFoundException;
 import org.artificer.common.error.ContentNotFoundException;
 import org.artificer.common.error.InvalidArtifactCreationException;
@@ -165,8 +165,8 @@ public class ArtifactServiceImpl extends AbstractServiceImpl implements Artifact
                             subArtifact.setName(subFile.getName());
 
                             // set relevant properties/relationships
-                            SrampModelUtils.setCustomProperty(subArtifact, "expanded.from.archive.path", pathInArchive);
-                            SrampModelUtils.addGenericRelationship(subArtifact, "expandedFromDocument", artifact.getUuid());
+                            ArtificerModelUtils.setCustomProperty(subArtifact, "expanded.from.archive.path", pathInArchive);
+                            ArtificerModelUtils.addGenericRelationship(subArtifact, "expandedFromDocument", artifact.getUuid());
 
                             creates.add(subArtifact, subArtifactContent, subArtifactContent.getPath());
                         }
@@ -224,7 +224,7 @@ public class ArtifactServiceImpl extends AbstractServiceImpl implements Artifact
 
         PersistenceManager persistenceManager = persistenceManager();
         // store the content
-        if (!SrampModelUtils.isDocumentArtifact(artifact)) {
+        if (!ArtificerModelUtils.isDocumentArtifact(artifact)) {
             throw new InvalidArtifactCreationException(Messages.i18n.format("INVALID_DOCARTY_CREATE")); //$NON-NLS-1$
         }
 

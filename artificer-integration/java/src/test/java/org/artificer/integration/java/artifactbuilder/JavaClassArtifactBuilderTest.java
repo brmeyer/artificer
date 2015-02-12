@@ -21,7 +21,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.artificer.common.ArtifactContent;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.java.model.JavaModel;
 
 import java.io.IOException;
@@ -50,8 +50,8 @@ public class JavaClassArtifactBuilderTest {
         Assert.assertNotNull(derivedArtifacts);
         Assert.assertEquals(0, derivedArtifacts.size());
         Assert.assertEquals("org.artificer.integration.java.deriver.MyClass", artifact.getName()); //$NON-NLS-1$
-        Assert.assertEquals("org.artificer.integration.java.deriver", SrampModelUtils.getCustomProperty(artifact, JavaModel.PROP_PACKAGE_NAME)); //$NON-NLS-1$
-        Assert.assertEquals("MyClass", SrampModelUtils.getCustomProperty(artifact, JavaModel.PROP_CLASS_NAME)); //$NON-NLS-1$
+        Assert.assertEquals("org.artificer.integration.java.deriver", ArtificerModelUtils.getCustomProperty(artifact, JavaModel.PROP_PACKAGE_NAME)); //$NON-NLS-1$
+        Assert.assertEquals("MyClass", ArtificerModelUtils.getCustomProperty(artifact, JavaModel.PROP_CLASS_NAME)); //$NON-NLS-1$
         Assert.assertEquals(JavaModel.TYPE_JAVA_CLASS, artifact.getExtendedType());
 
 
@@ -67,8 +67,8 @@ public class JavaClassArtifactBuilderTest {
         Assert.assertNotNull(derivedArtifacts);
         Assert.assertEquals(0, derivedArtifacts.size());
         Assert.assertEquals("org.artificer.integration.java.deriver.MyInterface", artifact.getName()); //$NON-NLS-1$
-        Assert.assertEquals("org.artificer.integration.java.deriver", SrampModelUtils.getCustomProperty(artifact, JavaModel.PROP_PACKAGE_NAME)); //$NON-NLS-1$
-        Assert.assertEquals("MyInterface", SrampModelUtils.getCustomProperty(artifact, JavaModel.PROP_CLASS_NAME)); //$NON-NLS-1$
+        Assert.assertEquals("org.artificer.integration.java.deriver", ArtificerModelUtils.getCustomProperty(artifact, JavaModel.PROP_PACKAGE_NAME)); //$NON-NLS-1$
+        Assert.assertEquals("MyInterface", ArtificerModelUtils.getCustomProperty(artifact, JavaModel.PROP_CLASS_NAME)); //$NON-NLS-1$
         Assert.assertEquals(JavaModel.TYPE_JAVA_INTERFACE, artifact.getExtendedType());
     }
 

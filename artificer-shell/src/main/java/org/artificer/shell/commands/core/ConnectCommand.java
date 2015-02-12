@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 
@@ -70,8 +70,8 @@ public class ConnectCommand extends BuiltInShellCommand {
 		}
 		QName varName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
-			SrampAtomApiClient client = null;
-		    client = new SrampAtomApiClient(endpointUrlArg, username, password, validating);
+			ArtificerAtomApiClient client = null;
+		    client = new ArtificerAtomApiClient(endpointUrlArg, username, password, validating);
 			getContext().setVariable(varName, client);
 			print(Messages.i18n.format("Connect.Success", endpointUrlArg)); //$NON-NLS-1$
 		} catch (Exception e) {

@@ -26,8 +26,8 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.common.ArtificerModelUtils;
+import org.artificer.repository.query.ArtificerQuery;
 
 import javax.xml.namespace.QName;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
         addWsdlDoc();
 
         // Get all the element style WSDL message parts
-        SrampQuery query = queryManager.createQuery("/s-ramp/wsdl/Part[element]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/wsdl/Part[element]");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(3, artifactSet.size());
@@ -109,13 +109,13 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
         WsdlDocument wsdlDoc1 = addWsdlDoc();
         WsdlDocument wsdlDoc2 = addWsdlDoc();
 
-        SrampModelUtils.addGenericRelationship(xsdDoc, "importedBy", wsdlDoc1.getUuid());
-        SrampModelUtils.addGenericRelationship(xsdDoc, "importedBy", wsdlDoc2.getUuid());
-        SrampModelUtils.addGenericRelationship(xsdDoc, "markerRel", null);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "importedBy", wsdlDoc1.getUuid());
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "importedBy", wsdlDoc2.getUuid());
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "markerRel", null);
 
         persistenceManager.updateArtifact(xsdDoc, ArtifactType.XsdDocument());
 
-        SrampQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[markerRel]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[markerRel]");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(1, artifactSet.size());
@@ -151,11 +151,11 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
 
         Map<QName, String> otherAttributes = new HashMap<QName, String>();
         otherAttributes.put(QName.valueOf("FooKey"), "FooValue");
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc1.getUuid(), otherAttributes, Collections.EMPTY_MAP);
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc2.getUuid(), otherAttributes, Collections.EMPTY_MAP);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc1.getUuid(), otherAttributes, Collections.EMPTY_MAP);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc2.getUuid(), otherAttributes, Collections.EMPTY_MAP);
         Map<QName, String> otherAttributes2 = new HashMap<QName, String>();
         otherAttributes2.put(QName.valueOf("FooKey2"), "FooValue2");
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr2", wsdlDoc3.getUuid(), otherAttributes2, Collections.EMPTY_MAP);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr2", wsdlDoc3.getUuid(), otherAttributes2, Collections.EMPTY_MAP);
 
         xsdDoc = (XsdDocument) persistenceManager.updateArtifact(xsdDoc, ArtifactType.XsdDocument());
 
@@ -167,7 +167,7 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
 
         wsdlDoc1 = (WsdlDocument) persistenceManager.updateArtifact(wsdlDoc1, ArtifactType.WsdlDocument());
 
-        SrampQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[relWithAttr[s-ramp:getRelationshipAttribute(., 'FooKey')]]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[relWithAttr[s-ramp:getRelationshipAttribute(., 'FooKey')]]");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(2, artifactSet.size());
@@ -243,11 +243,11 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
 
         Map<QName, String> otherAttributes = new HashMap<QName, String>();
         otherAttributes.put(QName.valueOf("FooKey"), "FooValue");
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc1.getUuid(), Collections.EMPTY_MAP, otherAttributes);
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc2.getUuid(), Collections.EMPTY_MAP, otherAttributes);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc1.getUuid(), Collections.EMPTY_MAP, otherAttributes);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr", wsdlDoc2.getUuid(), Collections.EMPTY_MAP, otherAttributes);
         Map<QName, String> otherAttributes2 = new HashMap<QName, String>();
         otherAttributes2.put(QName.valueOf("FooKey2"), "FooValue2");
-        SrampModelUtils.addGenericRelationship(xsdDoc, "relWithAttr2", wsdlDoc3.getUuid(), Collections.EMPTY_MAP, otherAttributes2);
+        ArtificerModelUtils.addGenericRelationship(xsdDoc, "relWithAttr2", wsdlDoc3.getUuid(), Collections.EMPTY_MAP, otherAttributes2);
 
         xsdDoc = (XsdDocument) persistenceManager.updateArtifact(xsdDoc, ArtifactType.XsdDocument());
 
@@ -259,7 +259,7 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
 
         wsdlDoc1 = (WsdlDocument) persistenceManager.updateArtifact(wsdlDoc1, ArtifactType.WsdlDocument());
 
-        SrampQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[relWithAttr[s-ramp:getTargetAttribute(., 'FooKey')]]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/xsd/XsdDocument[relWithAttr[s-ramp:getTargetAttribute(., 'FooKey')]]");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(2, artifactSet.size());

@@ -23,8 +23,8 @@ import javax.jcr.Value;
 import org.artificer.repository.jcr.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampException;
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.common.visitors.ArtifactVisitor;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.repository.jcr.mapper.JCRNodeToArtifactVisitor;
@@ -67,10 +67,10 @@ public final class JCRNodeToArtifactFactory {
 	 * @param jcrNode a node in the JCR repo
 	 * @param artifactType the type of artifact represented by the {@link Node}
 	 * @return S-RAMP artifact
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
     public static BaseArtifactType createArtifact(final Session session, Node jcrNode,
-            ArtifactType artifactType) throws SrampException {        
+            ArtifactType artifactType) throws ArtificerException {
 		try {
 	        // Early exit.  Atom service needs to 404 if the wrong model was given.
 	        String jcrArtifactType = jcrNode.getProperty(JCRConstants.SRAMP_ARTIFACT_TYPE).getValue().getString();
@@ -95,9 +95,9 @@ public final class JCRNodeToArtifactFactory {
 			return artifact;
 		} catch (Exception e) {
 			if (e.getCause() != null) {
-				throw new SrampServerException(e.getCause());
+				throw new ArtificerServerException(e.getCause());
 			} else {
-				throw new SrampServerException(e);
+				throw new ArtificerServerException(e);
 			}
 		}
 	}

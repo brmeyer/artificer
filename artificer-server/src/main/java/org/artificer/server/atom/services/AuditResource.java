@@ -31,13 +31,13 @@ import javax.ws.rs.QueryParam;
 import org.artificer.server.AuditServiceImpl;
 import org.artificer.server.core.api.PagedResult;
 import org.artificer.server.i18n.Messages;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.common.SrampConstants;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.common.ArtificerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,37 +66,37 @@ public class AuditResource extends AbstractResource {
     @Path("audit/artifact/{artifactUuid}")
     @Consumes(MediaType.APPLICATION_AUDIT_ENTRY_XML)
     @Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
-	public Entry create(@PathParam("artifactUuid") String artifactUuid, AuditEntry auditEntry) throws SrampAtomException {
+	public Entry create(@PathParam("artifactUuid") String artifactUuid, AuditEntry auditEntry) throws ArtificerAtomException {
         try {
             AuditEntry rval = auditService.create(artifactUuid, auditEntry);
             return auditEntryToAtomEntry(rval);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_CREATING_AUDIT_ENTRY", artifactUuid), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
     /**
      * Called to get the details of a single audit entry.
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @GET
     @Path("audit/artifact/{artifactUuid}/{auditEntryUuid}")
     @Produces(MediaType.APPLICATION_ATOM_XML_ENTRY)
     public Entry get(@PathParam("artifactUuid") String artifactUuid,
-            @PathParam("auditEntryUuid") String auditEntryUuid) throws SrampAtomException {
+            @PathParam("auditEntryUuid") String auditEntryUuid) throws ArtificerAtomException {
         try {
             AuditEntry auditEntry = auditService.get(artifactUuid, auditEntryUuid);
             return auditEntryToAtomEntry(auditEntry);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRY", artifactUuid, auditEntryUuid), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
     /**
      * Called to get a Feed of all audit entries for an artifact.
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @GET
     @Path("audit/artifact/{artifactUuid}")
@@ -105,7 +105,7 @@ public class AuditResource extends AbstractResource {
             @PathParam("artifactUuid") String artifactUuid,
             @QueryParam("startPage") Integer startPage,
             @QueryParam("startIndex") Integer startIndex,
-            @QueryParam("count") Integer count) throws SrampAtomException {
+            @QueryParam("count") Integer count) throws ArtificerAtomException {
 
         try {
             // Get all audit entries by artifact uuid
@@ -113,13 +113,13 @@ public class AuditResource extends AbstractResource {
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES", artifactUuid), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
     /**
      * Called to get a Feed of all audit entries for an artifact.
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @GET
     @Path("audit/user/{username}")
@@ -128,14 +128,14 @@ public class AuditResource extends AbstractResource {
             @PathParam("username") String username,
             @QueryParam("startPage") Integer startPage,
             @QueryParam("startIndex") Integer startIndex,
-            @QueryParam("count") Integer count) throws SrampAtomException {
+            @QueryParam("count") Integer count) throws ArtificerAtomException {
         try {
             // Get all audit entries by user
             PagedResult<AuditEntry> entries = auditService.queryByUser(username, startPage, startIndex, count);
             return createAuditFeed(entries);
         } catch (Throwable e) {
             logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES_2", username), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         }
     }
 
@@ -147,10 +147,10 @@ public class AuditResource extends AbstractResource {
     @SuppressWarnings("unchecked")
     private Feed createAuditFeed(PagedResult<AuditEntry> auditEntries) throws Exception {
         Feed feed = new Feed();
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntries.getPageSize()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntries.getStartIndex()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntries.getTotalSize()));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(auditEntries.getPageSize()));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_START_INDEX_QNAME, String.valueOf(auditEntries.getStartIndex()));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(auditEntries.getTotalSize()));
         feed.setId(new URI("urn:uuid:" + UUID.randomUUID().toString())); //$NON-NLS-1$
         feed.setTitle("S-RAMP Audit Feed"); //$NON-NLS-1$
         feed.setSubtitle("All Audit Entries for Artifact"); //$NON-NLS-1$

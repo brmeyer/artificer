@@ -26,8 +26,8 @@ import org.apache.commons.io.IOUtils;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileEntryPathCompleter;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.archive.SrampArchiveException;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.archive.ArtificerArchiveException;
 import org.artificer.common.ArtifactType;
 import org.artificer.shell.CompletionConstants;
 import org.artificer.shell.util.FileNameCompleter;
@@ -76,7 +76,7 @@ public class AddEntryArchiveCommand extends AbstractArchiveCommand {
 			artifact.setName(name);
 			archive.addEntry(archivePathArg, artifact, contentStream);
 			print(Messages.i18n.format("AddEntry.Added", archivePathArg)); //$NON-NLS-1$
-        } catch (SrampArchiveException e) {
+        } catch (ArtificerArchiveException e) {
             print(Messages.i18n.format("AddEntry.SrampArchiveException", e.getLocalizedMessage())); //$NON-NLS-1$
         } finally {
 			IOUtils.closeQuietly(contentStream);
@@ -101,7 +101,7 @@ public class AddEntryArchiveCommand extends AbstractArchiveCommand {
 
         if (getArguments().isEmpty()) {
             QName varName = new QName("archive", "active-archive"); //$NON-NLS-1$ //$NON-NLS-2$
-            SrampArchive archive = (SrampArchive) getContext().getVariable(varName);
+            ArtificerArchive archive = (ArtificerArchive) getContext().getVariable(varName);
             FileEntryPathCompleter delegate = new FileEntryPathCompleter(archive);
             delegate.complete(lastArgument, lastArgument.length(), candidates);
             return CompletionConstants.NO_APPEND_SEPARATOR;

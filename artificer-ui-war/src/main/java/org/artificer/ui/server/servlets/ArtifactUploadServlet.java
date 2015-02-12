@@ -24,10 +24,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.artificer.ui.server.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.common.ArtifactType;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 import org.artificer.ui.server.util.ExceptionUtils;
 
 import javax.servlet.ServletException;
@@ -89,7 +89,7 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 
 				// Now that the content has been extracted, process it (upload the artifact to the s-ramp repo).
 				responseMap = uploadArtifact(artifactType, fileName, artifactContent);
-			} catch (SrampAtomException e) {
+			} catch (ArtificerAtomException e) {
 				responseMap = new HashMap<String, String>();
 				responseMap.put("exception", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 				responseMap.put("exception-message", e.getMessage()); //$NON-NLS-1$
@@ -140,10 +140,10 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
      * @param responseParams
      */
     private void uploadPackage(File tempFile, Map<String, String> responseParams) throws Exception {
-        SrampArchive archive = null;
+        ArtificerArchive archive = null;
         try {
-            archive = new SrampArchive(tempFile);
-            Map<String, ?> batch = SrampApiClientAccessor.getClient().uploadBatch(archive);
+            archive = new ArtificerArchive(tempFile);
+            Map<String, ?> batch = ArtificerApiClientAccessor.getClient().uploadBatch(archive);
             int numSuccess = 0;
             int numFailed = 0;
             for (String key : batch.keySet()) {
@@ -160,7 +160,7 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
             responseParams.put("batchNumSuccess", String.valueOf(numSuccess)); //$NON-NLS-1$
             responseParams.put("batchNumFailed", String.valueOf(numFailed)); //$NON-NLS-1$
         } finally {
-            SrampArchive.closeQuietly(archive);
+            ArtificerArchive.closeQuietly(archive);
         }
 
     }
@@ -180,10 +180,10 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 			contentStream = FileUtils.openInputStream(tempFile);
             BaseArtifactType artifact;
             if (artifactType != null) {
-                artifact = SrampApiClientAccessor.getClient().uploadArtifact(ArtifactType.valueOf(artifactType),
+                artifact = ArtificerApiClientAccessor.getClient().uploadArtifact(ArtifactType.valueOf(artifactType),
                         contentStream, fileName);
             } else {
-                artifact = SrampApiClientAccessor.getClient().uploadArtifact(contentStream, fileName);
+                artifact = ArtificerApiClientAccessor.getClient().uploadArtifact(contentStream, fileName);
             }
             ArtifactType responseArtifactType = ArtifactType.valueOf(artifact);
 			responseParams.put("model", responseArtifactType.getModel()); //$NON-NLS-1$

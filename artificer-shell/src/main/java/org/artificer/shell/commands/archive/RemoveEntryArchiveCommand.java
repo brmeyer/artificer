@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.artificer.atom.archive.SrampArchive;
+import org.artificer.atom.archive.ArtificerArchive;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileEntryPathCompleter;
 
@@ -62,7 +62,7 @@ public class RemoveEntryArchiveCommand extends AbstractArchiveCommand {
 
         if (getArguments().isEmpty()) {
             QName varName = new QName("archive", "active-archive"); //$NON-NLS-1$ //$NON-NLS-2$
-            SrampArchive archive = (SrampArchive) getContext().getVariable(varName);
+            ArtificerArchive archive = (ArtificerArchive) getContext().getVariable(varName);
             FileEntryPathCompleter delegate = new FileEntryPathCompleter(archive);
             return delegate.complete(lastArgument, lastArgument.length(), candidates);
         }

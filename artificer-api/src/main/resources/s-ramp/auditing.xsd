@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://downloads.jboss.org/overlord/sramp/2013/auditing.xsd" version="1.0"
-  xmlns:tns="http://downloads.jboss.org/overlord/sramp/2013/auditing.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<xsd:schema targetNamespace="http://downloads.jboss.org/artificer/2013/auditing.xsd" version="1.0"
+  xmlns:tns="http://downloads.jboss.org/artificer/2013/auditing.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   elementFormDefault="qualified">
   <!-- 
   /*

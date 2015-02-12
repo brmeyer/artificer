@@ -30,9 +30,9 @@ import org.artificer.shell.api.ShellContext;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileEntryPathCompleter;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.archive.SrampArchiveEntry;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.archive.ArtificerArchiveEntry;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Removes an entry from the current S-RAMP batch archive.
@@ -84,7 +84,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @param context
 	 * @throws Exception
 	 */
-	private void executeSetContent(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
+	private void executeSetContent(ArtificerArchive archive, String entryPath, ShellContext context) throws Exception {
 		String pathToContentArg = requiredArgument(2, Messages.i18n.format("UpdateEntry.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
 		File file = new File(pathToContentArg);
 		if (!file.isFile()) {
@@ -94,7 +94,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 		InputStream contentStream = null;
 		try {
 			contentStream = FileUtils.openInputStream(file);
-			SrampArchiveEntry entry = archive.getEntry(entryPath);
+			ArtificerArchiveEntry entry = archive.getEntry(entryPath);
 			archive.updateEntry(entry, contentStream);
 			print(Messages.i18n.format("UpdateEntry.SuccessMsg")); //$NON-NLS-1$
 		} finally {
@@ -109,11 +109,11 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @param context
 	 * @throws Exception
 	 */
-	private void executeSetProperty(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
+	private void executeSetProperty(ArtificerArchive archive, String entryPath, ShellContext context) throws Exception {
 		String propNameArg = requiredArgument(2, Messages.i18n.format("UpdateEntry.InvalidArgMsg.PropertyName")); //$NON-NLS-1$
 		String propValArg = optionalArgument(3);
 
-		SrampArchiveEntry entry = archive.getEntry(entryPath);
+		ArtificerArchiveEntry entry = archive.getEntry(entryPath);
 		BaseArtifactType metaData = entry.getMetaData();
 
 		if ("name".equals(propNameArg)) { //$NON-NLS-1$
@@ -132,7 +132,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 		} else if ("lastModifiedTimestamp".equals(propNameArg)) { //$NON-NLS-1$
 		}
 
-		SrampModelUtils.setCustomProperty(metaData, propNameArg, propValArg);
+		ArtificerModelUtils.setCustomProperty(metaData, propNameArg, propValArg);
 		archive.updateEntry(entry, null);
 		print(Messages.i18n.format("UpdateEntry.MetaDataSuccessMsg")); //$NON-NLS-1$
 	}
@@ -144,7 +144,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @param context
 	 * @throws Exception
 	 */
-	private void executeSetRelationship(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
+	private void executeSetRelationship(ArtificerArchive archive, String entryPath, ShellContext context) throws Exception {
 		throw new InvalidCommandArgumentException(0, Messages.i18n.format("UpdateEntry.NotYetImplemented.Relationships")); //$NON-NLS-1$
 	}
 
@@ -155,7 +155,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 
         if (getArguments().isEmpty()) {
             QName varName = new QName("archive", "active-archive"); //$NON-NLS-1$ //$NON-NLS-2$
-            SrampArchive archive = (SrampArchive) getContext().getVariable(varName);
+            ArtificerArchive archive = (ArtificerArchive) getContext().getVariable(varName);
             FileEntryPathCompleter delegate = new FileEntryPathCompleter(archive);
             return delegate.complete(lastArgument, lastArgument.length(), candidates);
         } else if (getArguments().size() == 1) {

@@ -15,21 +15,21 @@
  */
 package org.artificer.events;
 
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 
 /**
  * @author Brett Meyer
  */
 public class OntologyUpdateEvent {
     
-    private SrampOntology updatedOntology = null;
+    private ArtificerOntology updatedOntology = null;
     
-    private SrampOntology oldOntology = null;
+    private ArtificerOntology oldOntology = null;
     
     public OntologyUpdateEvent() {
     }
     
-    public OntologyUpdateEvent(SrampOntology updatedOntology, SrampOntology oldOntology) {
+    public OntologyUpdateEvent(ArtificerOntology updatedOntology, ArtificerOntology oldOntology) {
         this.updatedOntology = updatedOntology;
         this.oldOntology = oldOntology;
     }
@@ -37,28 +37,28 @@ public class OntologyUpdateEvent {
     /**
      * @return the updatedOntology
      */
-    public SrampOntology getUpdatedOntology() {
+    public ArtificerOntology getUpdatedOntology() {
         return updatedOntology;
     }
 
     /**
      * @param updatedOntology the updatedOntology to set
      */
-    public void setUpdatedOntology(SrampOntology updatedOntology) {
+    public void setUpdatedOntology(ArtificerOntology updatedOntology) {
         this.updatedOntology = updatedOntology;
     }
 
     /**
      * @return the oldOntology
      */
-    public SrampOntology getOldOntology() {
+    public ArtificerOntology getOldOntology() {
         return oldOntology;
     }
 
     /**
      * @param oldOntology the oldOntology to set
      */
-    public void setOldOntology(SrampOntology oldOntology) {
+    public void setOldOntology(ArtificerOntology oldOntology) {
         this.oldOntology = oldOntology;
     }
 

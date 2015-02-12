@@ -32,18 +32,18 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.error.ArtifactNotFoundException;
 import org.artificer.common.error.InvalidArtifactUpdateException;
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.common.error.StoredQueryConflictException;
 import org.artificer.common.error.StoredQueryNotFoundException;
 import org.artificer.common.ontology.InvalidClassifiedByException;
 import org.artificer.common.ontology.OntologyConflictException;
 import org.artificer.common.ontology.OntologyNotFoundException;
-import org.artificer.common.ontology.SrampOntology;
-import org.artificer.common.ontology.SrampOntology.SrampOntologyClass;
+import org.artificer.common.ontology.ArtificerOntology;
+import org.artificer.common.ontology.ArtificerOntology.ArtificerOntologyClass;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.repository.jcr.audit.ArtifactJCRNodeDiffer;
 import org.artificer.repository.jcr.mapper.JCRNodeToStoredQuery;
@@ -92,7 +92,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
     }
 
     @Override
-    public List<Object> persistBatch(List<BatchItem> items) throws SrampException {
+    public List<Object> persistBatch(List<BatchItem> items) throws ArtificerException {
         List<Object> rval = new ArrayList<Object>(items.size());
         Session session = null;
         try {
@@ -130,7 +130,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
                 rval.add(item.attributes.get("result"));
             }
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
@@ -139,7 +139,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
 
     @Override
     public BaseArtifactType persistArtifact(BaseArtifactType primaryArtifact, ArtifactContent content)
-            throws SrampException {
+            throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -158,17 +158,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             // Create the S-RAMP Artifact object from the JCR node
             return JCRNodeToArtifactFactory.createArtifact(session, JCRUtils.findArtifactNode(
                     primaryArtifact.getUuid(), artifactType, session), artifactType);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public BaseArtifactType getArtifact(String uuid, ArtifactType type) throws SrampException {
+    public BaseArtifactType getArtifact(String uuid, ArtifactType type) throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -188,17 +188,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             } else {
                 return null;
             }
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public InputStream getArtifactContent(String uuid, ArtifactType type) throws SrampException {
+    public InputStream getArtifactContent(String uuid, ArtifactType type) throws ArtificerException {
         Session session = null;
 
         try {
@@ -220,17 +220,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             Node artifactContentNode = artifactNode.getNode(JCRConstants.JCR_CONTENT);
             File tempFile = JCRArtifactPersister.saveToTempFile(artifactContentNode);
             return new DeleteOnCloseFileInputStream(tempFile);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public BaseArtifactType updateArtifact(BaseArtifactType artifact, ArtifactType type) throws SrampException {
+    public BaseArtifactType updateArtifact(BaseArtifactType artifact, ArtifactType type) throws ArtificerException {
         Session session = null;
         ArtifactJCRNodeDiffer differ = null;
         try {
@@ -240,7 +240,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             if (artifactNode == null) {
                 throw new ArtifactNotFoundException(artifact.getUuid());
             }
-            if (SrampConfig.isAuditingEnabled()) {
+            if (ArtificerConfig.isAuditingEnabled()) {
                 differ = new ArtifactJCRNodeDiffer(artifactNode);
             }
             ArtifactToJCRNodeVisitor visitor = new ArtifactToJCRNodeVisitor(type, artifactNode,
@@ -255,23 +255,23 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
                 printArtifactGraph(artifact.getUuid(), type);
             }
 
-            if (SrampConfig.isAuditingEnabled()) {
+            if (ArtificerConfig.isAuditingEnabled()) {
                 JCRArtifactPersister.auditUpdateArtifact(differ, artifactNode);
                 session.save();
             }
 
             return JCRNodeToArtifactFactory.createArtifact(session, artifactNode, type);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public BaseArtifactType updateArtifactContent(String uuid, ArtifactType type, ArtifactContent content) throws SrampException {
+    public BaseArtifactType updateArtifactContent(String uuid, ArtifactType type, ArtifactContent content) throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -303,17 +303,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             // Create the S-RAMP Artifact object from the JCR node
             return JCRNodeToArtifactFactory.createArtifact(session, JCRUtils.findArtifactNode(
                     primaryArtifact.getUuid(), type, session), type);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public BaseArtifactType deleteArtifact(String uuid, ArtifactType type) throws SrampException {
+    public BaseArtifactType deleteArtifact(String uuid, ArtifactType type) throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -340,17 +340,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             log.debug(Messages.i18n.format("DELETED_ARTY", uuid));
             
             return JCRNodeToArtifactFactory.createArtifact(session, artifactNode, type);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public BaseArtifactType deleteArtifactContent(String uuid, ArtifactType type) throws SrampException {
+    public BaseArtifactType deleteArtifactContent(String uuid, ArtifactType type) throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -381,17 +381,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             // Create the S-RAMP Artifact object from the JCR node
             return JCRNodeToArtifactFactory.createArtifact(session, JCRUtils.findArtifactNode(
                     uuid, type, session), type);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public SrampOntology persistOntology(SrampOntology ontology) throws SrampException {
+    public ArtificerOntology persistOntology(ArtificerOntology ontology) throws ArtificerException {
         Session session = null;
         if (ontology.getUuid() == null) {
             ontology.setUuid(UUID.randomUUID().toString());
@@ -399,8 +399,8 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
         String ontologyPath = MapToJCRPath.getOntologyPath(ontology.getUuid());
 
         // Check if an ontology with the given base URL already exists.
-        List<SrampOntology> ontologies = getOntologies();
-        for (SrampOntology existingOntology : ontologies) {
+        List<ArtificerOntology> ontologies = getOntologies();
+        for (ArtificerOntology existingOntology : ontologies) {
             if (existingOntology.getBase().equals(ontology.getBase())) {
                 throw new OntologyConflictException();
             }
@@ -418,43 +418,43 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
                 log.debug(Messages.i18n.format("SAVED_ONTOLOGY", ontology.getUuid()));
                 return ontology;
             }
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public SrampOntology getOntology(String uuid) throws SrampException {
+    public ArtificerOntology getOntology(String uuid) throws ArtificerException {
         Session session = null;
         String ontologyPath = MapToJCRPath.getOntologyPath(uuid);
 
         try {
-            SrampOntology ontology = null;
+            ArtificerOntology ontology = null;
             session = JCRRepositoryFactory.getSession();
             Node ontologyNode = JCRUtils.findNode(ontologyPath, session);
             if (ontologyNode != null) {
-                ontology = new SrampOntology();
+                ontology = new ArtificerOntology();
                 ontology.setUuid(uuid);
                 jcr2o.read(ontology, ontologyNode);
             } else {
                 throw new OntologyNotFoundException(uuid);
             }
             return ontology;
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public List<SrampOntology> getOntologies() throws SrampException {
+    public List<ArtificerOntology> getOntologies() throws ArtificerException {
         // TODO add caching based on the last modified date of the ontology node
         Session session = null;
 
@@ -462,23 +462,23 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             session = JCRRepositoryFactory.getSession();
             Node ontologiesNode = JCRUtils.findOrCreateNode(session, "/s-ramp/ontologies", JCRConstants.NT_FOLDER);
             NodeIterator nodes = ontologiesNode.getNodes();
-            List<SrampOntology> ontologies = new ArrayList<SrampOntology>();
+            List<ArtificerOntology> ontologies = new ArrayList<ArtificerOntology>();
             while (nodes.hasNext()) {
                 Node node = nodes.nextNode();
-                SrampOntology ontology = new SrampOntology();
+                ArtificerOntology ontology = new ArtificerOntology();
                 jcr2o.read(ontology, node);
                 ontologies.add(ontology);
             }
             return ontologies;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public void updateOntology(SrampOntology ontology) throws SrampException {
+    public void updateOntology(ArtificerOntology ontology) throws ArtificerException {
         Session session = null;
         String ontologyPath = MapToJCRPath.getOntologyPath(ontology.getUuid());
 
@@ -492,17 +492,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             }
             log.debug(Messages.i18n.format("UPDATED_ONTOLOGY", ontology.getUuid()));
             session.save();
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public void deleteOntology(String uuid) throws SrampException {
+    public void deleteOntology(String uuid) throws ArtificerException {
         Session session = null;
         String ontologyPath = MapToJCRPath.getOntologyPath(uuid);
 
@@ -516,17 +516,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             }
             session.save();
             log.debug(Messages.i18n.format("DELETED_ONTOLOGY", uuid));
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public StoredQuery persistStoredQuery(StoredQuery storedQuery) throws SrampException {
+    public StoredQuery persistStoredQuery(StoredQuery storedQuery) throws ArtificerException {
         String name = storedQuery.getQueryName();
         Session session = null;
 
@@ -557,17 +557,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
                 log.debug(Messages.i18n.format("SAVED_STOREDQUERY", name));
                 return storedQuery;
             }
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public StoredQuery getStoredQuery(String queryName) throws SrampException {
+    public StoredQuery getStoredQuery(String queryName) throws ArtificerException {
         Session session = null;
         String storedQueryPath = MapToJCRPath.getStoredQueryPath(queryName);
 
@@ -581,17 +581,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             } else {
                 throw new StoredQueryNotFoundException(queryName);
             }
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public List<StoredQuery> getStoredQueries() throws SrampException {
+    public List<StoredQuery> getStoredQueries() throws ArtificerException {
         Session session = null;
 
         try {
@@ -607,14 +607,14 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             }
             return storedQueries;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public void updateStoredQuery(String queryName, StoredQuery storedQuery) throws SrampException {
+    public void updateStoredQuery(String queryName, StoredQuery storedQuery) throws ArtificerException {
         Session session = null;
         String storedQueryPath = MapToJCRPath.getStoredQueryPath(queryName);
 
@@ -628,17 +628,17 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             }
             log.debug(Messages.i18n.format("UPDATED_STOREDQUERY", queryName));
             session.save();
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public void deleteStoredQuery(String queryName) throws SrampException {
+    public void deleteStoredQuery(String queryName) throws ArtificerException {
         Session session = null;
         String storedQueryPath = MapToJCRPath.getStoredQueryPath(queryName);
 
@@ -652,26 +652,26 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             }
             session.save();
             log.debug(Messages.i18n.format("DELETED_STOREDQUERY", queryName));
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
 
     @Override
-    public URI resolve(String classifiedBy) throws SrampException {
+    public URI resolve(String classifiedBy) throws ArtificerException {
         URI classifiedUri = null;
         try {
             classifiedUri = new URI(classifiedBy);
         } catch (URISyntaxException e) {
             throw new InvalidClassifiedByException(classifiedBy);
         }
-        Collection<SrampOntology> ontologies = getOntologies();
-        for (SrampOntology ontology : ontologies) {
-            SrampOntologyClass sclass = ontology.findClass(classifiedBy);
+        Collection<ArtificerOntology> ontologies = getOntologies();
+        for (ArtificerOntology ontology : ontologies) {
+            ArtificerOntologyClass sclass = ontology.findClass(classifiedBy);
             if (sclass == null) {
                 sclass = ontology.findClass(classifiedUri);
             }
@@ -683,10 +683,10 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
     }
 
     @Override
-    public Collection<URI> normalize(URI classification) throws SrampException {
-        List<SrampOntology> ontologies = getOntologies();
-        for (SrampOntology ontology : ontologies) {
-            SrampOntologyClass sclass = ontology.findClass(classification);
+    public Collection<URI> normalize(URI classification) throws ArtificerException {
+        List<ArtificerOntology> ontologies = getOntologies();
+        for (ArtificerOntology ontology : ontologies) {
+            ArtificerOntologyClass sclass = ontology.findClass(classification);
             if (sclass != null) {
                 return sclass.normalize();
             }
@@ -695,7 +695,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
     }
 
     @Override
-    public Collection<URI> resolveAll(Collection<String> classifiedBy) throws SrampException {
+    public Collection<URI> resolveAll(Collection<String> classifiedBy) throws ArtificerException {
         Set<URI> resolved = new HashSet<URI>(classifiedBy.size());
         for (String classification : classifiedBy) {
             resolved.add(resolve(classification));
@@ -704,7 +704,7 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
     }
 
     @Override
-    public Collection<URI> normalizeAll(Collection<URI> classifications) throws SrampException {
+    public Collection<URI> normalizeAll(Collection<URI> classifications) throws ArtificerException {
         Set<URI> resolved = new HashSet<URI>(classifications.size());
         for (URI classification : classifications) {
             resolved.addAll(normalize(classification));

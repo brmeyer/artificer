@@ -15,13 +15,13 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampConflictException;
+import org.artificer.common.error.ArtificerConflictException;
 import org.artificer.common.i18n.Messages;
 
 /**
  * @author Brett Meyer.
  */
-public class RelationshipConstraintException extends SrampConflictException {
+public class RelationshipConstraintException extends ArtificerConflictException {
 
     public RelationshipConstraintException(String uuid) {
         super(Messages.i18n.format("RELATIONSHIP_CONSTRAINT", uuid));

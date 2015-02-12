@@ -34,11 +34,11 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.common.SrampConstants;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.ui.server.i18n.Messages;
 import org.artificer.ui.server.util.ExceptionUtils;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
 /**
@@ -87,7 +87,7 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 
 				// Now that the content has been extracted, process it (upload the ontology to the s-ramp repo).
 				responseMap = uploadOntology(ontologyContent);
-			} catch (SrampAtomException e) {
+			} catch (ArtificerAtomException e) {
 				responseMap = new HashMap<String, String>();
 				responseMap.put("exception", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 				responseMap.put("exception-message", e.getMessage()); //$NON-NLS-1$
@@ -136,12 +136,12 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
         InputStream contentStream = null;
 		try {
 			contentStream = FileUtils.openInputStream(tempFile);
-			RDF ontology = SrampApiClientAccessor.getClient().uploadOntology(contentStream);
+			RDF ontology = ArtificerApiClientAccessor.getClient().uploadOntology(contentStream);
 
             if (ontology.getOtherAttributes() != null) {
                 responseParams
                         .put("namespace", ontology.getOtherAttributes().get(new QName("http://www.w3.org/XML/1998/namespace", "base"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                QName uuid = new QName(SrampConstants.SRAMP_NS, "uuid"); //$NON-NLS-1$
+                QName uuid = new QName(ArtificerConstants.SRAMP_NS, "uuid"); //$NON-NLS-1$
                 if (ontology.getOtherAttributes().get(uuid) != null) {
                     responseParams.put("uuid", ontology.getOtherAttributes().get(uuid)); //$NON-NLS-1$
                 }

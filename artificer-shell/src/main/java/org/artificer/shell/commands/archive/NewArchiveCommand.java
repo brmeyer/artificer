@@ -15,7 +15,7 @@
  */
 package org.artificer.shell.commands.archive;
 
-import org.artificer.atom.archive.SrampArchive;
+import org.artificer.atom.archive.ArtificerArchive;
 import org.artificer.shell.AbstractShellContextVariableLifecycleHandler;
 import org.artificer.shell.i18n.Messages;
 
@@ -39,15 +39,15 @@ public class NewArchiveCommand extends AbstractArchiveCommand {
             return false;
         }
 
-		archive = new SrampArchive();
+		archive = new ArtificerArchive();
 		getContext().setVariable(varName, archive, new AbstractShellContextVariableLifecycleHandler() {
 			@Override
 			public void onRemove(Object object) {
-				SrampArchive.closeQuietly((SrampArchive) object);
+				ArtificerArchive.closeQuietly((ArtificerArchive) object);
 			}
 			@Override
 			public void onContextDestroyed(Object object) {
-				SrampArchive.closeQuietly((SrampArchive) object);
+				ArtificerArchive.closeQuietly((ArtificerArchive) object);
 			}
 		});
 		print(Messages.i18n.format("NewArchive.Opened")); //$NON-NLS-1$

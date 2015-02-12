@@ -20,9 +20,9 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.test.AbstractIntegrationTest;
 
 /**
@@ -35,7 +35,7 @@ public abstract class AbstractClientTest extends AbstractIntegrationTest {
 
 	@AfterClass
 	public static void resetAuditing() {
-        System.clearProperty(SrampConstants.SRAMP_CONFIG_AUDITING);
+        System.clearProperty(ArtificerConstants.ARTIFICER_CONFIG_AUDITING);
 	}
 
     /**
@@ -46,7 +46,7 @@ public abstract class AbstractClientTest extends AbstractIntegrationTest {
         String artifactFileName = "PO.xml"; //$NON-NLS-1$
         InputStream is = this.getClass().getResourceAsStream("/sample-files/core/" + artifactFileName); //$NON-NLS-1$
         try {
-            SrampAtomApiClient client = client();
+            ArtificerAtomApiClient client = client();
             return client.uploadArtifact(ArtifactType.XmlDocument(), is, artifactFileName);
         } finally {
             IOUtils.closeQuietly(is);

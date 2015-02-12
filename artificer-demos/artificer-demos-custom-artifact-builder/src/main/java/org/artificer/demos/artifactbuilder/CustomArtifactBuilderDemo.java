@@ -18,10 +18,10 @@ package org.artificer.demos.artifactbuilder;
 import java.io.InputStream;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates how to create a custom artifact builder for extended artifacts.  Note
@@ -58,7 +58,7 @@ public class CustomArtifactBuilderDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -87,13 +87,13 @@ public class CustomArtifactBuilderDemo {
      * @param client
      * @throws Exception
      */
-    private static String addWebXmlToRepository(SrampAtomApiClient client) throws Exception {
+    private static String addWebXmlToRepository(ArtificerAtomApiClient client) throws Exception {
         System.out.println("Adding the sample 'web.xml' artifact to the repository.");
         InputStream webXmlIS = CustomArtifactBuilderDemo.class.getResourceAsStream("web.xml");
         ArtifactType artifactType = ArtifactType.valueOf("WebXmlDocument");
         BaseArtifactType artifact = client.uploadArtifact(artifactType, webXmlIS, "web.xml");
         System.out.println("Sample 'web.xml' artifact successfully added.");
-        SrampModelUtils.setCustomProperty(artifact, "from-demo", CustomArtifactBuilderDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact, "from-demo", CustomArtifactBuilderDemo.class.getSimpleName());
         client.updateArtifactMetaData(artifact);
         System.out.println("Sample 'web.xml' artifact successfully updated.");
         return artifact.getUuid();
@@ -106,7 +106,7 @@ public class CustomArtifactBuilderDemo {
      * @param webXmlArtifactUUID
      * @throws Exception
      */
-    private static void queryForDerivedArtifacts(SrampAtomApiClient client, String webXmlArtifactUUID) throws Exception {
+    private static void queryForDerivedArtifacts(ArtificerAtomApiClient client, String webXmlArtifactUUID) throws Exception {
         // Check that we can query for the source web.xml artifact
         System.out.println("Querying the repository to verify derived web.xml content.");
         String query = String.format("/s-ramp/ext/WebXmlDocument[@uuid = '%1$s']", webXmlArtifactUUID);

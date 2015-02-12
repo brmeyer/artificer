@@ -39,7 +39,7 @@ import org.artificer.common.query.xpath.ast.PrimaryExpr;
 import org.artificer.common.query.xpath.ast.Query;
 import org.artificer.common.query.xpath.ast.RelationshipPath;
 import org.artificer.common.query.xpath.ast.SubartifactSet;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -62,7 +62,7 @@ public class XPathParser {
      */
     public XPathParser() {
     	setNamespaceContext(new DefaultNamespaceContext());
-    	setDefaultPrefix(SrampConstants.SRAMP_PREFIX);
+    	setDefaultPrefix(ArtificerConstants.SRAMP_PREFIX);
     }
 
 	/**

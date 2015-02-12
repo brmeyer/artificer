@@ -15,7 +15,7 @@
  */
 package org.artificer.ui.server.api;
 
-import org.artificer.ui.server.SrampUIConfig;
+import org.artificer.ui.server.ArtificerUIConfig;
 
 
 /**
@@ -29,8 +29,8 @@ public class BasicAuthenticationProvider extends org.artificer.client.auth.Basic
      * Constructor.
      */
     public BasicAuthenticationProvider() {
-        super(SrampUIConfig.config.getString(SrampUIConfig.SRAMP_API_BASIC_AUTH_USER),
-                SrampUIConfig.config.getString(SrampUIConfig.SRAMP_API_BASIC_AUTH_PASS));
+        super(ArtificerUIConfig.config.getString(ArtificerUIConfig.ARTIFICER_API_BASIC_AUTH_USER),
+                ArtificerUIConfig.config.getString(ArtificerUIConfig.ARTIFICER_API_BASIC_AUTH_PASS));
     }
 
 }

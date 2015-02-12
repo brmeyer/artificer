@@ -79,12 +79,12 @@
       </build>
       <distributionManagement>
         <repository>
-          <id>local-sramp-repo</id>
+          <id>local-artificer-repo</id>
           <name>Artificer Releases Repository</name>
           <url>http://localhost:8080/artificer-server/maven/repository</url>
         </repository>
         <snapshotRepository>
-          <id>local-sramp-repo-snapshots</id>
+          <id>local-artificer-repo-snapshots</id>
           <name>Artificer Snapshots Repository</name>
           <url>http://localhost:8080/artificer-server/maven/repository</url>
         </snapshotRepository>

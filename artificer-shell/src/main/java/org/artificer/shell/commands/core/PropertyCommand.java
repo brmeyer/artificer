@@ -27,7 +27,7 @@ import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.shell.api.InvalidCommandArgumentException;
 
 /**
@@ -104,7 +104,7 @@ public class PropertyCommand extends BuiltInShellCommand {
 				artifact.setVersion(propValue);
 			}
 		} else {
-			SrampModelUtils.setCustomProperty(artifact, propName, propValue);
+			ArtificerModelUtils.setCustomProperty(artifact, propName, propValue);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class PropertyCommand extends BuiltInShellCommand {
 		if (CORE_PROPERTIES.contains(propNameLC)) {
 			setProperty(artifact, propName, null);
 		} else {
-			SrampModelUtils.unsetCustomProperty(artifact, propName);
+			ArtificerModelUtils.unsetCustomProperty(artifact, propName);
 		}
 	}
 

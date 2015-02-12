@@ -22,7 +22,7 @@ package org.artificer.common.error;
  *
  * @author eric.wittmann@redhat.com
  */
-public class InvalidArtifactCreationException extends SrampUserException {
+public class InvalidArtifactCreationException extends ArtificerUserException {
 
     private static final long serialVersionUID = 1927569341892142710L;
 

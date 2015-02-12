@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.ontology.OntologySummary;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates how to get and set artifact classifications.  Also shows how to query
@@ -61,7 +61,7 @@ public class ClassificationDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -92,7 +92,7 @@ public class ClassificationDemo {
 		System.out.println("Artifact 1 successfully added with UUID: " + metaData.getUuid());
 		metaData.getClassifiedBy().add("http://www.example.org/regions.owl#Germany");
 		// Set a marker property so we know which demo this artifact came from
-		SrampModelUtils.setCustomProperty(metaData, "from-demo", ClassificationDemo.class.getSimpleName());
+		ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ClassificationDemo.class.getSimpleName());
 		client.updateArtifactMetaData(metaData);
 		System.out.println("Artifact 1 successfully updated to add the #Germany classification.");
 
@@ -118,7 +118,7 @@ public class ClassificationDemo {
 		metaData = client.uploadArtifact(type, content, "classifications-demo-doc-2.txt");
 		System.out.println("Artifact 2 successfully added.");
 		// This time, we won't add classifications, but we *will* add that marker property
-        SrampModelUtils.setCustomProperty(metaData, "from-demo", ClassificationDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ClassificationDemo.class.getSimpleName());
         client.updateArtifactMetaData(metaData);
 
 
@@ -163,7 +163,7 @@ public class ClassificationDemo {
 	 * @param client
 	 * @throws Exception
 	 */
-	private static void installRegionsOntology(SrampAtomApiClient client) throws Exception {
+	private static void installRegionsOntology(ArtificerAtomApiClient client) throws Exception {
 		boolean alreadyExists = false;
 		List<OntologySummary> ontologies = client.getOntologies();
 		for (OntologySummary ontology : ontologies) {

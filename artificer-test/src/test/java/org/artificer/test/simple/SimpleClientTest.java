@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.test.AbstractIntegrationTest;
@@ -39,7 +39,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
     @Test
     public void testSimple() {
         try {
-            SrampAtomApiClient client = client();
+            ArtificerAtomApiClient client = client();
             ExtendedArtifactType artifact = new ExtendedArtifactType();
             artifact.setArtifactType(BaseArtifactEnum.EXTENDED_ARTIFACT_TYPE);
             artifact.setExtendedType("FooArtifactType"); //$NON-NLS-1$

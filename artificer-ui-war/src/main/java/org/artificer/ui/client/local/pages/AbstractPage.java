@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import org.jboss.errai.bus.client.api.ClientMessageBus;
 import org.jboss.errai.enterprise.client.cdi.api.CDI;
 import org.jboss.errai.ui.nav.client.local.PageShowing;
-import org.artificer.ui.client.local.util.SrampJS;
+import org.artificer.ui.client.local.util.ArtificerJS;
 
 import com.google.gwt.user.client.ui.Composite;
 
@@ -48,7 +48,7 @@ public abstract class AbstractPage extends Composite {
     @PostConstruct
     private final void _onPostConstruct() {
         // Call the SRAMP javascript every time the page loads.
-        SrampJS.onPageLoad();
+        ArtificerJS.onPageLoad();
     }
 
     /**

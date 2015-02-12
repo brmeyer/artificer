@@ -21,11 +21,11 @@ import java.util.Map;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates the S-RAMP package archive feature.  The S-RAMP specification defines
@@ -62,7 +62,7 @@ public class ArchivePackageDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
 		// Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -76,7 +76,7 @@ public class ArchivePackageDemo {
 
 		// Let's create the S-RAMP archive and populate it with some artifacts.
 		System.out.println("Creating the S-RAMP package...");
-		SrampArchive archive = new SrampArchive();
+		ArtificerArchive archive = new ArtificerArchive();
 		// The archive creates temporary files, which must be deleted by calling
 		// close on the archive.  So wrap everything in a try/catch/finally so we
 		// can ensure that the archive will be properly closed.
@@ -90,7 +90,7 @@ public class ArchivePackageDemo {
 			metaData.setDescription("WS-Security: utility.xsd");
 			metaData.setVersion("1.0");
 	        // Tag this artifact as coming from this demo.
-			SrampModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
+			ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
 			// Add the artifact (with its meta-data) to the archive.
 			System.out.print("\tAdding " + metaData.getName() + " to the archive...");
 			archive.addEntry("ws-security/schemas/wss-wssecurity-utility-1.0.xsd", metaData, contentStream);
@@ -103,7 +103,7 @@ public class ArchivePackageDemo {
 			metaData.setName("wss-wssecurity-secext-1.0.xsd");
 			metaData.setDescription("WS-Security: secext.xsd");
 			metaData.setVersion("1.0");
-            SrampModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
+            ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
 			System.out.print("\tAdding " + metaData.getName() + " to the archive...");
 			archive.addEntry("ws-security/schemas/wss-wssecurity-secext-1.0.xsd", metaData, contentStream);
 			contentStream.close();
@@ -115,7 +115,7 @@ public class ArchivePackageDemo {
 			metaData.setName("wstx-wsba-1.1-schema-200701.xsd");
 			metaData.setDescription("WS-Transaction: ws-tx-schema.xsd");
 			metaData.setVersion("1.1");
-            SrampModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
+            ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
 			System.out.print("\tAdding " + metaData.getName() + " to the archive...");
 			archive.addEntry("ws-tx/schemas/wstx-wsba-1.1-schema-200701.xsd", metaData, contentStream);
 			contentStream.close();
@@ -128,7 +128,7 @@ public class ArchivePackageDemo {
 			metaData.setName("wstx-wsba-1.1-wsdl-200702.wsdl");
 			metaData.setDescription("WS-Transaction: ws-tx-wsdl.wsdl");
 			metaData.setVersion("1.1");
-            SrampModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
+            ArtificerModelUtils.setCustomProperty(metaData, "from-demo", ArchivePackageDemo.class.getSimpleName());
 			System.out.print("\tAdding " + metaData.getName() + " to the archive...");
 			archive.addEntry("ws-tx/wsdl/wstx-wsba-1.1-wsdl-200702.wsdl", metaData, contentStream);
 			contentStream.close();
@@ -151,7 +151,7 @@ public class ArchivePackageDemo {
 			}
 		} finally {
 			// Close the archive to cleanup any temporary resources.
-			SrampArchive.closeQuietly(archive);
+			ArtificerArchive.closeQuietly(archive);
 		}
 
 		// Now query the S-RAMP repository (for the Schemas only)

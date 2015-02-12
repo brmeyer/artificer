@@ -21,7 +21,7 @@ import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.junit.Assert;
 import org.junit.Test;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.client.ClientRequest;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 import org.w3._2002._07.owl_.Class;
@@ -49,7 +49,7 @@ public class OntologyResourceTest extends AbstractResourceTest {
         ClientResponse<Entry> response = request.post(Entry.class);
         Entry entry = response.getEntity();
 
-        RDF ontology = SrampAtomUtils.unwrap(entry, RDF.class);
+        RDF ontology = ArtificerAtomUtils.unwrap(entry, RDF.class);
 
         Assert.assertNotNull(ontology);
         assertEquals(rdf, ontology);
@@ -88,7 +88,7 @@ public class OntologyResourceTest extends AbstractResourceTest {
 		// GET the ontology
 		request = clientRequest("/s-ramp/ontology/" + uuid); //$NON-NLS-1$
 		entry = request.get(Entry.class).getEntity();
-		RDF ontology = SrampAtomUtils.unwrap(entry, RDF.class);
+		RDF ontology = ArtificerAtomUtils.unwrap(entry, RDF.class);
 
 		Assert.assertNotNull(ontology);
 		assertEquals(rdf, ontology);

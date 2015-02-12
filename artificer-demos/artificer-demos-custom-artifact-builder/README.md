@@ -29,12 +29,12 @@ application server.  For JBoss 7.1, the details can be found here:
 
 Typically it's easier to create a local directory in which Custom Builder JARs can be
 placed.  Once that is done, you must tell S-RAMP about the directory, by setting a 
-system property 'sramp.extension.customDir'.  For example, I might do this:
+system property 'artificer.extension.customDir'.  For example, I might do this:
 
     $ ~/bin/stopJBoss.sh
     $ mkdir ~/.s-ramp-builders
     $ cp target/*.jar ~/.s-ramp-builders
-    $ ~/bin/runJBoss.sh -Dsramp.extension.customDir=/home/ewittman/.s-ramp-builders
+    $ ~/bin/runJBoss.sh -Dartificer.extension.customDir=/home/ewittman/.s-ramp-builders
 
 You will need to create the directory, copy the project JAR into it, and then set the
 appropriate -D system property when you start your application server.
@@ -42,12 +42,12 @@ appropriate -D system property when you start your application server.
 To run the demo, you will need to supply valid user credentials.  You can do this
 by passing the following properties using -D:
 
-* sramp.auth.username - sets the BASIC auth username to use during the demo
-* sramp.auth.password - sets the BASIC auth password to use during the demo
+* artificer.auth.username - sets the BASIC auth username to use during the demo
+* artificer.auth.password - sets the BASIC auth password to use during the demo
 
 In short, it might look something like this:
 
-	$ mvn -Pdemo -Dsramp.auth.username=admin -Dsramp.auth.password=MYPASSWORD clean test
+	$ mvn -Pdemo -Dartificer.auth.username=admin -Dartificer.auth.password=MYPASSWORD clean test
 
 *Note* - the demo expects/assumes the S-RAMP Atom API endpoint to be located at:
 
@@ -56,7 +56,7 @@ In short, it might look something like this:
 If you are running the S-RAMP repository on some other port or deployed in some other way
 you can customize where the demo looks for the Atom API.  For example:
 
-	$ mvn -Pdemo -Dsramp.endpoint=http://myhost:8081/s-ramp-server clean test
+	$ mvn -Pdemo -Dartificer.endpoint=http://myhost:8081/s-ramp-server clean test
 
 The demo should output some interesting information before completing successfully.  Please
 take a look at the code found in the CustomArtifactBuilderDemo Java class for more information.

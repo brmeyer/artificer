@@ -22,9 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.artificer.events.ArtifactUpdateEvent;
 import org.artificer.events.jms.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampConstants;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.events.EventProducer;
 import org.artificer.events.OntologyUpdateEvent;
 import org.slf4j.Logger;
@@ -70,12 +70,12 @@ import java.util.List;
  */
 public class JMSEventProducer implements EventProducer {
 
-    public static final String JMS_TYPE_ARTIFACT_CREATED = "sramp:artifactCreated"; //$NON-NLS-1$
-    public static final String JMS_TYPE_ARTIFACT_UPDATED = "sramp:artifactUpdated"; //$NON-NLS-1$
-    public static final String JMS_TYPE_ARTIFACT_DELETED = "sramp:artifactDeleted"; //$NON-NLS-1$
-    public static final String JMS_TYPE_ONTOLOGY_CREATED = "sramp:ontologyCreated"; //$NON-NLS-1$
-    public static final String JMS_TYPE_ONTOLOGY_UPDATED = "sramp:ontologyUpdated"; //$NON-NLS-1$
-    public static final String JMS_TYPE_ONTOLOGY_DELETED = "sramp:ontologyDeleted"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ARTIFACT_CREATED = "artificer:artifactCreated"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ARTIFACT_UPDATED = "artificer:artifactUpdated"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ARTIFACT_DELETED = "artificer:artifactDeleted"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ONTOLOGY_CREATED = "artificer:ontologyCreated"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ONTOLOGY_UPDATED = "artificer:ontologyUpdated"; //$NON-NLS-1$
+    public static final String JMS_TYPE_ONTOLOGY_DELETED = "artificer:ontologyDeleted"; //$NON-NLS-1$
 
     private static Logger LOG = LoggerFactory.getLogger(JMSEventProducer.class);
 
@@ -87,19 +87,19 @@ public class JMSEventProducer implements EventProducer {
 
     @Override
     public void startup() {
-        if (SrampConfig.isJmsEnabled()) {
+        if (ArtificerConfig.isJmsEnabled()) {
             try {
-                String connectionFactoryName = SrampConfig.getConfigProperty(
-                        SrampConstants.SRAMP_CONFIG_EVENT_JMS_CONNECTIONFACTORY, "ConnectionFactory"); //$NON-NLS-1$
+                String connectionFactoryName = ArtificerConfig.getConfigProperty(
+                        ArtificerConstants.ARTIFICER_CONFIG_EVENT_JMS_CONNECTIONFACTORY, "ConnectionFactory"); //$NON-NLS-1$
 
                 // Note that both properties end up doing the same thing.  Technically, we could combine both into one
                 // single sramp.config.events.jms.destinations, but leaving them split for readability.
-                String topicNamesProp = SrampConfig.getConfigProperty(SrampConstants.SRAMP_CONFIG_EVENT_JMS_TOPICS, ""); //$NON-NLS-1$
+                String topicNamesProp = ArtificerConfig.getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_EVENT_JMS_TOPICS, ""); //$NON-NLS-1$
                 String[] topicNames = new String[0];
                 if (StringUtils.isNotEmpty(topicNamesProp)) {
                     topicNames = topicNamesProp.split(","); //$NON-NLS-1$
                 }
-                String queueNamesProp = SrampConfig.getConfigProperty(SrampConstants.SRAMP_CONFIG_EVENT_JMS_QUEUES, ""); //$NON-NLS-1$
+                String queueNamesProp = ArtificerConfig.getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_EVENT_JMS_QUEUES, ""); //$NON-NLS-1$
                 String[] queueNames = new String[0];
                 if (StringUtils.isNotEmpty(queueNamesProp)) {
                     queueNames = queueNamesProp.split(","); //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class JMSEventProducer implements EventProducer {
                     // ActiveMQ broker and create the destinations.
 
                     String bindAddress = "tcp://localhost:" //$NON-NLS-1$
-                            + SrampConfig.getConfigProperty(SrampConstants.SRAMP_CONFIG_EVENT_JMS_PORT, "61616"); //$NON-NLS-1$
+                            + ArtificerConfig.getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_EVENT_JMS_PORT, "61616"); //$NON-NLS-1$
 
                     LOG.warn(Messages.i18n.format("org.artificer.events.jms.embedded_broker", bindAddress)); //$NON-NLS-1$
 
@@ -166,14 +166,14 @@ public class JMSEventProducer implements EventProducer {
 
     @Override
     public void artifactCreated(BaseArtifactType artifact) {
-        if (SrampConfig.isJmsEnabled()) {
+        if (ArtificerConfig.isJmsEnabled()) {
             publishEvent(artifact, JMS_TYPE_ARTIFACT_CREATED);
         }
     }
 
     @Override
     public void artifactUpdated(BaseArtifactType updatedArtifact, BaseArtifactType oldArtifact) {
-        if (SrampConfig.isJmsEnabled()) {
+        if (ArtificerConfig.isJmsEnabled()) {
             ArtifactUpdateEvent event = new ArtifactUpdateEvent(updatedArtifact, oldArtifact);
             publishEvent(event, JMS_TYPE_ARTIFACT_UPDATED);
         }
@@ -181,29 +181,29 @@ public class JMSEventProducer implements EventProducer {
 
     @Override
     public void artifactDeleted(BaseArtifactType artifact) {
-        if (SrampConfig.isJmsEnabled()) {
+        if (ArtificerConfig.isJmsEnabled()) {
             publishEvent(artifact, JMS_TYPE_ARTIFACT_DELETED);
         }
     }
 
     @Override
-    public void ontologyCreated(SrampOntology ontology) {
-        if (SrampConfig.isJmsEnabled()) {
+    public void ontologyCreated(ArtificerOntology ontology) {
+        if (ArtificerConfig.isJmsEnabled()) {
             publishEvent(ontology, JMS_TYPE_ONTOLOGY_CREATED);
         }
     }
 
     @Override
-    public void ontologyUpdated(SrampOntology updatedOntology, SrampOntology oldOntology) {
-        if (SrampConfig.isJmsEnabled()) {
+    public void ontologyUpdated(ArtificerOntology updatedOntology, ArtificerOntology oldOntology) {
+        if (ArtificerConfig.isJmsEnabled()) {
             OntologyUpdateEvent event = new OntologyUpdateEvent(updatedOntology, oldOntology);
             publishEvent(event, JMS_TYPE_ONTOLOGY_UPDATED);
         }
     }
 
     @Override
-    public void ontologyDeleted(SrampOntology ontology) {
-        if (SrampConfig.isJmsEnabled()) {
+    public void ontologyDeleted(ArtificerOntology ontology) {
+        if (ArtificerConfig.isJmsEnabled()) {
             publishEvent(ontology, JMS_TYPE_ONTOLOGY_DELETED);
         }
     }
@@ -248,7 +248,7 @@ public class JMSEventProducer implements EventProducer {
 
     @Override
     public void shutdown() {
-        if (SrampConfig.isJmsEnabled()) {
+        if (ArtificerConfig.isJmsEnabled()) {
             try {
                 session.close();
             } catch (Exception e) {

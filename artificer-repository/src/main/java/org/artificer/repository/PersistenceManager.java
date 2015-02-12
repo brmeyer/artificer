@@ -24,8 +24,8 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampException;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ontology.ArtificerOntology;
 
 /**
  * Service used to persist artifacts to some (permanent?) storage.
@@ -34,29 +34,29 @@ public interface PersistenceManager extends AbstractManager {
 
     /**
      * Persists a batch of artifacts.  For each item in the batch, either a {@link BaseArtifactType}
-     * or {@link SrampException} is returned in the result list.  Note that any content streams
+     * or {@link org.artificer.common.ArtificerException} is returned in the result list.  Note that any content streams
      * provided in the list of batch items will be closed.
      * @param items
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public List<Object> persistBatch(List<BatchItem> items) throws SrampException;
+    public List<Object> persistBatch(List<BatchItem> items) throws ArtificerException;
 
     /**
      * Persists a single artifact.
      * @param baseArtifactType, the s-ramp artifact
      * @param content, the artifact content
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public BaseArtifactType persistArtifact(BaseArtifactType baseArtifactType, ArtifactContent content) throws SrampException;
+    public BaseArtifactType persistArtifact(BaseArtifactType baseArtifactType, ArtifactContent content) throws ArtificerException;
 
 	/**
 	 * Gets a previously persisted artifact by its UUID.
 	 * @param uuid the UUID of the s-ramp artifact
 	 * @param type the type of the artifact
 	 * @return an instance of a {@link BaseArtifactType} or null if not found
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public BaseArtifactType getArtifact(String uuid, ArtifactType type) throws SrampException;
+	public BaseArtifactType getArtifact(String uuid, ArtifactType type) throws ArtificerException;
 
 	/**
 	 * Gets the content (media) for a previously persisted artifact by its UUID.
@@ -66,114 +66,114 @@ public interface PersistenceManager extends AbstractManager {
 	 * @param uuid the S-RAMP uuid of the artifact.
 	 * @param artifactType the type of the artifact
 	 * @return an {@link InputStream} over the artifact content
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public InputStream getArtifactContent(String uuid, ArtifactType artifactType) throws SrampException;
+	public InputStream getArtifactContent(String uuid, ArtifactType artifactType) throws ArtificerException;
 
 	/**
 	 * Updates a previously persisted artifact.  Note that this method only updates the meta data
 	 * of the artifact, not the content.  This will not create or delete any derived artifacts.
 	 * @param artifact the s-ramp artifact being updated
 	 * @param type the type of the artifact
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public BaseArtifactType updateArtifact(BaseArtifactType artifact, ArtifactType type) throws SrampException;
+	public BaseArtifactType updateArtifact(BaseArtifactType artifact, ArtifactType type) throws ArtificerException;
 
 	/**
 	 * Called to update the content for an existing artifact.
 	 * @param uuid a UUID of an existing artifact
 	 * @param artifactType the artifact's type
 	 * @param content the new artifact content
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public BaseArtifactType updateArtifactContent(String uuid, ArtifactType artifactType, ArtifactContent content) throws SrampException;
+	public BaseArtifactType updateArtifactContent(String uuid, ArtifactType artifactType, ArtifactContent content) throws ArtificerException;
 
 	/**
 	 * Deletes a previously persisted artifact from the S-RAMP repository.
 	 * @param uuid
 	 * @param artifactType
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public BaseArtifactType deleteArtifact(String uuid, ArtifactType artifactType) throws SrampException;
+	public BaseArtifactType deleteArtifact(String uuid, ArtifactType artifactType) throws ArtificerException;
 
     /**
      * Deletes a previously persisted artifact's content from the S-RAMP repository.
      * @param uuid
      * @param artifactType
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public BaseArtifactType deleteArtifactContent(String uuid, ArtifactType artifactType) throws SrampException;
+    public BaseArtifactType deleteArtifactContent(String uuid, ArtifactType artifactType) throws ArtificerException;
 
     /**
      * Persists a single ontology.
      * @param ontology
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public SrampOntology persistOntology(SrampOntology ontology) throws SrampException;
+    public ArtificerOntology persistOntology(ArtificerOntology ontology) throws ArtificerException;
 
 	/**
 	 * Gets a previously persisted ontology by its UUID.
 	 * @param uuid the UUID of the s-ramp ontology
-	 * @return an instance of a {@link SrampOntology} or null if not found
-	 * @throws SrampException
+	 * @return an instance of a {@link org.artificer.common.ontology.ArtificerOntology} or null if not found
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public SrampOntology getOntology(String uuid) throws SrampException;
+	public ArtificerOntology getOntology(String uuid) throws ArtificerException;
 
 	/**
 	 * Gets all of the ontologies known to the S-RAMP repository.
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public List<SrampOntology> getOntologies() throws SrampException;
+	public List<ArtificerOntology> getOntologies() throws ArtificerException;
 
 	/**
 	 * Updates a previously persisted ontology.
 	 * @param ontology the s-ramp artifact being updated
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public void updateOntology(SrampOntology ontology) throws SrampException;
+	public void updateOntology(ArtificerOntology ontology) throws ArtificerException;
 
 	/**
 	 * Deletes a previously persisted ontology from the S-RAMP repository.
 	 * @param uuid
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public void deleteOntology(String uuid) throws SrampException;
+	public void deleteOntology(String uuid) throws ArtificerException;
 
     /**
      * Persists a single StoredQuery.
      * @param storedQuery
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public StoredQuery persistStoredQuery(StoredQuery storedQuery) throws SrampException;
+    public StoredQuery persistStoredQuery(StoredQuery storedQuery) throws ArtificerException;
 
     /**
      * Gets a previously persisted StoredQuery by its UUID.
      * @param queryName the queryName of the s-ramp StoredQuery
      * @return an instance of a {@link StoredQuery} or null if not found
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public StoredQuery getStoredQuery(String queryName) throws SrampException;
+    public StoredQuery getStoredQuery(String queryName) throws ArtificerException;
 
     /**
      * Gets all of the StoredQueries known to the S-RAMP repository.
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public List<StoredQuery> getStoredQueries() throws SrampException;
+    public List<StoredQuery> getStoredQueries() throws ArtificerException;
 
     /**
      * Updates a previously persisted StoredQuery.
      * @param queryName
      * @param storedQuery the StoredQuery being updated
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public void updateStoredQuery(String queryName, StoredQuery storedQuery) throws SrampException;
+    public void updateStoredQuery(String queryName, StoredQuery storedQuery) throws ArtificerException;
 
     /**
      * Deletes a previously persisted StoredQuery from the S-RAMP repository.
      * @param queryName
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
      */
-    public void deleteStoredQuery(String queryName) throws SrampException;
+    public void deleteStoredQuery(String queryName) throws ArtificerException;
 
 	/**
 	 * TODO remove this

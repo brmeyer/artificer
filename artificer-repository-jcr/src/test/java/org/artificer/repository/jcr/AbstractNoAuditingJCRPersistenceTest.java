@@ -16,7 +16,7 @@
 package org.artificer.repository.jcr;
 
 import org.junit.BeforeClass;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 
 /**
@@ -26,7 +26,7 @@ public abstract class AbstractNoAuditingJCRPersistenceTest extends AbstractJCRPe
 
     @BeforeClass
     public static void beforeClass() {
-	    System.setProperty(SrampConstants.SRAMP_CONFIG_AUDITING, "false");
+	    System.setProperty(ArtificerConstants.ARTIFICER_CONFIG_AUDITING, "false");
         setupPersistence();
     }
 

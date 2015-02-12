@@ -21,7 +21,7 @@ import org.artificer.common.i18n.Messages;
 /**
  * Thrown when a derived relationship is manually created by the client.
  */
-public class DerivedRelationshipCreationException extends SrampConflictException {
+public class DerivedRelationshipCreationException extends ArtificerConflictException {
 
     private static final long serialVersionUID = 1927569341892142710L;
 

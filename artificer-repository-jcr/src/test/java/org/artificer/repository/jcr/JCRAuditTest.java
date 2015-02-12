@@ -16,9 +16,9 @@
 package org.artificer.repository.jcr;
 
 import org.artificer.repository.jcr.auth.MockSecurityContext;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType.Property;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -30,13 +30,13 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Document;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
-import org.artificer.common.SrampException;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.audit.AuditEntryTypes;
 import org.artificer.common.audit.AuditItemTypes;
 import org.artificer.common.audit.AuditUtils;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.repository.audit.AuditEntrySet;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -58,8 +58,8 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
 
     @BeforeClass
     public static void enableAuditing() {
-        System.setProperty(SrampConstants.SRAMP_CONFIG_AUDITING, "true");
-        System.setProperty(SrampConstants.SRAMP_CONFIG_DERIVED_AUDITING, "true");
+        System.setProperty(ArtificerConstants.ARTIFICER_CONFIG_AUDITING, "true");
+        System.setProperty(ArtificerConstants.ARTIFICER_CONFIG_DERIVED_AUDITING, "true");
     }
 
     @Test
@@ -169,8 +169,8 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
         // Update the artifact's name, description, and add a custom property
         artifact.setName("S-RAMP Press Release");
         artifact.setDescription("Sample description.");
-        SrampModelUtils.setCustomProperty(artifact, "foo", "bar");
-        SrampModelUtils.unsetCustomProperty(artifact, "hello");
+        ArtificerModelUtils.setCustomProperty(artifact, "foo", "bar");
+        ArtificerModelUtils.unsetCustomProperty(artifact, "hello");
         persistenceManager.updateArtifact(artifact, ArtifactType.Document());
 
         int expectedEntries = 2;
@@ -325,7 +325,7 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
 
     /**
      * @return a new artifact
-     * @throws org.artificer.common.SrampException
+     * @throws org.artificer.common.ArtificerException
      */
     private BaseArtifactType createArtifact(Set<String> classifiers, String ... args) throws Exception {
         String artifactFileName = "s-ramp-press-release.pdf";
@@ -345,7 +345,7 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
             for (int i = 0; i < args.length; i+=2) {
                 String propName = args[i];
                 String propVal = args[i+1];
-                SrampModelUtils.setCustomProperty(document, propName, propVal);
+                ArtificerModelUtils.setCustomProperty(document, propName, propVal);
             }
         }
 
@@ -357,7 +357,7 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
 
     /**
      * @return a new artifact
-     * @throws org.artificer.common.SrampException
+     * @throws org.artificer.common.ArtificerException
      */
     private BaseArtifactType createXsdArtifact() throws Exception {
         String artifactFileName = "PO.xsd";
@@ -372,19 +372,19 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
         return artifact;
     }
 
-    private String createOntology() throws SrampException {
-        SrampOntology ontology = new SrampOntology();
+    private String createOntology() throws ArtificerException {
+        ArtificerOntology ontology = new ArtificerOntology();
         ontology.setBase("urn:example.org/world");
         ontology.setLabel("World Ontology");
         ontology.setComment("This is my test ontology.");
 
-        SrampOntology.SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-        SrampOntology.SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-        SrampOntology.SrampOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
-        SrampOntology.SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-        SrampOntology.SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
-        SrampOntology.SrampOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
-        SrampOntology.SrampOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
+        ArtificerOntology.ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+        ArtificerOntology.ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+        ArtificerOntology.ArtificerOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
+        ArtificerOntology.ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+        ArtificerOntology.ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+        ArtificerOntology.ArtificerOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
+        ArtificerOntology.ArtificerOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
 
         ontology.getRootClasses().add(world);
 
@@ -407,8 +407,8 @@ public class JCRAuditTest extends AbstractAuditingJCRPersistenceTest {
      * @param label
      * @param comment
      */
-    private SrampOntology.SrampOntologyClass createClass(SrampOntology ontology, SrampOntology.SrampOntologyClass parent, String id, String label, String comment) {
-        SrampOntology.SrampOntologyClass rval = ontology.createClass(id);
+    private ArtificerOntology.ArtificerOntologyClass createClass(ArtificerOntology ontology, ArtificerOntology.ArtificerOntologyClass parent, String id, String label, String comment) {
+        ArtificerOntology.ArtificerOntologyClass rval = ontology.createClass(id);
         rval.setParent(parent);
         rval.setComment(comment);
         rval.setLabel(label);

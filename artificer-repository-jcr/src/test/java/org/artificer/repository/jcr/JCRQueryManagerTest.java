@@ -22,9 +22,9 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Document;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.repository.query.ArtifactSet;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.query.ArtificerQuery;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -47,7 +47,7 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
         log.info("persisted to JCR, returned artifact uuid=" + artifact.getUuid());
 
         // Now query for it
-        SrampQuery query = queryManager.createQuery("/s-ramp/core/Document");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/core/Document");
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
 
@@ -77,12 +77,12 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
 
         // Now update some properties on them.
         // Prop3 is on all 3 artifacts, prop2 is on 2 artifacts, prop1 is on 1 artifact
-        SrampModelUtils.setCustomProperty(artifact1, "prop1", uniquePropVal1);
-        SrampModelUtils.setCustomProperty(artifact1, "prop2", uniquePropVal2);
-        SrampModelUtils.setCustomProperty(artifact1, "prop3", uniquePropVal3);
-        SrampModelUtils.setCustomProperty(artifact2, "prop2", uniquePropVal2);
-        SrampModelUtils.setCustomProperty(artifact2, "prop3", uniquePropVal3);
-        SrampModelUtils.setCustomProperty(artifact3, "prop3", uniquePropVal3);
+        ArtificerModelUtils.setCustomProperty(artifact1, "prop1", uniquePropVal1);
+        ArtificerModelUtils.setCustomProperty(artifact1, "prop2", uniquePropVal2);
+        ArtificerModelUtils.setCustomProperty(artifact1, "prop3", uniquePropVal3);
+        ArtificerModelUtils.setCustomProperty(artifact2, "prop2", uniquePropVal2);
+        ArtificerModelUtils.setCustomProperty(artifact2, "prop3", uniquePropVal3);
+        ArtificerModelUtils.setCustomProperty(artifact3, "prop3", uniquePropVal3);
 
         persistenceManager.updateArtifact(artifact1, ArtifactType.Document());
         persistenceManager.updateArtifact(artifact2, ArtifactType.Document());
@@ -90,7 +90,7 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
 
         // Now query by various properties
         persistenceManager.printArtifactGraph(artifact1.getUuid(), ArtifactType.Document());
-        SrampQuery query = queryManager.createQuery("/s-ramp/core/Document[@prop1 = ?]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp/core/Document[@prop1 = ?]");
         query.setString(uniquePropVal1);
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
@@ -175,7 +175,7 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
     }
 
 	/**
-	 * @throws org.artificer.common.SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
 	private BaseArtifactType createDocument(int idx) throws Exception {
         String artifactFileName = "s-ramp-press-release.pdf";

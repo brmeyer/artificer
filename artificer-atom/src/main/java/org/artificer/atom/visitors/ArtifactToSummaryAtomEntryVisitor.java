@@ -21,17 +21,17 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomConstants;
+import org.artificer.atom.ArtificerAtomConstants;
 import org.jboss.resteasy.plugins.providers.atom.Category;
 import org.jboss.resteasy.plugins.providers.atom.Content;
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Link;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.*;
-import org.artificer.atom.SrampAtomUtils;
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.common.visitors.HierarchicalArtifactVisitor;
 
@@ -117,7 +117,7 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
 				entry.getAuthors().add(new Person(artifact.getCreatedBy()));
 			if (artifact.getDescription() != null)
 				entry.setSummary(artifact.getDescription());
-			entry.getExtensionAttributes().put(SrampConstants.SRAMP_DERIVED_QNAME, String.valueOf(artifactType.isDerived()));
+			entry.getExtensionAttributes().put(ArtificerConstants.SRAMP_DERIVED_QNAME, String.valueOf(artifactType.isDerived()));
 
 			atomLink = baseUrl + "/s-ramp/" //$NON-NLS-1$
 					+ artifactType.getModel() + "/" //$NON-NLS-1$
@@ -149,7 +149,7 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
 			Category typeCat = new Category();
 			typeCat.setTerm(artifactType.getType());
 			typeCat.setLabel(artifactType.getLabel());
-			typeCat.setScheme(SrampAtomConstants.X_S_RAMP_TYPE_URN);
+			typeCat.setScheme(ArtificerAtomConstants.X_S_RAMP_TYPE_URN);
 			entry.getCategories().add(typeCat);
 
             // Kind category
@@ -161,14 +161,14 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
                 kindCat.setTerm("modeled");
                 kindCat.setLabel("Modeled S-RAMP Artifact");
             }
-            kindCat.setScheme(SrampAtomConstants.X_S_RAMP_KIND_URN);
+            kindCat.setScheme(ArtificerAtomConstants.X_S_RAMP_KIND_URN);
             entry.getCategories().add(kindCat);
 
 			// Model category
 			Category modelCat = new Category();
 			modelCat.setTerm(artifactType.getModel());
 			modelCat.setLabel(artifactType.getLabel());
-			modelCat.setScheme(SrampAtomConstants.X_S_RAMP_MODEL_URN);
+			modelCat.setScheme(ArtificerAtomConstants.X_S_RAMP_MODEL_URN);
 			entry.getCategories().add(modelCat);
 
 			setAtomEntry(entry);
@@ -218,7 +218,7 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
         
         try {
             if (this.atomEntry != null) {
-                SrampAtomUtils.setXmlContentType(artifact, atomLink, atomEntry);
+                ArtificerAtomUtils.setXmlContentType(artifact, atomLink, atomEntry);
             }
         } catch (Exception e) {
             this.failure = e;
@@ -235,7 +235,7 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
 
 	    if (this.atomEntry != null) {
 	        String extendedType = artifact.getExtendedType();
-	        this.atomEntry.getExtensionAttributes().put(SrampConstants.SRAMP_EXTENDED_TYPE_QNAME, extendedType);
+	        this.atomEntry.getExtensionAttributes().put(ArtificerConstants.SRAMP_EXTENDED_TYPE_QNAME, extendedType);
 	    }
 	}
 
@@ -249,7 +249,7 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
 
         if (this.atomEntry != null) {
             String extendedType = artifact.getExtendedType();
-            this.atomEntry.getExtensionAttributes().put(SrampConstants.SRAMP_EXTENDED_TYPE_QNAME, extendedType);
+            this.atomEntry.getExtensionAttributes().put(ArtificerConstants.SRAMP_EXTENDED_TYPE_QNAME, extendedType);
         }
 	}
 
@@ -274,8 +274,8 @@ public class ArtifactToSummaryAtomEntryVisitor extends HierarchicalArtifactVisit
                 for (Property customProperty : artifact.getProperty()) {
                     // Custom property?
                     if (propertyName.equalsIgnoreCase(customProperty.getPropertyName())) {
-                        SrampModelUtils.setCustomProperty(includedArtifact,
-                                customProperty.getPropertyName(), customProperty.getPropertyValue());
+                        ArtificerModelUtils.setCustomProperty(includedArtifact,
+								customProperty.getPropertyName(), customProperty.getPropertyValue());
                         break;
                     }
 

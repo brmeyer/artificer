@@ -26,7 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.artificer.common.i18n.AbstractMessages;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 
 /**
  * A filter used to configure the i18n system to obey any inbound locale information.  In
@@ -61,10 +61,10 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
         Locale locale = request.getLocale();
         AbstractMessages.setLocale(locale);
-        SrampApiClientAccessor.setLocale(locale);
+        ArtificerApiClientAccessor.setLocale(locale);
         chain.doFilter(request, response);
         AbstractMessages.clearLocale();
-        SrampApiClientAccessor.clearLocale();
+        ArtificerApiClientAccessor.clearLocale();
     }
 
     /**

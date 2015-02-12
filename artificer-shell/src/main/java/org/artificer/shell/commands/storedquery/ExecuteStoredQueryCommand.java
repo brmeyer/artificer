@@ -17,7 +17,7 @@ package org.artificer.shell.commands.storedquery;
 
 import java.util.List;
 
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
@@ -35,7 +35,7 @@ public class ExecuteStoredQueryCommand extends BuiltInShellCommand {
     public boolean execute() throws Exception {
         String name = this.requiredArgument(0, Messages.i18n.format("StoredQuery.Name.Mandatory")); //$NON-NLS-1$
 
-        SrampAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
+        ArtificerAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
         if (client == null) {
             return false;
         }

@@ -28,9 +28,9 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampException;
-import org.artificer.common.SrampModelUtils;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ArtificerModelUtils;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.repository.error.ClassifierConstraintException;
 import org.artificer.repository.error.CustomPropertyConstraintException;
 
@@ -57,7 +57,7 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         // Create another artifact with a generic relationship targeting the original.
         Actor actor = new Actor();
         actor.setArtifactType(BaseArtifactEnum.ACTOR);
-        SrampModelUtils.addGenericRelationship(actor, "fooRelationship", task.getUuid());
+        ArtificerModelUtils.addGenericRelationship(actor, "fooRelationship", task.getUuid());
         actor = (Actor) persistenceManager.persistArtifact(actor, null);
 
         // Verify deleting the original fails
@@ -114,7 +114,7 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         // Create another artifact with a generic relationship targeting one of the XSD's derived artifacts.
         BaseArtifactType complexType = queryManager.createQuery("/s-ramp/xsd/ComplexTypeDeclaration").executeQuery().iterator().next();
         BaseArtifactType fooArtifact = ArtifactType.ExtendedArtifactType("FooType", false).newArtifactInstance();
-        SrampModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
+        ArtificerModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
         fooArtifact = persistenceManager.persistArtifact(fooArtifact, null);
 
         // Verify the XSD cannot be deleted
@@ -151,12 +151,12 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         BaseArtifactType complexType = queryManager.createQuery("/s-ramp/xsd/ComplexTypeDeclaration").executeQuery().iterator().next();
 
         // Create a generic relationship on the primary artifact targeting the derived artifact, to be used later.
-        SrampModelUtils.addGenericRelationship(xsd, "fooRelationship", complexType.getUuid());
+        ArtificerModelUtils.addGenericRelationship(xsd, "fooRelationship", complexType.getUuid());
         persistenceManager.updateArtifact(xsd, ArtifactType.valueOf(xsd));
 
         // Create another artifact with a generic relationship targeting one of the XSD's derived artifacts.
         BaseArtifactType fooArtifact = ArtifactType.ExtendedArtifactType("FooType", false).newArtifactInstance();
-        SrampModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
+        ArtificerModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
         fooArtifact = persistenceManager.persistArtifact(fooArtifact, null);
 
         // Verify the XSD cannot be updated
@@ -193,7 +193,7 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         complexType.getProperty().clear();
 
         // Add a classifier to one of the XSD's derived artifacts.
-        SrampOntology ontology = createOntology();
+        ArtificerOntology ontology = createOntology();
         complexType.getClassifiedBy().add(ontology.findClass("World").getUri().toString());
         persistenceManager.updateArtifact(complexType, ArtifactType.valueOf(complexType));
 
@@ -243,12 +243,12 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         BaseArtifactType complexType = queryManager.createQuery("/s-ramp/xsd/ComplexTypeDeclaration").executeQuery().iterator().next();
 
         // Create a generic relationship on the primary artifact targeting the derived artifact, to be used later.
-        SrampModelUtils.addGenericRelationship(xsd, "fooRelationship", complexType.getUuid());
+        ArtificerModelUtils.addGenericRelationship(xsd, "fooRelationship", complexType.getUuid());
         persistenceManager.updateArtifact(xsd, ArtifactType.valueOf(xsd));
 
         // Create another artifact with a generic relationship targeting one of the XSD's derived artifacts.
         BaseArtifactType fooArtifact = ArtifactType.ExtendedArtifactType("FooType", false).newArtifactInstance();
-        SrampModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
+        ArtificerModelUtils.addGenericRelationship(fooArtifact, "fooRelationship", complexType.getUuid());
         fooArtifact = persistenceManager.persistArtifact(fooArtifact, null);
 
         // Verify the XSD content cannot be deleted
@@ -276,13 +276,13 @@ public class JCRConstraintTest extends AbstractNoAuditingJCRPersistenceTest {
         assertEquals(0, xsd.getRelationship().size());
     }
 
-    private SrampOntology createOntology() throws SrampException {
-        SrampOntology ontology = new SrampOntology();
+    private ArtificerOntology createOntology() throws ArtificerException {
+        ArtificerOntology ontology = new ArtificerOntology();
         ontology.setBase("urn:example.org/test");
         ontology.setLabel("Test Ontology");
         ontology.setComment("This is my test ontology.");
 
-        SrampOntology.SrampOntologyClass world = ontology.createClass("World");
+        ArtificerOntology.ArtificerOntologyClass world = ontology.createClass("World");
         world.setParent(null);
         world.setComment("The entire world");
         world.setLabel("World");

@@ -17,7 +17,7 @@ package org.artificer.shell.commands.core;
 
 import javax.xml.namespace.QName;
 
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 
@@ -37,7 +37,7 @@ public class DisconnectCommand extends BuiltInShellCommand {
 	@Override
 	public boolean execute() throws Exception {
 		QName varName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
-		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(varName);
+		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(varName);
 		if (client == null) {
             print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;

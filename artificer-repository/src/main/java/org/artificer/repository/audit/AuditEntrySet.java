@@ -16,7 +16,7 @@
 package org.artificer.repository.audit;
 
 import org.artificer.repository.AbstractSet;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 
 import java.util.List;
 

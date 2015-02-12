@@ -15,7 +15,7 @@
  */
 package org.artificer.common.ontology;
 
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 
 /**
  * Exception thrown when the user attempts to update an ontology but something went
@@ -23,7 +23,7 @@ import org.artificer.common.error.SrampUserException;
  *
  * @author eric.wittmann@redhat.com
  */
-public class OntologyUpdateException extends SrampUserException {
+public class OntologyUpdateException extends ArtificerUserException {
 
     private static final long serialVersionUID = OntologyUpdateException.class.hashCode();
 

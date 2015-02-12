@@ -16,7 +16,7 @@
 package org.artificer.server;
 
 import org.artificer.common.ontology.OntologyValidator;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.events.EventProducer;
 import org.artificer.events.EventProducerFactory;
 import org.artificer.repository.PersistenceManager;
@@ -35,7 +35,7 @@ import java.util.Set;
 public class OntologyServiceImpl extends AbstractServiceImpl implements OntologyService {
 
     @Override
-    public SrampOntology create(SrampOntology ontology) throws Exception  {
+    public ArtificerOntology create(ArtificerOntology ontology) throws Exception  {
         OntologyValidator.validateOntology(ontology);
 
         PersistenceManager persistenceManager = persistenceManager();
@@ -50,10 +50,10 @@ public class OntologyServiceImpl extends AbstractServiceImpl implements Ontology
     }
 
     @Override
-    public void update(String uuid, SrampOntology ontology) throws Exception {
+    public void update(String uuid, ArtificerOntology ontology) throws Exception {
         OntologyValidator.validateOntology(ontology);
 
-        SrampOntology oldOntology = get(uuid);
+        ArtificerOntology oldOntology = get(uuid);
 
         PersistenceManager persistenceManager = persistenceManager();
         persistenceManager.updateOntology(ontology);
@@ -65,18 +65,18 @@ public class OntologyServiceImpl extends AbstractServiceImpl implements Ontology
     }
 
     @Override
-    public SrampOntology get(String uuid) throws Exception {
+    public ArtificerOntology get(String uuid) throws Exception {
         return persistenceManager().getOntology(uuid);
     }
 
     @Override
-    public List<SrampOntology> get() throws Exception {
+    public List<ArtificerOntology> get() throws Exception {
         return persistenceManager().getOntologies();
     }
 
     @Override
     public void delete(String uuid) throws Exception {
-        SrampOntology ontology = get(uuid);
+        ArtificerOntology ontology = get(uuid);
 
         persistenceManager().deleteOntology(uuid);
 

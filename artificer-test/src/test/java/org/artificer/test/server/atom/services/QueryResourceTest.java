@@ -29,9 +29,9 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.client.ClientRequest;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -148,9 +148,9 @@ public class QueryResourceTest extends AbstractResourceTest {
         ClientRequest request = clientRequest("/s-ramp?query=ext"); //$NON-NLS-1$
         ClientResponse<Feed> response = request.get(Feed.class);
         Feed feed = response.getEntity();
-        Object startIndexAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_START_INDEX_QNAME);
-        Object itemsPerPageAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
-        Object totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        Object startIndexAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_START_INDEX_QNAME);
+        Object itemsPerPageAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
+        Object totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         Assert.assertNotNull("The startIndex attribute wasn't returned!", startIndexAttr); //$NON-NLS-1$
         Assert.assertNotNull("The itemsPerPage attribute wasn't returned!", itemsPerPageAttr); //$NON-NLS-1$
         Assert.assertNotNull("The totalResults attribute wasn't returned!", totalResultsAttr); //$NON-NLS-1$
@@ -165,9 +165,9 @@ public class QueryResourceTest extends AbstractResourceTest {
         request = clientRequest("/s-ramp?query=ext&startIndex=5&count=2"); //$NON-NLS-1$
         response = request.get(Feed.class);
         feed = response.getEntity();
-        startIndexAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_START_INDEX_QNAME);
-        itemsPerPageAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
-        totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        startIndexAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_START_INDEX_QNAME);
+        itemsPerPageAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
+        totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         Assert.assertNotNull("The startIndex attribute wasn't returned!", startIndexAttr); //$NON-NLS-1$
         Assert.assertNotNull("The itemsPerPage attribute wasn't returned!", itemsPerPageAttr); //$NON-NLS-1$
         Assert.assertNotNull("The totalResults attribute wasn't returned!", totalResultsAttr); //$NON-NLS-1$
@@ -231,14 +231,14 @@ public class QueryResourceTest extends AbstractResourceTest {
 		ClientRequest request = clientRequest("/s-ramp?query=ext/JpgDocument"); //$NON-NLS-1$
 		ClientResponse<Feed> response = request.get(Feed.class);
 		Feed feed = response.getEntity();
-		Object totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+		Object totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         int total = Integer.parseInt(String.valueOf(totalResultsAttr));
 		Assert.assertEquals(2, total);
 
 		request = clientRequest("/s-ramp/ext/JpgDocument"); //$NON-NLS-1$
 		response = request.get(Feed.class);
 		feed = response.getEntity();
-		totalResultsAttr = feed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+		totalResultsAttr = feed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         total = Integer.parseInt(String.valueOf(totalResultsAttr));
         Assert.assertEquals(2, total);
 	}
@@ -261,13 +261,13 @@ public class QueryResourceTest extends AbstractResourceTest {
 
 			Entry entry = response.getEntity();
 			Assert.assertEquals(fname, entry.getTitle());
-			BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+			BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 			Assert.assertTrue(arty instanceof ExtendedDocument);
 			ExtendedDocument doc = (ExtendedDocument) arty;
 			Assert.assertEquals(fname, doc.getName());
 			Assert.assertEquals("JpgDocument", doc.getExtendedType()); //$NON-NLS-1$
-			Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_SIZE_QNAME)));
-			Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(SrampConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
+			Assert.assertEquals(Long.valueOf(2398), Long.valueOf(doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME)));
+			Assert.assertEquals("image/jpeg", doc.getOtherAttributes().get(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME)); //$NON-NLS-1$
 		} finally {
 			IOUtils.closeQuietly(contentStream);
 		}

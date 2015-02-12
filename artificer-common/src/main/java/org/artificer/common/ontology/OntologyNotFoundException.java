@@ -15,7 +15,7 @@
  */
 package org.artificer.common.ontology;
 
-import org.artificer.common.error.SrampNotFoundException;
+import org.artificer.common.error.ArtificerNotFoundException;
 import org.artificer.common.i18n.Messages;
 
 /**
@@ -24,7 +24,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class OntologyNotFoundException extends SrampNotFoundException {
+public class OntologyNotFoundException extends ArtificerNotFoundException {
 
     private static final long serialVersionUID = 8420594209143921892L;
 

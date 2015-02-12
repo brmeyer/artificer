@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 /**
  * An instance of this class is returned by the Atom API client when consumers
@@ -52,7 +52,7 @@ public class QueryResultSet implements Iterable<ArtifactSummary> {
 	 * Returns -1 if this feature is not supported by the server.
 	 */
 	public long getTotalResults() {
-        Object totalResultsAttr = this.currentFeed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        Object totalResultsAttr = this.currentFeed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         if (totalResultsAttr != null) {
             return Long.parseLong((String) totalResultsAttr);
         } else {
@@ -71,7 +71,7 @@ public class QueryResultSet implements Iterable<ArtifactSummary> {
      * Returns -1 if this feature is not supported by the server.
      */
 	public int getItemsPerPage() {
-        Object itemsPerPageAttr = this.currentFeed.getExtensionAttributes().get(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
+        Object itemsPerPageAttr = this.currentFeed.getExtensionAttributes().get(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME);
         if (itemsPerPageAttr != null) {
             return Integer.parseInt((String) itemsPerPageAttr);
         } else {
@@ -86,7 +86,7 @@ public class QueryResultSet implements Iterable<ArtifactSummary> {
      * Returns -1 if this feature is not supported by the server.
      */
 	public int getStartIndex() {
-        Object startIndexAttr = this.currentFeed.getExtensionAttributes().get(SrampConstants.SRAMP_START_INDEX_QNAME);
+        Object startIndexAttr = this.currentFeed.getExtensionAttributes().get(ArtificerConstants.SRAMP_START_INDEX_QNAME);
         if (startIndexAttr != null) {
             return Integer.parseInt((String) startIndexAttr);
         } else {

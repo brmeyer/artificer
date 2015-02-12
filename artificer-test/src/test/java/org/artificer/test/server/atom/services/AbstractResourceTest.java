@@ -16,7 +16,7 @@
 package org.artificer.test.server.atom.services;
 
 import org.junit.AfterClass;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.test.AbstractIntegrationTest;
 
 /**
@@ -28,7 +28,7 @@ public abstract class AbstractResourceTest extends AbstractIntegrationTest {
 
 	@AfterClass
 	public static void resetAuditing() {
-        System.clearProperty(SrampConstants.SRAMP_CONFIG_AUDITING);
+        System.clearProperty(ArtificerConstants.ARTIFICER_CONFIG_AUDITING);
 	}
 
 }

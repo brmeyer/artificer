@@ -22,15 +22,15 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartOutput;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.archive.SrampArchive;
-import org.artificer.atom.archive.SrampArchiveEntry;
+import org.artificer.atom.archive.ArtificerArchive;
+import org.artificer.atom.archive.ArtificerArchiveEntry;
 import org.artificer.atom.beans.HttpResponseBean;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.atom.visitors.ArtifactToFullAtomEntryVisitor;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerException;
 import org.artificer.common.error.ArtifactNotFoundException;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.repository.PersistenceFactory;
@@ -80,14 +80,14 @@ public class BatchResource extends AbstractResource {
      * @param fileName the name of the .zip file (optional)
      * @param content the zip content
      * @return a multipart/mixed response as defined in the S-RAMP Atom binding document
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @POST
     @Consumes(MediaType.APPLICATION_ZIP)
     @Produces(MediaType.MULTIPART_MIXED)
     @PartType("message/http")
 	public MultipartOutput zipPackagePost(@Context HttpServletRequest request,
-	        @HeaderParam("Slug") String fileName, InputStream content) throws SrampAtomException, SrampException {
+	        @HeaderParam("Slug") String fileName, InputStream content) throws ArtificerAtomException, ArtificerException {
         return doZipPackage(request, content);
     }
 
@@ -97,35 +97,35 @@ public class BatchResource extends AbstractResource {
      * @param fileName the name of the .zip file (optional)
      * @param content the zip content
      * @return a multipart/mixed response as defined in the S-RAMP Atom binding document
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      */
     @PUT
     @Consumes(MediaType.APPLICATION_ZIP)
     @Produces(MediaType.MULTIPART_MIXED)
     @PartType("message/http")
     public MultipartOutput zipPackagePut(@Context HttpServletRequest request,
-            @HeaderParam("Slug") String fileName, InputStream content) throws SrampAtomException, SrampException {
+            @HeaderParam("Slug") String fileName, InputStream content) throws ArtificerAtomException, ArtificerException {
         return doZipPackage(request, content);
     }
 
     private MultipartOutput doZipPackage(HttpServletRequest request, InputStream content)
-            throws SrampAtomException, SrampException {
+            throws ArtificerAtomException, ArtificerException {
         PersistenceManager persistenceManager = PersistenceFactory.newInstance();
 
-        SrampArchive archive = null;
-        String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+        ArtificerArchive archive = null;
+        String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
         try {
-            archive = new SrampArchive(content);
+            archive = new ArtificerArchive(content);
 
             MultipartOutput output = new MultipartOutput();
             output.setBoundary("package"); //$NON-NLS-1$
 
             // Process all of the entries in the s-ramp package.  First, do all the create
             // entries.  Once the creates are done, do the updates.
-            Collection<SrampArchiveEntry> entries = archive.getEntries();
+            Collection<ArtificerArchiveEntry> entries = archive.getEntries();
             BatchCreate batchCreates = new BatchCreate();
-            List<SrampArchiveEntry> updates = new ArrayList<SrampArchiveEntry>();
-            for (SrampArchiveEntry entry : entries) {
+            List<ArtificerArchiveEntry> updates = new ArrayList<ArtificerArchiveEntry>();
+            for (ArtificerArchiveEntry entry : entries) {
                 String path = entry.getPath();
                 BaseArtifactType metaData = entry.getMetaData();
                 if (isCreate(metaData)) {
@@ -173,7 +173,7 @@ public class BatchResource extends AbstractResource {
             }
 
             // Finally, process all the updates.
-            for (SrampArchiveEntry updateEntry : updates) {
+            for (ArtificerArchiveEntry updateEntry : updates) {
                 String path = updateEntry.getPath();
                 InputStream updateIs = archive.getInputStream(updateEntry);
                 ArtifactContent entryContent = null;
@@ -194,11 +194,11 @@ public class BatchResource extends AbstractResource {
             throw e;
         } catch (Exception e) {
             logError(logger, Messages.i18n.format("ERROR_CONSUMING_ZIP"), e); //$NON-NLS-1$
-            throw new SrampAtomException(e);
+            throw new ArtificerAtomException(e);
         } finally {
             IOUtils.closeQuietly(content);
             if (archive != null)
-                SrampArchive.closeQuietly(archive);
+                ArtificerArchive.closeQuietly(archive);
         }
     }
 
@@ -226,7 +226,7 @@ public class BatchResource extends AbstractResource {
             // TODO Bug: this would allow a re-used UUID as long as the artifact type was different.  Should change this to query via UUID instead.
             BaseArtifactType artifact = persistenceManager.getArtifact(metaData.getUuid(), artifactType);
             return artifact != null;
-        } catch (SrampException e) {
+        } catch (ArtificerException e) {
             return false;
         }
     }
@@ -298,7 +298,7 @@ public class BatchResource extends AbstractResource {
 	 */
 	private void addErrorPart(MultipartOutput output, String contentId, Exception error) {
         HttpResponseBean errorResponse = new HttpResponseBean(409, "Conflict"); //$NON-NLS-1$
-        SrampAtomException e = new SrampAtomException(error);
+        ArtificerAtomException e = new ArtificerAtomException(error);
         errorResponse.setBody(e, MediaType.APPLICATION_SRAMP_ATOM_EXCEPTION_TYPE);
         output.addPart(errorResponse, MediaType.MESSAGE_HTTP_TYPE).getHeaders().putSingle("Content-ID", contentId); //$NON-NLS-1$
 	}

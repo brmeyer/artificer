@@ -14,13 +14,13 @@
   <xsl:template name="add-jms-destinations">
     <xsl:variable name="currentNS" select="namespace-uri(.)" />
     <xsl:element name="jms-topic" namespace="{$currentNS}">
-      <xsl:attribute name="name">SRAMPTopic</xsl:attribute>
+      <xsl:attribute name="name">ArtificerTopic</xsl:attribute>
       <xsl:element name="entry" namespace="{$currentNS}">
-        <xsl:attribute name="name">sramp/events/topic</xsl:attribute>
+        <xsl:attribute name="name">artificer/events/topic</xsl:attribute>
       </xsl:element>
       <!-- Needed for remote JMS -->
       <xsl:element name="entry" namespace="{$currentNS}">
-        <xsl:attribute name="name">jboss/exported/jms/sramp/events/topic</xsl:attribute>
+        <xsl:attribute name="name">jboss/exported/jms/artificer/events/topic</xsl:attribute>
       </xsl:element>
     </xsl:element>
   </xsl:template>
@@ -29,7 +29,7 @@
   <xsl:template name="add-jms-security">
     <xsl:variable name="currentNS" select="namespace-uri(.)" />
     <xsl:element name="security-setting" namespace="{$currentNS}">
-      <xsl:attribute name="match">jms.topic.SRAMPTopic</xsl:attribute>
+      <xsl:attribute name="match">jms.topic.ArtificerTopic</xsl:attribute>
       <xsl:element name="permission" namespace="{$currentNS}">
         <xsl:attribute name="type">send</xsl:attribute>
         <xsl:attribute name="roles">artificer</xsl:attribute>
@@ -72,7 +72,7 @@
 
   <!-- Add the destinations if jms-destinations already existed and was *not* 
     created above. -->
-  <xsl:template match="*[name()='profile']/*[name()='subsystem']/*[name()='hornetq-server']/*[name()='jms-destinations'][not(*[name()='jms-topic'][@name = 'SRAMPTopic'])]">
+  <xsl:template match="*[name()='profile']/*[name()='subsystem']/*[name()='hornetq-server']/*[name()='jms-destinations'][not(*[name()='jms-topic'][@name = 'ArtificerTopic'])]">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()|text()" />
 

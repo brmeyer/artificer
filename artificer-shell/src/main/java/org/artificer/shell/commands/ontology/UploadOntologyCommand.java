@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.api.Arguments;
@@ -69,7 +69,7 @@ public class UploadOntologyCommand extends BuiltInShellCommand {
                 throw new FileNotFoundException(path);
             argLine.append(file.getCanonicalPath());
         }
-        SrampAtomApiClient client = new SrampAtomApiClient("http://localhost:8080/s-ramp-server"); //$NON-NLS-1$
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient("http://localhost:8080/s-ramp-server"); //$NON-NLS-1$
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         ShellContext context = new SimpleShellContext();
         context.setVariable(clientVarName, client);
@@ -83,7 +83,7 @@ public class UploadOntologyCommand extends BuiltInShellCommand {
     public boolean execute() throws Exception {
         String filePathArg = this.requiredArgument(0, Messages.i18n.format("UploadOntology.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
-        SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+        ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
             print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;

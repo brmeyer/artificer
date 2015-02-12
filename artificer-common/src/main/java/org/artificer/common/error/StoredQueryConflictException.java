@@ -22,7 +22,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author Brett Meyer
  */
-public class StoredQueryConflictException extends SrampConflictException {
+public class StoredQueryConflictException extends ArtificerConflictException {
 
     private static final long serialVersionUID = 632263403445444191L;
 

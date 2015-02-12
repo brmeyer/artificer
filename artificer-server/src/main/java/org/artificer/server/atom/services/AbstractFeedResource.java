@@ -24,9 +24,9 @@ import org.jboss.resteasy.plugins.providers.atom.Link;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.atom.visitors.ArtifactToSummaryAtomEntryVisitor;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +57,12 @@ public abstract class AbstractFeedResource extends AbstractResource {
 	 * @param ascending the sort direction
 	 * @param propNames the set of s-ramp property names - the extra properties that the query should return as part of the {@link Feed}
 	 * @return an Atom {@link Feed}
-	 * @throws SrampAtomException
+	 * @throws org.artificer.atom.err.ArtificerAtomException
 	 */
 	protected Feed createArtifactFeed(String query, Integer startPage, Integer startIndex, Integer count, String orderBy,
-			Boolean ascending, Set<String> propNames, String baseUrl) throws SrampAtomException {
+			Boolean ascending, Set<String> propNames, String baseUrl) throws ArtificerAtomException {
 	    if (query == null)
-            throw new SrampAtomException(Messages.i18n.format("MISSING_QUERY_PARAM")); //$NON-NLS-1$
+            throw new ArtificerAtomException(Messages.i18n.format("MISSING_QUERY_PARAM")); //$NON-NLS-1$
 
 		try {
             PagedResult<BaseArtifactType> artifactSet = queryService.query(
@@ -72,7 +72,7 @@ public abstract class AbstractFeedResource extends AbstractResource {
 			return feed;
 		} catch (Throwable e) {
 			logError(logger, Messages.i18n.format("Error trying to create an Artifact Feed."), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
 
@@ -96,10 +96,10 @@ public abstract class AbstractFeedResource extends AbstractResource {
 	@SuppressWarnings("unchecked")
     private Feed createFeed(PagedResult<BaseArtifactType> pagedResult, Set<String> propNames, String baseUrl) throws Exception {
 		Feed feed = new Feed();
-		feed.getExtensionAttributes().put(SrampConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(pagedResult.getPageSize()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_START_INDEX_QNAME, String.valueOf(pagedResult.getStartIndex()));
-        feed.getExtensionAttributes().put(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(pagedResult.getTotalSize()));
+		feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_PROVIDER_QNAME, "JBoss Overlord"); //$NON-NLS-1$
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(pagedResult.getPageSize()));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_START_INDEX_QNAME, String.valueOf(pagedResult.getStartIndex()));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(pagedResult.getTotalSize()));
 		feed.setId(new URI("urn:uuid:" + UUID.randomUUID().toString())); //$NON-NLS-1$
 		feed.setTitle("S-RAMP Feed"); //$NON-NLS-1$
 		feed.setSubtitle("Ad Hoc query feed"); //$NON-NLS-1$

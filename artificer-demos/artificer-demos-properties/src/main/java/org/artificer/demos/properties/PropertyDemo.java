@@ -16,10 +16,10 @@
 package org.artificer.demos.properties;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates how to manage both core and custom properties on an S-RAMP
@@ -56,7 +56,7 @@ public class PropertyDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-		SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+		ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -81,16 +81,16 @@ public class PropertyDemo {
 		artifact2.setName("property-demo-document-2.txt");
 
 		// Now, we can modify the artifacts by adding some custom properties to them.
-		SrampModelUtils.setCustomProperty(artifact1, "property-demo", "true");
-		SrampModelUtils.setCustomProperty(artifact1, "artifact-num", "one");
-		SrampModelUtils.setCustomProperty(artifact1, "hello", "world");
-		SrampModelUtils.setCustomProperty(artifact2, "property-demo", "true");
-		SrampModelUtils.setCustomProperty(artifact2, "artifact-num", "two");
-		SrampModelUtils.setCustomProperty(artifact2, "foo", "bar");
+		ArtificerModelUtils.setCustomProperty(artifact1, "property-demo", "true");
+		ArtificerModelUtils.setCustomProperty(artifact1, "artifact-num", "one");
+		ArtificerModelUtils.setCustomProperty(artifact1, "hello", "world");
+		ArtificerModelUtils.setCustomProperty(artifact2, "property-demo", "true");
+		ArtificerModelUtils.setCustomProperty(artifact2, "artifact-num", "two");
+		ArtificerModelUtils.setCustomProperty(artifact2, "foo", "bar");
 
         // Also tag these artifacts as coming from this demo.
-        SrampModelUtils.setCustomProperty(artifact1, "from-demo", PropertyDemo.class.getSimpleName());
-        SrampModelUtils.setCustomProperty(artifact2, "from-demo", PropertyDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact1, "from-demo", PropertyDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact2, "from-demo", PropertyDemo.class.getSimpleName());
 
 		// And now update both artifacts so that the repository knows about these
 		// new properties.

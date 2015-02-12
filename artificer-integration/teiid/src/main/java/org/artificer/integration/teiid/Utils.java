@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.artificer.integration.teiid.model.TeiidRelationshipType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Utilities used by the Teiid S-RAMP integration module.
@@ -38,7 +38,7 @@ public final class Utils {
     public static void addRelationship( final BaseArtifactType sourceArtifact,
                                         final BaseArtifactType targetArtifact,
                                         final TeiidRelationshipType relationshipType ) {
-        SrampModelUtils.addGenericRelationship(sourceArtifact, relationshipType.relationshipType(), targetArtifact.getUuid());
+        ArtificerModelUtils.addGenericRelationship(sourceArtifact, relationshipType.relationshipType(), targetArtifact.getUuid());
     }
 
     /**
@@ -53,10 +53,10 @@ public final class Utils {
                                               final BaseArtifactType targetArtifact,
                                               final TeiidRelationshipType relationshipType,
                                               final TeiidRelationshipType inverseRelationshipType ) {
-        SrampModelUtils.addGenericRelationship(sourceArtifact, relationshipType.relationshipType(), targetArtifact.getUuid());
-        SrampModelUtils.addGenericRelationship(targetArtifact,
-                                               inverseRelationshipType.relationshipType(),
-                                               sourceArtifact.getUuid());
+        ArtificerModelUtils.addGenericRelationship(sourceArtifact, relationshipType.relationshipType(), targetArtifact.getUuid());
+        ArtificerModelUtils.addGenericRelationship(targetArtifact,
+                inverseRelationshipType.relationshipType(),
+                sourceArtifact.getUuid());
     }
 
     /**

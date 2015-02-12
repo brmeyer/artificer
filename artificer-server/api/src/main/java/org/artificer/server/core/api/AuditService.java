@@ -15,7 +15,7 @@
  */
 package org.artificer.server.core.api;
 
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 
 import java.util.List;
 

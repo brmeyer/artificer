@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.artificer.ui.client.shared.beans.OntologyBean;
 import org.artificer.ui.client.shared.beans.OntologyResultSetBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 /**
  * Provides a way to get/set ontology data.
@@ -39,47 +39,47 @@ public interface IOntologyService {
 
     /**
      * Gets the list of all ontologies.
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public OntologyResultSetBean list() throws SrampUiException;
+    public OntologyResultSetBean list() throws ArtificerUiException;
 
     /**
      * Gets the full meta data for an ontology, including its full tree of classes.
      * @param uuid
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @GET
     @Path("{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public OntologyBean get(@PathParam("uuid") String uuid) throws SrampUiException;
+    public OntologyBean get(@PathParam("uuid") String uuid) throws ArtificerUiException;
 
     /**
      * Called to update the given ontology.
      * @param ontology
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(OntologyBean ontology) throws SrampUiException;
+    public void update(OntologyBean ontology) throws ArtificerUiException;
     
     /**
      * Called to add a new ontology.
      * @param ontology
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void add(OntologyBean ontology) throws SrampUiException;
+    public void add(OntologyBean ontology) throws ArtificerUiException;
 
     /**
      * Called to delete the given ontology.
      * @param uuid
-     * @throws SrampUiException
+     * @throws org.artificer.ui.client.shared.exceptions.ArtificerUiException
      */
     @DELETE
     @Path("{uuid}")
-    public void delete(@PathParam("uuid") String uuid) throws SrampUiException;
+    public void delete(@PathParam("uuid") String uuid) throws ArtificerUiException;
 
 }

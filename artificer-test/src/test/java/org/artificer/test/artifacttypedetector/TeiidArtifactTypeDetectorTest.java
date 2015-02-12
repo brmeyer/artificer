@@ -21,7 +21,7 @@ import org.artificer.test.client.AbstractClientTest;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.integration.teiid.model.TeiidArtifactType;
@@ -38,14 +38,14 @@ import static org.junit.Assert.assertNotNull;
  */
 public final class TeiidArtifactTypeDetectorTest extends AbstractClientTest {
 
-    private void assertManifest(SrampAtomApiClient client) throws Exception {
+    private void assertManifest(ArtificerAtomApiClient client) throws Exception {
         QueryResultSet results = client.buildQuery("/s-ramp/ext/" + VdbManifest.ARTIFACT_TYPE.extendedType()).query();
         assertEquals(1, results.size());
         ArtifactSummary summary = results.get(0);
         assertNotNull(summary);
     }
 
-    private void assertModel(SrampAtomApiClient client, String filename) throws Exception {
+    private void assertModel(ArtificerAtomApiClient client, String filename) throws Exception {
         QueryResultSet results = client.buildQuery("/s-ramp/ext/" + TeiidArtifactType.MODEL.extendedType()
                 + "[@name='" + filename + "']").query();
         assertEquals(1, results.size());
@@ -53,7 +53,7 @@ public final class TeiidArtifactTypeDetectorTest extends AbstractClientTest {
         assertNotNull(summary);
     }
 
-    private void assertXsd(SrampAtomApiClient client, String filename) throws Exception {
+    private void assertXsd(ArtificerAtomApiClient client, String filename) throws Exception {
         QueryResultSet results = client.buildQuery("/s-ramp/xsd/XsdDocument[@name='" + filename + "']").query();
         assertEquals(1, results.size());
         ArtifactSummary summary = results.get(0);
@@ -62,7 +62,7 @@ public final class TeiidArtifactTypeDetectorTest extends AbstractClientTest {
 
     @Test
     public void testBooksVdb() throws Exception {
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
         InputStream stream = null;
         try {
             stream = this.getClass().getResourceAsStream("BooksVdb.vdb");
@@ -92,7 +92,7 @@ public final class TeiidArtifactTypeDetectorTest extends AbstractClientTest {
 
     @Test
     public void testProductsVdb() throws Exception {
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
         InputStream stream = null;
         try {
             stream = this.getClass().getResourceAsStream("ProductsSS_VDB.vdb");

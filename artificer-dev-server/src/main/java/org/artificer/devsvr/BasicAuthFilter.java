@@ -16,7 +16,7 @@
 
 package org.artificer.devsvr;
 
-import org.artificer.common.SrampConfig;
+import org.artificer.common.ArtificerConfig;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +35,8 @@ public class BasicAuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
-        SimplePrincipal principal = new SimplePrincipal(SrampConfig.getMavenReadOnlyUsername());
-        principal.addRole("admin." + SrampConfig.getJCRRepositoryName()); //$NON-NLS-1$
+        SimplePrincipal principal = new SimplePrincipal(ArtificerConfig.getMavenReadOnlyUsername());
+        principal.addRole("admin." + ArtificerConfig.getJCRRepositoryName()); //$NON-NLS-1$
         chain.doFilter(wrapRequest(request, principal), response);
     }
 

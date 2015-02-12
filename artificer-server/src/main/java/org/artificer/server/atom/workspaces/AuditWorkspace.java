@@ -19,7 +19,7 @@ import org.jboss.resteasy.plugins.providers.atom.Category;
 import org.jboss.resteasy.plugins.providers.atom.app.AppCategories;
 import org.jboss.resteasy.plugins.providers.atom.app.AppCollection;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomConstants;
+import org.artificer.atom.ArtificerAtomConstants;
 
 /**
  * Models the custom audit workspace.  This workspace is not defined by the
@@ -48,7 +48,7 @@ public class AuditWorkspace extends AbstractWorkspace {
 		collection.getCategories().add(categories);
 
 		Category category = new Category();
-		category.setScheme(SrampAtomConstants.X_S_RAMP_TYPE_URN);
+		category.setScheme(ArtificerAtomConstants.X_S_RAMP_TYPE_URN);
 		category.setTerm("audit"); //$NON-NLS-1$
 		category.setLabel("Audit"); //$NON-NLS-1$
 		categories.getCategory().add(category);

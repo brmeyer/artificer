@@ -25,7 +25,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.ArtifactBuilder;
 import org.artificer.integration.artifactbuilder.XmlArtifactBuilder;
 import org.artificer.common.query.xpath.StaticNamespaceContext;
@@ -92,7 +92,7 @@ public class WebXmlArtifactBuilder extends XmlArtifactBuilder {
             if (description != null && description.trim().length() > 0) {
                 listener.setDescription(description);
             }
-            SrampModelUtils.setCustomProperty(listener, "listener-class", listenerClass);
+            ArtificerModelUtils.setCustomProperty(listener, "listener-class", listenerClass);
             derivedArtifacts.add(listener);
         }
     }
@@ -119,8 +119,8 @@ public class WebXmlArtifactBuilder extends XmlArtifactBuilder {
 
             filter.setName(filterName);
             filter.setDescription(description);
-            SrampModelUtils.setCustomProperty(filter, "display-name", displayName);
-            SrampModelUtils.setCustomProperty(filter, "filter-class", filterClass);
+            ArtificerModelUtils.setCustomProperty(filter, "display-name", displayName);
+            ArtificerModelUtils.setCustomProperty(filter, "filter-class", filterClass);
             derivedArtifacts.add(filter);
         }
     }
@@ -139,13 +139,13 @@ public class WebXmlArtifactBuilder extends XmlArtifactBuilder {
 
             filterMapping.setName(filterName + " Mapping");
             filterMapping.setDescription("Maps URLs of the form '"+urlPattern+"' to filter "+filterName+".");
-            SrampModelUtils.setCustomProperty(filterMapping, "filter-name", filterName);
-            SrampModelUtils.setCustomProperty(filterMapping, "url-pattern", urlPattern);
+            ArtificerModelUtils.setCustomProperty(filterMapping, "filter-name", filterName);
+            ArtificerModelUtils.setCustomProperty(filterMapping, "url-pattern", urlPattern);
 
             WebXmlArtifactCollection index = (WebXmlArtifactCollection) derivedArtifacts;
             ExtendedArtifactType filter = index.lookupFilter(filterName);
             if (filter != null) {
-                SrampModelUtils.addGenericRelationship(filterMapping, "mapsFilter", filter.getUuid());
+                ArtificerModelUtils.addGenericRelationship(filterMapping, "mapsFilter", filter.getUuid());
             }
 
             derivedArtifacts.add(filterMapping);
@@ -174,8 +174,8 @@ public class WebXmlArtifactBuilder extends XmlArtifactBuilder {
 
             servlet.setName(servletName);
             servlet.setDescription(description);
-            SrampModelUtils.setCustomProperty(servlet, "display-name", displayName);
-            SrampModelUtils.setCustomProperty(servlet, "servlet-class", servletClass);
+            ArtificerModelUtils.setCustomProperty(servlet, "display-name", displayName);
+            ArtificerModelUtils.setCustomProperty(servlet, "servlet-class", servletClass);
             derivedArtifacts.add(servlet);
         }
     }
@@ -194,13 +194,13 @@ public class WebXmlArtifactBuilder extends XmlArtifactBuilder {
 
             servletMapping.setName(servletName + " Mapping");
             servletMapping.setDescription("Maps URLs of the form '"+urlPattern+"' to servlet "+servletName+".");
-            SrampModelUtils.setCustomProperty(servletMapping, "servlet-name", servletName);
-            SrampModelUtils.setCustomProperty(servletMapping, "url-pattern", urlPattern);
+            ArtificerModelUtils.setCustomProperty(servletMapping, "servlet-name", servletName);
+            ArtificerModelUtils.setCustomProperty(servletMapping, "url-pattern", urlPattern);
 
             WebXmlArtifactCollection index = (WebXmlArtifactCollection) derivedArtifacts;
             ExtendedArtifactType servlet = index.lookupServlet(servletName);
             if (servlet != null) {
-                SrampModelUtils.addGenericRelationship(servletMapping, "mapsServlet", servlet.getUuid());
+                ArtificerModelUtils.addGenericRelationship(servletMapping, "mapsServlet", servlet.getUuid());
             }
 
             derivedArtifacts.add(servletMapping);

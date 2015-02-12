@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 
 /**
  * Updates an artifact's meta-data in the s-ramp repository. This requires an active artifact to exist in the
@@ -42,7 +42,7 @@ public class UpdateMetaDataCommand extends BuiltInShellCommand {
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
 			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;

@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.common.ArtifactType;
 import org.artificer.shell.api.InvalidCommandArgumentException;
 
@@ -34,7 +34,7 @@ import org.artificer.shell.api.InvalidCommandArgumentException;
  */
 public class CreateArtifactCommand extends BuiltInShellCommand {
 
-    private SrampAtomApiClient client;
+    private ArtificerAtomApiClient client;
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public class CreateArtifactCommand extends BuiltInShellCommand {
         String descriptionArg = this.optionalArgument(2);
 
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
-        client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+        client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
             print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;

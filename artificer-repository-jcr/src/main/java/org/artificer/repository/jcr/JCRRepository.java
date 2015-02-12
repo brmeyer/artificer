@@ -21,8 +21,8 @@ import org.modeshape.common.collection.Problems;
 import org.modeshape.jcr.RepositoryConfiguration;
 import org.modeshape.jcr.api.nodetype.NodeTypeManager;
 import org.overlord.commons.services.ServiceRegistryUtil;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
 public class JCRRepository {
 
     private static Logger log = LoggerFactory.getLogger(JCRRepository.class);
-    private static String S_RAMP_JNDI = "jcr/sramp";
+    private static String ARTIFICER_JNDI = "jcr/artificer";
 
     private Repository repository;
 
@@ -75,7 +75,7 @@ public class JCRRepository {
         }
         //Using the Modeshape Service
         if (configUrl==null) {
-            String srampJndiLocation = SrampConfig.getConfigProperty(SrampConstants.SRAMP_CONFIG_JCR_REPO_JNDI_PATH, S_RAMP_JNDI);
+            String srampJndiLocation = ArtificerConfig.getConfigProperty(ArtificerConstants.ARTIFICER_CONFIG_JCR_REPO_JNDI_PATH, ARTIFICER_JNDI);
             log.info(Messages.i18n.format("CONNECT_TO_MS", srampJndiLocation));
             try {
                 InitialContext context = new InitialContext();
@@ -125,7 +125,7 @@ public class JCRRepository {
      * @throws Exception
      */
     private URL getModeshapeConfigurationUrl() throws Exception {
-        String configUrl = SrampConfig.getConfigProperty("sramp.modeshape.config.url", null);
+        String configUrl = ArtificerConfig.getConfigProperty("sramp.modeshape.config.url", null);
         if (configUrl == null) {
             return null;
         }
@@ -183,7 +183,7 @@ public class JCRRepository {
             NodeTypeManager manager = (NodeTypeManager) session.getWorkspace().getNodeTypeManager();
 
             // Register the ModeShape S-RAMP node types ...
-            is = getClass().getResourceAsStream("sramp.cnd");
+            is = getClass().getResourceAsStream("artificer.cnd");
             if (is == null) {
                 throw new RuntimeException(Messages.i18n.format("CND_NOT_FOUND"));
             }

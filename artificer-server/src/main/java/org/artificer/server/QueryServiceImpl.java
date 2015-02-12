@@ -20,7 +20,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
 import org.artificer.repository.QueryManager;
 import org.artificer.repository.query.ArtifactSet;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.query.ArtificerQuery;
 import org.artificer.server.core.api.PagedResult;
 
 import javax.ejb.Remote;
@@ -98,8 +98,8 @@ public class QueryServiceImpl extends AbstractServiceImpl implements QueryServic
 
     private ArtifactSet executeQuery(String query, String orderBy, Boolean ascending) throws Exception {
        QueryManager queryManager = queryManager();
-        SrampQuery srampQuery = queryManager.createQuery(query, orderBy, ascending);
-        return srampQuery.executeQuery();
+        ArtificerQuery artificerQuery = queryManager.createQuery(query, orderBy, ascending);
+        return artificerQuery.executeQuery();
     }
 
     @Override

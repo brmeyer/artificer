@@ -18,11 +18,11 @@ git add .
 git commit -m "Prepare for release $RELEASE_VERSION"
 git push origin master
 
-git tag -a -m "Tagging release $RELEASE_VERSION" s-ramp-$RELEASE_VERSION
-git push origin s-ramp-$RELEASE_VERSION
+git tag -a -m "Tagging release $RELEASE_VERSION" artificer-$RELEASE_VERSION
+git push origin artificer-$RELEASE_VERSION
 
 mvn deploy -Pgenerate-docs,upload-docs -Dkeyfile=$KEYFILE
-scp s-ramp-distro/assembly/target/s-ramp-$RELEASE_VERSION.zip overlord@filemgmt.jboss.org:/downloads_htdocs/overlord/sramp
+scp artificer-distro/assembly/target/artificer-$RELEASE_VERSION.zip overlord@filemgmt.jboss.org:/downloads_htdocs/artificer
 
 mvn versions:set -DnewVersion=$DEV_VERSION
 find . -name '*.versionsBackup' -exec rm -f {} \;

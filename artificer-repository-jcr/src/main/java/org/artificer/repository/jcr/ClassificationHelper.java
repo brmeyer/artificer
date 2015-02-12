@@ -18,7 +18,7 @@ package org.artificer.repository.jcr;
 import java.net.URI;
 import java.util.Collection;
 
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerException;
 
 
 /**
@@ -38,17 +38,17 @@ public interface ClassificationHelper {
 	 * cannot be resolved using any of the ontologies known to the S-RAMP repository
 	 * then an exception will be thrown.
 	 * @param classifiedBy
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public URI resolve(String classifiedBy) throws SrampException;
+	public URI resolve(String classifiedBy) throws ArtificerException;
 
 	/**
 	 * Normalizes a single classification URI to the list of URIs matching itself and all
 	 * of its ancestors within its ontology.
 	 * @param classification
-	 * @throws SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public Collection<URI> normalize(URI classification) throws SrampException;
+	public Collection<URI> normalize(URI classification) throws ArtificerException;
 
 	/**
 	 * Resolves all of the "classified-by" values into full URIs.  Note that these
@@ -56,17 +56,17 @@ public interface ClassificationHelper {
 	 * this method also serves to validate all of the values.  If one of the values
 	 * cannot be resolved to an existing ontology, this method will throw.
 	 * @param classifiedBy
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
 	 */
-	public Collection<URI> resolveAll(Collection<String> classifiedBy) throws SrampException;
+	public Collection<URI> resolveAll(Collection<String> classifiedBy) throws ArtificerException;
 
 	/**
 	 * Normalizes all of the classification URIs.  In this context, normalizing the
 	 * cassifications means walking up the ontology and including all ancestors along
 	 * with the specified classifications themselves.
 	 * @param classifications
-     * @throws SrampException
+     * @throws org.artificer.common.ArtificerException
 	 */
-	public Collection<URI> normalizeAll(Collection<URI> classifications) throws SrampException;
+	public Collection<URI> normalizeAll(Collection<URI> classifications) throws ArtificerException;
 
 }

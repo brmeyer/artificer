@@ -17,9 +17,9 @@ package org.artificer.common.audit;
 
 import java.util.List;
 
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType.Property;
 
 /**
  * Some util methods for dealing with audit data structures.

@@ -26,8 +26,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.artificer.repository.jcr.JCRConstants;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType;
 
 /**
  * Maps a JCR auditEntry node to an {@link AuditEntry} bean.
@@ -70,8 +70,8 @@ public class JCRNodeToAuditEntryFactory {
                     } else if (propName.equals(JCRConstants.JCR_PRIMARY_TYPE)) {
                         // Skip this one
                     } else {
-                        org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property p =
-                                new org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property();
+                        AuditItemType.Property p =
+                                new AuditItemType.Property();
                         p.setName(propName);
                         p.setValue(propValue);
                         auditItem.getProperty().add(p);

@@ -47,7 +47,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.artificer.shell.SrampShell</mainClass>
+              <mainClass>org.artificer.shell.ArtificerShell</mainClass>
             </manifest>
           </archive>
         </configuration>

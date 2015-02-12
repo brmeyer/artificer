@@ -24,7 +24,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author Brett Meyer
  */
-public class DuplicateNameException extends SrampConflictException {
+public class DuplicateNameException extends ArtificerConflictException {
 
     private static final long serialVersionUID = -3535532386495478538L;
 

@@ -16,7 +16,7 @@
 package org.artificer.server;
 
 import org.artificer.server.core.api.PagedResult;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
 import org.artificer.repository.AuditManager;
 import org.artificer.repository.audit.AuditEntrySet;
 import org.artificer.server.core.api.AuditService;

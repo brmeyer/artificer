@@ -15,7 +15,7 @@
  */
 package org.artificer.server.atom.services;
 
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 import org.slf4j.Logger;
 
 /**
@@ -31,7 +31,7 @@ public abstract class AbstractResource {
      * @param error
      */
     protected static final void logError(Logger logger, String message, Throwable error) {
-        if (!(error instanceof SrampUserException)) {
+        if (!(error instanceof ArtificerUserException)) {
             logger.error(message, error);
         }
     }

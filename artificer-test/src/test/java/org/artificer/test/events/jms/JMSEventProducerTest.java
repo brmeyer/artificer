@@ -20,10 +20,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.artificer.events.ArtifactUpdateEvent;
 import org.artificer.events.OntologyUpdateEvent;
 import org.artificer.test.AbstractIntegrationTest;
@@ -72,7 +72,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        System.setProperty(SrampConstants.SRAMP_CONFIG_EVENT_JMS_ENABLED, "true"); //$NON-NLS-1$
+        System.setProperty(ArtificerConstants.ARTIFICER_CONFIG_EVENT_JMS_ENABLED, "true"); //$NON-NLS-1$
     }
     
     @Test
@@ -85,7 +85,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         Connection connection = subscribe(lock);
         
         // create
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
         ExtendedArtifactType artifact = new ExtendedArtifactType();
         artifact.setArtifactType(BaseArtifactEnum.EXTENDED_ARTIFACT_TYPE);
         artifact.setExtendedType("FooArtifactType"); //$NON-NLS-1$
@@ -157,7 +157,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         Connection connection = subscribe(lock);
         
         // create
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
         RDF rdf = new RDF();
         rdf.getOtherAttributes().put(new QName("http://www.w3.org/XML/1998/namespace", "base"), "foo");
         Ontology ontology = new Ontology();
@@ -195,7 +195,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         assertNotNull(textMessage);
         assertEquals("sramp:ontologyCreated", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
-        SrampOntology eventOntology = mapper.readValue(textMessage.getText(), SrampOntology.class);
+        ArtificerOntology eventOntology = mapper.readValue(textMessage.getText(), ArtificerOntology.class);
         assertNotNull(eventOntology);
         assertEquals(rdf.getOntology().getID(), eventOntology.getId());
         assertEquals(rdf.getOntology().getLabel(), eventOntology.getLabel());
@@ -224,7 +224,7 @@ public class JMSEventProducerTest extends AbstractIntegrationTest {
         assertNotNull(textMessage);
         assertEquals("sramp:ontologyDeleted", textMessage.getJMSType());
         assertTrue(textMessage.getText() != null && textMessage.getText().length() > 0);
-        eventOntology = mapper.readValue(textMessage.getText(), SrampOntology.class);
+        eventOntology = mapper.readValue(textMessage.getText(), ArtificerOntology.class);
         assertNotNull(eventOntology);
         assertEquals(rdf.getOntology().getID(), eventOntology.getId());
         

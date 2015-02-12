@@ -29,10 +29,10 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.error.ArtifactNotFoundException;
 import org.artificer.repository.error.ArtifactConflictException;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.query.ArtificerQuery;
 
 import java.io.InputStream;
 import java.util.Collections;
@@ -437,7 +437,7 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         // Now update the artifact's generic relationships
         artifact = persistenceManager.getArtifact(uuid1, ArtifactType.XsdDocument());
         assertTrue("Expected 0 relationships.", artifact.getRelationship().isEmpty());
-        SrampModelUtils.addGenericRelationship(artifact, "NoTargetRelationship", null);
+        ArtificerModelUtils.addGenericRelationship(artifact, "NoTargetRelationship", null);
         persistenceManager.updateArtifact(artifact, ArtifactType.XsdDocument());
 
         // Now verify that the relationship was stored
@@ -457,17 +457,17 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         uuid2 = artifact2.getUuid();
 
         // Add a second relationship, this time with a target.
-        SrampModelUtils.addGenericRelationship(artifact, "TargetedRelationship", uuid2);
+        ArtificerModelUtils.addGenericRelationship(artifact, "TargetedRelationship", uuid2);
         persistenceManager.updateArtifact(artifact, ArtifactType.XsdDocument());
 
         // Now verify that the targeted relationship was stored
         artifact = persistenceManager.getArtifact(uuid1, ArtifactType.XsdDocument());
         Assert.assertEquals("Expected 2 relationships.", 2, artifact.getRelationship().size());
-        Relationship relationship = SrampModelUtils.getGenericRelationship(artifact, "NoTargetRelationship");
+        Relationship relationship = ArtificerModelUtils.getGenericRelationship(artifact, "NoTargetRelationship");
         Assert.assertNotNull(relationship);
         Assert.assertEquals("NoTargetRelationship", relationship.getRelationshipType());
         Assert.assertEquals(Collections.EMPTY_LIST, relationship.getRelationshipTarget());
-        relationship = SrampModelUtils.getGenericRelationship(artifact, "TargetedRelationship");
+        relationship = ArtificerModelUtils.getGenericRelationship(artifact, "TargetedRelationship");
         Assert.assertNotNull(relationship);
         Assert.assertEquals("TargetedRelationship", relationship.getRelationshipType());
         Assert.assertEquals(1, relationship.getRelationshipTarget().size()); // has only one target
@@ -484,17 +484,17 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         uuid3 = artifact3.getUuid();
 
         // Add a third relationship, again with a target.
-        SrampModelUtils.addGenericRelationship(artifact, "TargetedRelationship", uuid3);
+        ArtificerModelUtils.addGenericRelationship(artifact, "TargetedRelationship", uuid3);
         persistenceManager.updateArtifact(artifact, ArtifactType.XsdDocument());
 
         // More verifications
         artifact = persistenceManager.getArtifact(uuid1, ArtifactType.XsdDocument());
         Assert.assertEquals("Expected 2 relationships.", 2, artifact.getRelationship().size());
-        relationship = SrampModelUtils.getGenericRelationship(artifact, "NoTargetRelationship");
+        relationship = ArtificerModelUtils.getGenericRelationship(artifact, "NoTargetRelationship");
         Assert.assertNotNull(relationship);
         Assert.assertEquals("NoTargetRelationship", relationship.getRelationshipType());
         Assert.assertEquals(Collections.EMPTY_LIST, relationship.getRelationshipTarget());
-        relationship = SrampModelUtils.getGenericRelationship(artifact, "TargetedRelationship");
+        relationship = ArtificerModelUtils.getGenericRelationship(artifact, "TargetedRelationship");
         Assert.assertNotNull(relationship);
         Assert.assertEquals("TargetedRelationship", relationship.getRelationshipType());
         Assert.assertEquals(2, relationship.getRelationshipTarget().size());
@@ -507,7 +507,7 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         Assert.assertEquals(expected, actual);
 
         // Add a fourth (bogus) relationship
-        SrampModelUtils.addGenericRelationship(artifact, "TargetedRelationship", "not-a-valid-uuid");
+        ArtificerModelUtils.addGenericRelationship(artifact, "TargetedRelationship", "not-a-valid-uuid");
     	try {
 			persistenceManager.updateArtifact(artifact, ArtifactType.XsdDocument());
 			Assert.fail("Expected an update failure.");
@@ -540,7 +540,7 @@ public class JCRPersistenceTest extends AbstractNoAuditingJCRPersistenceTest {
         BaseArtifactType deleted = persistenceManager.getArtifact(document.getUuid(), at);
         Assert.assertNull(deleted);
 
-        SrampQuery query = queryManager.createQuery("/s-ramp[@uuid = ?]");
+        ArtificerQuery query = queryManager.createQuery("/s-ramp[@uuid = ?]");
         query.setString(document.getUuid());
         ArtifactSet artifactSet = query.executeQuery();
         Assert.assertEquals(0, artifactSet.size());

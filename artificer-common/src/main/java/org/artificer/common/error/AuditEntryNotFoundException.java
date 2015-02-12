@@ -23,7 +23,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class AuditEntryNotFoundException extends SrampUserException {
+public class AuditEntryNotFoundException extends ArtificerUserException {
 
     private static final long serialVersionUID = 8446724007853150213L;
 

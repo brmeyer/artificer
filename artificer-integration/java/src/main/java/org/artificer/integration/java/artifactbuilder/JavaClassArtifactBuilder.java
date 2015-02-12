@@ -21,7 +21,7 @@ import org.artificer.integration.artifactbuilder.ArtifactBuilder;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.artificer.common.ArtifactContent;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.AbstractArtifactBuilder;
 import org.artificer.integration.artifactbuilder.RelationshipContext;
 import org.artificer.integration.java.model.JavaModel;
@@ -57,8 +57,8 @@ public class JavaClassArtifactBuilder extends AbstractArtifactBuilder {
         if (className.lastIndexOf('.') > 0) {
             shortName = className.substring(className.lastIndexOf('.') + 1);
         }
-        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_PACKAGE_NAME, packageName);
-        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_CLASS_NAME, shortName);
+        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_PACKAGE_NAME, packageName);
+        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_CLASS_NAME, shortName);
         
         return this;
     }

@@ -20,7 +20,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Relationship;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.ArtifactTypeEnum;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.QNameRelationshipSource;
 import org.artificer.integration.artifactbuilder.XmlArtifactBuilder;
 import org.artificer.common.query.xpath.StaticNamespaceContext;
@@ -55,7 +55,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
         try {
             // Pull out the target namespace and save it as a custom property
             String targetNS = rootElement.getAttribute("targetNamespace"); //$NON-NLS-1$
-            SrampModelUtils.setCustomProperty(getPrimaryArtifact(), "targetNamespace", targetNS); //$NON-NLS-1$
+            ArtificerModelUtils.setCustomProperty(getPrimaryArtifact(), "targetNamespace", targetNS); //$NON-NLS-1$
             // Pull out the name and set it (unless the name has already been set)
             if ("switchyard.xml".equals(getPrimaryArtifact().getName()) && rootElement.hasAttribute("name")) { //$NON-NLS-1$ //$NON-NLS-2$
                 String name = rootElement.getAttribute("name"); //$NON-NLS-1$
@@ -85,7 +85,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 String promote = node.getAttribute("promote"); //$NON-NLS-1$
                 BaseArtifactType component = findComponentByName(getDerivedArtifacts(), promote);
                 if (component != null) {
-                    SrampModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_PROMOTES, component.getUuid());
+                    ArtificerModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_PROMOTES, component.getUuid());
                 }
             }
 
@@ -93,7 +93,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
             if (iface != null) {
                 if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                     String ifaceName = iface.getAttribute("interface"); //$NON-NLS-1$
-                    Relationship relationship = SrampModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
+                    Relationship relationship = ArtificerModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
                     relationshipSources.add(new JavaRelationshipSource(ifaceName, null,
                             relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_INTERFACE));
                 }
@@ -102,7 +102,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
             if (iface != null) {
                 if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                     String wsdlInfo = iface.getAttribute("interface"); //$NON-NLS-1$
-                    Relationship relationship = SrampModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
+                    Relationship relationship = ArtificerModelUtils.addGenericRelationship(serviceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
                     // TODO Implement finding an artifact in the s-ramp repo given the wsdl information in switchyard.xml (why couldn't a QName be used in there???)
                 }
             }
@@ -123,13 +123,13 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
             if (implBean != null) {
                 if (implBean.hasAttribute("class")) { //$NON-NLS-1$
                     String implClassName = implBean.getAttribute("class"); //$NON-NLS-1$
-                    Relationship relationship = SrampModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                    Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                     relationshipSources.add(new JavaRelationshipSource(implClassName, null,
                             relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_CLASS));
                 }
                 if (implBean.hasAttribute("requires")) { //$NON-NLS-1$
                     String requires = implBean.getAttribute("requires"); //$NON-NLS-1$
-                    SrampModelUtils.setCustomProperty(componentArtifact, "requires", requires); //$NON-NLS-1$
+                    ArtificerModelUtils.setCustomProperty(componentArtifact, "requires", requires); //$NON-NLS-1$
                 }
             }
             Element implCamel = (Element) query(node, "camel:implementation.camel", XPathConstants.NODE); //$NON-NLS-1$
@@ -137,12 +137,12 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 Element xml = (Element) query(implCamel, "camel:xml", XPathConstants.NODE); //$NON-NLS-1$
                 if (xml != null) {
                     String path = xml.getAttribute("path"); //$NON-NLS-1$
-                    Relationship relationship = SrampModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                    Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                     // TODO Implement finding a camel config artifact in the repository
                 }
                 if (implCamel.hasAttribute("requires")) { //$NON-NLS-1$
                     String requires = implCamel.getAttribute("requires"); //$NON-NLS-1$
-                    SrampModelUtils.setCustomProperty(componentArtifact, "requires", requires); //$NON-NLS-1$
+                    ArtificerModelUtils.setCustomProperty(componentArtifact, "requires", requires); //$NON-NLS-1$
                 }
             }
 
@@ -154,7 +154,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 if (iface != null) {
                     if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                         String ifaceName = iface.getAttribute("interface"); //$NON-NLS-1$
-                        Relationship relationship = SrampModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_REFERENCES, null);
+                        Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_REFERENCES, null);
                         relationshipSources.add(new JavaRelationshipSource(ifaceName, null,
                                 relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_INTERFACE));
                     }
@@ -163,7 +163,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 if (iface != null) {
                     if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                         String wsdlInfo = iface.getAttribute("interface"); //$NON-NLS-1$
-                        Relationship relationship = SrampModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_REFERENCES, null);
+                        Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_REFERENCES, null);
                         // TODO Implement finding an artifact in the s-ramp repo given the wsdl information in switchyard.xml (why couldn't a QName be used in there???)
                     }
                 }
@@ -177,13 +177,13 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 ExtendedArtifactType componentServiceArtifact = SwitchYardModel.newComponentServiceArtifact(name);
                 componentServiceArtifact.setUuid(UUID.randomUUID().toString());
                 getDerivedArtifacts().add(componentServiceArtifact);
-                SrampModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_OFFERS, componentServiceArtifact.getUuid());
+                ArtificerModelUtils.addGenericRelationship(componentArtifact, SwitchYardModel.REL_OFFERS, componentServiceArtifact.getUuid());
 
                 Element iface = (Element) query(componentSvc, "sca:interface.java", XPathConstants.NODE); //$NON-NLS-1$
                 if (iface != null) {
                     if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                         String ifaceName = iface.getAttribute("interface"); //$NON-NLS-1$
-                        Relationship relationship = SrampModelUtils.addGenericRelationship(componentServiceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
+                        Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentServiceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
                         relationshipSources.add(new JavaRelationshipSource(ifaceName, null,
                                 relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_INTERFACE));
                     }
@@ -192,14 +192,14 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 if (iface != null) {
                     if (iface.hasAttribute("interface")) { //$NON-NLS-1$
                         String wsdlInfo = iface.getAttribute("interface"); //$NON-NLS-1$
-                        Relationship relationship = SrampModelUtils.addGenericRelationship(componentServiceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
+                        Relationship relationship = ArtificerModelUtils.addGenericRelationship(componentServiceArtifact, SwitchYardModel.REL_IMPLEMENTS, null);
                         // TODO Implement finding an artifact in the s-ramp repo given the wsdl information in switchyard.xml (why couldn't a QName be used in there???)
                     }
                 }
 
                 if (componentSvc.hasAttribute("requires")) { //$NON-NLS-1$
                     String requires = componentSvc.getAttribute("requires"); //$NON-NLS-1$
-                    SrampModelUtils.setCustomProperty(componentServiceArtifact, "requires", requires); //$NON-NLS-1$
+                    ArtificerModelUtils.setCustomProperty(componentServiceArtifact, "requires", requires); //$NON-NLS-1$
                 }
 
             }
@@ -234,26 +234,26 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
             ExtendedArtifactType transformerArtifact = SwitchYardModel.newTransformerArtifact(name);
             String type = node.getLocalName();
             type = type.substring(type.lastIndexOf('.') + 1);
-            SrampModelUtils.setCustomProperty(transformerArtifact, SwitchYardModel.PROP_TRANSFORMER_TYPE, type);
+            ArtificerModelUtils.setCustomProperty(transformerArtifact, SwitchYardModel.PROP_TRANSFORMER_TYPE, type);
             if (node.hasAttribute("class")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 relationshipSources.add(new JavaRelationshipSource(node.getAttribute("class"), null,
                         relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_CLASS));
             }
             if (node.hasAttribute("bean")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 // TODO Implement finding a java class artifact by its cdi bean name
             }
             if (node.hasAttribute("xsltFile")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 // TODO Implement finding an xslt artifact in the repository
             }
             if (node.hasAttribute("config")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 // TODO Implement finding a smooks config artifact in the repository
             }
             if (node.hasAttribute("from")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_TRANSFORMS_FROM, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_TRANSFORMS_FROM, null);
                 String from = node.getAttribute("from");
                 if (from.startsWith("{")) {
                     relationshipSources.add(new QNameRelationshipSource(QName.valueOf(from), null,
@@ -264,7 +264,7 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
                 }
             }
             if (node.hasAttribute("to")) { //$NON-NLS-1$
-                Relationship relationship = SrampModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_TRANSFORMS_TO, null);
+                Relationship relationship = ArtificerModelUtils.addGenericRelationship(transformerArtifact, SwitchYardModel.REL_TRANSFORMS_TO, null);
                 String to = node.getAttribute("to");
                 if (to.startsWith("{")) {
                     relationshipSources.add(new QNameRelationshipSource(QName.valueOf(to), null,
@@ -292,10 +292,10 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
             ExtendedArtifactType validatorArtifact = SwitchYardModel.newValidateArtifact(name);
             String type = node.getLocalName();
             type = type.substring(type.lastIndexOf('.') + 1);
-            SrampModelUtils.setCustomProperty(validatorArtifact, SwitchYardModel.PROP_VALIDATE_TYPE, type);
+            ArtificerModelUtils.setCustomProperty(validatorArtifact, SwitchYardModel.PROP_VALIDATE_TYPE, type);
 
             // Unresolved 'validates' reference
-            Relationship relationship = SrampModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_VALIDATES, null);
+            Relationship relationship = ArtificerModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_VALIDATES, null);
             if (name.startsWith("{")) {
                 relationshipSources.add(new QNameRelationshipSource(QName.valueOf(name), null,
                         relationship.getRelationshipTarget(), ArtifactTypeEnum.ElementDeclaration.getModel(), ArtifactTypeEnum.ElementDeclaration.getType()));
@@ -306,12 +306,12 @@ public class SwitchYardXmlArtifactBuilder extends XmlArtifactBuilder {
 
             // Unresolved 'implementedBy' reference
             if (node.hasAttribute("class")) { //$NON-NLS-1$
-                relationship = SrampModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                relationship = ArtificerModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 relationshipSources.add(new JavaRelationshipSource(node.getAttribute("class"), null,
                         relationship.getRelationshipTarget(), "ext", JavaModel.TYPE_JAVA_CLASS));
             }
             if (node.hasAttribute("bean")) { //$NON-NLS-1$
-                relationship = SrampModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
+                relationship = ArtificerModelUtils.addGenericRelationship(validatorArtifact, SwitchYardModel.REL_IMPLEMENTED_BY, null);
                 // TODO Implement finding a java class artifact by its cdi bean name
             }
             if (node.hasAttribute("schemaType")) { //$NON-NLS-1$

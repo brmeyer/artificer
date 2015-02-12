@@ -26,14 +26,14 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Target;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactTypeEnum;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.repository.AuditManager;
 import org.artificer.repository.AuditManagerFactory;
 import org.artificer.repository.PersistenceFactory;
 import org.artificer.repository.QueryManager;
 import org.artificer.repository.QueryManagerFactory;
 import org.artificer.repository.query.ArtifactSet;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.query.ArtificerQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +56,8 @@ public abstract class AbstractJCRPersistenceTest {
 
     public static void setupPersistence() {
 		// use the in-memory config for unit tests
-		System.setProperty("sramp.modeshape.config.url", "classpath://" + AbstractJCRPersistenceTest.class.getName()
-				+ "/META-INF/modeshape-configs/junit-sramp-config.json");
+		System.setProperty("artificer.modeshape.config.url", "classpath://" + AbstractJCRPersistenceTest.class.getName()
+				+ "/META-INF/modeshape-configs/junit-artificer-config.json");
         persistenceManager = PersistenceFactory.newInstance();
         queryManager = QueryManagerFactory.newInstance();
         auditManager = AuditManagerFactory.newInstance();
@@ -71,7 +71,7 @@ public abstract class AbstractJCRPersistenceTest {
     @AfterClass
     public static void cleanup() {
         persistenceManager.shutdown();
-        System.clearProperty(SrampConstants.SRAMP_CONFIG_AUDITING);
+        System.clearProperty(ArtificerConstants.ARTIFICER_CONFIG_AUDITING);
     }
     
     /**
@@ -80,7 +80,7 @@ public abstract class AbstractJCRPersistenceTest {
      * @param filename
      * @param document
      * @param type
-     * @throws org.artificer.common.SrampException
+     * @throws org.artificer.common.ArtificerException
      */
     protected BaseArtifactType addArtifact(String resourcePath, String filename, XmlDocument document, BaseArtifactEnum type) throws Exception {
         InputStream contentStream = this.getClass().getResourceAsStream(resourcePath + filename);
@@ -108,7 +108,7 @@ public abstract class AbstractJCRPersistenceTest {
      */
     protected BaseArtifactType assertSingleArtifact(ArtifactTypeEnum type, String name) throws Exception {
         String q = String.format("/s-ramp/%1$s/%2$s[@name = ?]", type.getModel(), type.getType()); //$NON-NLS-1$
-        SrampQuery query = queryManager.createQuery(q);
+        ArtificerQuery query = queryManager.createQuery(q);
         query.setString(name);
         ArtifactSet artifactSet = null;
         try {
@@ -136,7 +136,7 @@ public abstract class AbstractJCRPersistenceTest {
      * @throws Exception
      */
     protected BaseArtifactType getArtifactByUUID(String uuid) throws Exception {
-        SrampQuery query = queryManager.createQuery("/s-ramp[@uuid = ?]"); //$NON-NLS-1$
+        ArtificerQuery query = queryManager.createQuery("/s-ramp[@uuid = ?]"); //$NON-NLS-1$
         query.setString(uuid);
         ArtifactSet artifactSet = null;
         try {

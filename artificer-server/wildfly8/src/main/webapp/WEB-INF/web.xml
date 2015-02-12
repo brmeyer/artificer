@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <distributable/> 
   <listener>
-    <listener-class>org.artificer.server.SrampLifeCycle</listener-class>
+    <listener-class>org.artificer.server.ArtificerLifeCycle</listener-class>
   </listener>
 
   <servlet>
@@ -10,7 +10,7 @@
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>org.artificer.server.atom.services.SRAMPApplication</param-value>
+      <param-value>org.artificer.server.atom.services.ArtificerApplication</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

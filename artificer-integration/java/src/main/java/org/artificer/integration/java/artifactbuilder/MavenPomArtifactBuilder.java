@@ -22,7 +22,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.artificer.common.ArtifactContent;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.artifactbuilder.AbstractArtifactBuilder;
 import org.artificer.integration.artifactbuilder.ArtifactBuilder;
 import org.artificer.integration.artifactbuilder.RelationshipContext;
@@ -48,22 +48,22 @@ public class MavenPomArtifactBuilder extends AbstractArtifactBuilder {
 	        ((ExtendedDocument) primaryArtifact).setExtendedType(JavaModel.TYPE_MAVEN_POM_XML);
 	        for (String key :project.getProperties().stringPropertyNames()) {
 	        	String value = project.getProperties().getProperty(key);
-	        	SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PROPERTY + key, value);
+	        	ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PROPERTY + key, value);
 	        }
 	        //set core properties when not specified on the request
 	        if (primaryArtifact.getDescription()==null) primaryArtifact.setDescription(project.getDescription());
 	        if (primaryArtifact.getName()==null) primaryArtifact.setName(project.getName());
 	        if (primaryArtifact.getVersion()==null) primaryArtifact.setVersion(project.getVersion());
 	        //set the GAV and packaging info
-	        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_ARTIFACT_ID, model.getArtifactId());
-	        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_GROUP_ID, model.getGroupId());
-	        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_VERSION, model.getVersion());
-	        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PACKAGING, model.getPackaging());
+	        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_ARTIFACT_ID, model.getArtifactId());
+	        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_GROUP_ID, model.getGroupId());
+	        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_VERSION, model.getVersion());
+	        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PACKAGING, model.getPackaging());
 	        //set the parent GAV info
 	        if (model.getParent()!=null) {
-		        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_ARTIFACT_ID, model.getParent().getArtifactId());
-		        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_GROUP_ID, model.getParent().getGroupId());
-		        SrampModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_VERSION, model.getParent().getVersion());
+		        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_ARTIFACT_ID, model.getParent().getArtifactId());
+		        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_GROUP_ID, model.getParent().getGroupId());
+		        ArtificerModelUtils.setCustomProperty(primaryArtifact, JavaModel.PROP_MAVEN_PARENT_VERSION, model.getParent().getVersion());
 	        }
 	        
 	        return this;

@@ -21,9 +21,9 @@ import java.util.Map;
 
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.SrampAtomUtils;
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Models a summary of a single S-RAMP artifact from a Feed (result of an
@@ -48,7 +48,7 @@ public class ArtifactSummary {
 	 * @return the artifact type
 	 */
 	public ArtifactType getType() {
-		return SrampAtomUtils.getArtifactType(entry);
+		return ArtificerAtomUtils.getArtifactType(entry);
 	}
 
 	/**
@@ -116,10 +116,10 @@ public class ArtifactSummary {
 	 */
 	public String getCustomPropertyValue(String propertyName) {
 	    if (artifact == null) {
-	        artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+	        artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
 	    }
 	    if (artifact != null) {
-	        return SrampModelUtils.getCustomProperty(artifact, propertyName);
+	        return ArtificerModelUtils.getCustomProperty(artifact, propertyName);
 	    } else {
 	        return null;
 	    }
@@ -134,10 +134,10 @@ public class ArtifactSummary {
     public Map<String, String> getCustomPropertiesByPrefix(String prefix) {
         Map<String, String> result = new HashMap<String, String>();
         if (artifact == null) {
-            artifact = SrampAtomUtils.unwrapSrampArtifact(entry);
+            artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
         }
         if (artifact != null) {
-            result = SrampModelUtils.getCustomPropertiesByPrefix(artifact, prefix);
+            result = ArtificerModelUtils.getCustomPropertiesByPrefix(artifact, prefix);
         }
         return result;
     }

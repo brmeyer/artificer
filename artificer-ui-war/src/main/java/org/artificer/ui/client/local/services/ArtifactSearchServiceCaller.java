@@ -19,7 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.artificer.ui.client.local.services.callback.IServiceInvocationHandler;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -60,7 +60,7 @@ public class ArtifactSearchServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteSearchService.call(successCallback, errorCallback).search(searchBean);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }

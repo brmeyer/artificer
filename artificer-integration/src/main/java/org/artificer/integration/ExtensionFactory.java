@@ -25,7 +25,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.commons.services.ServiceRegistryUtil;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +84,7 @@ public class ExtensionFactory {
         // Allow users to provide a directory path where we will check for JARs that
         // contain extension implementations.
         Collection<ClassLoader> loaders = new LinkedList<ClassLoader>();
-        String customDirPath = System.getProperty(SrampConstants.SRAMP_CUSTOM_EXTENSION_DIR);
+        String customDirPath = System.getProperty(ArtificerConstants.ARTIFICER_CUSTOM_EXTENSION_DIR);
         if (customDirPath != null && customDirPath.trim().length() > 0) {
             File directory = new File(customDirPath);
             if (directory.isDirectory()) {

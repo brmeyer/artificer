@@ -17,7 +17,7 @@ package org.artificer.atom.mappers;
 
 import javax.xml.namespace.QName;
 
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 import org.w3._2000._01.rdf_schema_.SubClassOf;
 import org.w3._2002._07.owl_.Ontology;
@@ -41,7 +41,7 @@ public class OntologyToRdfMapper {
 	 * @param ontology
 	 * @param rdf
 	 */
-	public void map(SrampOntology ontology, RDF rdf) {
+	public void map(ArtificerOntology ontology, RDF rdf) {
 		Ontology rdfOntology = new Ontology();
 		rdfOntology.setID(ontology.getId());
 		rdfOntology.setLabel(ontology.getLabel());
@@ -49,7 +49,7 @@ public class OntologyToRdfMapper {
 		rdf.getOtherAttributes().put(new QName("http://www.w3.org/XML/1998/namespace", "base"), ontology.getBase()); //$NON-NLS-1$ //$NON-NLS-2$
 		rdf.setOntology(rdfOntology);
 
-		for (SrampOntology.SrampOntologyClass oclass : ontology.getAllClasses()) {
+		for (ArtificerOntology.ArtificerOntologyClass oclass : ontology.getAllClasses()) {
 			org.w3._2002._07.owl_.Class rdfClass = new org.w3._2002._07.owl_.Class();
 			rdfClass.setID(oclass.getId());
 			rdfClass.setLabel(oclass.getLabel());

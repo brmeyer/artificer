@@ -16,9 +16,9 @@
 package org.artificer.test.server.atom.services;
 
 import org.apache.commons.io.IOUtils;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType.Property;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
@@ -27,9 +27,9 @@ import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Document;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.SrampAtomUtils;
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.client.ClientRequest;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.common.audit.AuditEntryTypes;
 import org.artificer.common.audit.AuditItemTypes;
 import org.artificer.common.audit.AuditUtils;
@@ -53,7 +53,7 @@ public class AuditResourceTest extends AbstractResourceTest {
 	    ClientRequest request = clientRequest("/s-ramp/audit/user/" + getUsername()); //$NON-NLS-1$
         ClientResponse<Feed> feedResponse = request.get(Feed.class);
         Feed auditEntryFeed = feedResponse.getEntity();
-        Object totalResultsAttr = auditEntryFeed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        Object totalResultsAttr = auditEntryFeed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         int currentTotal = Integer.parseInt(String.valueOf(totalResultsAttr));
 	    
 	    Document pdf = addPdf();
@@ -74,7 +74,7 @@ public class AuditResourceTest extends AbstractResourceTest {
 		// GET the audit entry (the last one in the list - the artifact:add)
 		request = clientRequest("/s-ramp/audit/artifact/" + pdf.getUuid() + "/" + auditEntryUuid); //$NON-NLS-1$ //$NON-NLS-2$
 		Entry entry = request.get(Entry.class).getEntity();
-		AuditEntry auditEntry = SrampAtomUtils.unwrap(entry, AuditEntry.class);
+		AuditEntry auditEntry = ArtificerAtomUtils.unwrap(entry, AuditEntry.class);
 		Assert.assertNotNull(auditEntry);
         Assert.assertEquals(getUsername(), auditEntry.getWho()); 
         Assert.assertEquals(AuditEntryTypes.ARTIFACT_ADD, auditEntry.getType());
@@ -100,7 +100,7 @@ public class AuditResourceTest extends AbstractResourceTest {
         request = clientRequest("/s-ramp/audit/user/" + getUsername()); //$NON-NLS-1$
         auditEntryFeed = request.get(Feed.class).getEntity();
         Assert.assertNotNull(auditEntryFeed);
-        totalResultsAttr = auditEntryFeed.getExtensionAttributes().get(SrampConstants.SRAMP_TOTAL_RESULTS_QNAME);
+        totalResultsAttr = auditEntryFeed.getExtensionAttributes().get(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME);
         int total = Integer.parseInt(String.valueOf(totalResultsAttr));
         Assert.assertEquals(2, total - currentTotal);
 	}
@@ -125,7 +125,7 @@ public class AuditResourceTest extends AbstractResourceTest {
         request.body(MediaType.APPLICATION_AUDIT_ENTRY_XML_TYPE, auditEntry);
         ClientResponse<Entry> response = request.post(Entry.class);
         Entry entry = response.getEntity();
-        AuditEntry re = SrampAtomUtils.unwrap(entry, AuditEntry.class);
+        AuditEntry re = ArtificerAtomUtils.unwrap(entry, AuditEntry.class);
         Assert.assertNotNull(re);
         Assert.assertNotNull(re.getUuid());
         Assert.assertEquals(getUsername(), re.getWho()); 
@@ -144,7 +144,7 @@ public class AuditResourceTest extends AbstractResourceTest {
         request = clientRequest("/s-ramp/audit/artifact/" + pdf.getUuid() + "/" + re.getUuid()); //$NON-NLS-1$ //$NON-NLS-2$
         response = request.get(Entry.class);
         entry = response.getEntity();
-        re = SrampAtomUtils.unwrap(entry, AuditEntry.class);
+        re = ArtificerAtomUtils.unwrap(entry, AuditEntry.class);
         Assert.assertNotNull(re);
         Assert.assertNotNull(re.getUuid());
         Assert.assertEquals(getUsername(), re.getWho()); 
@@ -171,7 +171,7 @@ public class AuditResourceTest extends AbstractResourceTest {
 
             Entry entry = response.getEntity();
             Assert.assertEquals(artifactFileName, entry.getTitle());
-            BaseArtifactType arty = SrampAtomUtils.unwrapSrampArtifact(entry);
+            BaseArtifactType arty = ArtificerAtomUtils.unwrapSrampArtifact(entry);
             Assert.assertTrue(arty instanceof Document);
             return (Document) arty;
         } finally {

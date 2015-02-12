@@ -27,7 +27,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Relationship;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Target;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.teiid.Utils;
 
 /**
@@ -48,7 +48,7 @@ public abstract class TeiidIntegrationTest {
         assert (artifact != null);
         assert ((customPropertyName != null) && !customPropertyName.isEmpty());
 
-        final String actual = SrampModelUtils.getCustomProperty(artifact, customPropertyName);
+        final String actual = ArtificerModelUtils.getCustomProperty(artifact, customPropertyName);
         assertThat(actual, is(expected));
     }
 

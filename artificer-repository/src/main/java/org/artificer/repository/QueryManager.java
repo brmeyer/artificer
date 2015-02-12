@@ -15,8 +15,8 @@
  */
 package org.artificer.repository;
 
-import org.artificer.common.SrampException;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.common.ArtificerException;
+import org.artificer.repository.query.ArtificerQuery;
 
 /**
  * Service used to query the repository using the s-ramp query api.
@@ -33,7 +33,7 @@ public interface QueryManager extends AbstractManager {
 	 * <code>/s-ramp/xsd/XsdDocument[@prop1 = ?]</code>
 	 * <br/>
 	 * <br/>
-	 * This method will create the {@link org.artificer.repository.query.SrampQuery} object, which can then be
+	 * This method will create the {@link org.artificer.repository.query.ArtificerQuery} object, which can then be
 	 * used to bind real values to the template and finally execute the query. An
 	 * example illustrates the idea:<br/>
 	 * <br/>
@@ -46,18 +46,18 @@ public interface QueryManager extends AbstractManager {
 	 * @param xpathTemplate the templatized xpath
 	 * @param orderByProperty property name to use when sorting
 	 * @param orderAscending whether to sort ascending
-	 * @return a new {@link org.artificer.repository.query.SrampQuery} object
-	 * @throws SrampException
+	 * @return a new {@link org.artificer.repository.query.ArtificerQuery} object
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) throws SrampException;
+	public ArtificerQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) throws ArtificerException;
 
 	/**
 	 * Create an s-ramp query from the given xpath template.  No order-by hints are given,
 	 * so the s-ramp repository is free to return the artifacts in any arbitrary order.
 	 * @param xpathTemplate the templatized xpath
-	 * @return a new {@link SrampQuery} object
-	 * @throws SrampException
+	 * @return a new {@link org.artificer.repository.query.ArtificerQuery} object
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	public SrampQuery createQuery(String xpathTemplate) throws SrampException;
+	public ArtificerQuery createQuery(String xpathTemplate) throws ArtificerException;
 
 }

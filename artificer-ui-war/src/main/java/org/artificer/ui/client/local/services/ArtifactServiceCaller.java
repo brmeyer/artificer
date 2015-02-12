@@ -27,7 +27,7 @@ import org.artificer.ui.client.local.services.callback.DelegatingRemoteCallback;
 import org.artificer.ui.client.local.services.callback.IServiceInvocationHandler;
 import org.artificer.ui.client.shared.beans.ArtifactBean;
 import org.artificer.ui.client.shared.beans.ArtifactRelationshipsIndexBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 /**
  * Client-side service for making Caller calls to the remote artifact service.
@@ -54,7 +54,7 @@ public class ArtifactServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteArtifactService.call(successCallback, errorCallback).get(uuid);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -68,7 +68,7 @@ public class ArtifactServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteArtifactService.call(successCallback, errorCallback).getDocumentContent(uuid, artifactType);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -82,7 +82,7 @@ public class ArtifactServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteArtifactService.call(successCallback, errorCallback).getRelationships(uuid, artifactType);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -95,7 +95,7 @@ public class ArtifactServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteArtifactService.call(successCallback, errorCallback).update(artifact);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -108,7 +108,7 @@ public class ArtifactServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteArtifactService.call(successCallback, errorCallback).delete(artifact);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }

@@ -17,7 +17,7 @@ package org.artificer.server.atom.services;
 
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.artificer.atom.MediaType;
-import org.artificer.common.SrampConfig;
+import org.artificer.common.ArtificerConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -63,7 +63,7 @@ public class FeedResource extends AbstractFeedResource {
 			@QueryParam("ascending") Boolean asc,
 			@QueryParam("propertyName") Set<String> propNames) throws Exception {
 		String xpath = String.format("/s-ramp/%1$s", model); //$NON-NLS-1$
-		String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+		String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
 		return createArtifactFeed(xpath, startPage, startIndex, count, orderBy, asc, propNames, baseUrl);
 	}
 
@@ -84,7 +84,7 @@ public class FeedResource extends AbstractFeedResource {
 			@QueryParam("ascending") Boolean asc,
 			@QueryParam("propertyName") Set<String> propNames) throws Exception {
 		String xpath = String.format("/s-ramp/%1$s/%2$s", model, type); //$NON-NLS-1$
-		String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+		String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
 		return createArtifactFeed(xpath, startPage, startIndex, count, orderBy, asc, propNames, baseUrl);
 	}
 

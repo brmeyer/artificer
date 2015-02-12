@@ -23,7 +23,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author Brett Meyer
  */
-public class StoredQueryNotFoundException extends SrampNotFoundException {
+public class StoredQueryNotFoundException extends ArtificerNotFoundException {
 
     private static final long serialVersionUID = 6962141373474710343L;
 

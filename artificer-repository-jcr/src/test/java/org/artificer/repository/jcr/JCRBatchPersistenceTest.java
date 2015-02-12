@@ -123,7 +123,7 @@ public class JCRBatchPersistenceTest extends AbstractNoAuditingJCRPersistenceTes
      * @param filePath
      * @param document
      * @param type
-     * @throws org.artificer.common.SrampException
+     * @throws org.artificer.common.ArtificerException
      */
     private BatchItem createBatchItem(String filePath, DocumentArtifactType document, BaseArtifactEnum type) throws Exception {
         String artifactFileName = filePath.substring(filePath.lastIndexOf('/') + 1);

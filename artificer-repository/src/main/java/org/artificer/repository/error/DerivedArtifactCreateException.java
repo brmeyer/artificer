@@ -16,7 +16,7 @@
 package org.artificer.repository.error;
 
 import org.artificer.common.ArtifactTypeEnum;
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 import org.artificer.repository.i18n.Messages;
 
 /**
@@ -24,7 +24,7 @@ import org.artificer.repository.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class DerivedArtifactCreateException extends SrampUserException {
+public class DerivedArtifactCreateException extends ArtificerUserException {
 
     private static final long serialVersionUID = -2247193241132739490L;
 

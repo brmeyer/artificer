@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.artificer.shell.api.AbstractShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.api.Arguments;
 import org.artificer.shell.api.ShellContext;
 
@@ -36,7 +36,7 @@ public class StoredQueryCommandUtil {
     public static int tabCompletion(AbstractShellCommand command, Arguments args, ShellContext context,
             List<CharSequence> candidates) {
         if (args.isEmpty()) {
-            SrampAtomApiClient client = client(command, context);
+            ArtificerAtomApiClient client = client(command, context);
             if (client != null) {
                 try {
                     List<StoredQuery> storedQueries = client.getStoredQueries();
@@ -52,9 +52,9 @@ public class StoredQueryCommandUtil {
         return -1;
     }
 
-    public static SrampAtomApiClient client(AbstractShellCommand command, ShellContext context) {
+    public static ArtificerAtomApiClient client(AbstractShellCommand command, ShellContext context) {
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
-        SrampAtomApiClient client = (SrampAtomApiClient) context.getVariable(clientVarName);
+        ArtificerAtomApiClient client = (ArtificerAtomApiClient) context.getVariable(clientVarName);
         if (client == null) {
             command.print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
         }

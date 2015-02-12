@@ -96,7 +96,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocumentTarget;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdTypeTarget;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 import org.artificer.common.visitors.HierarchicalArtifactVisitor;
 
 import javax.jcr.Node;
@@ -326,7 +326,7 @@ public class JCRNodeToArtifactVisitor extends HierarchicalArtifactVisitor {
         String extendedDerived = getProperty(jcrNode, JCRConstants.SRAMP_DERIVED, "false");
 
         artifact.setExtendedType(extendedType);
-        artifact.getOtherAttributes().put(SrampConstants.SRAMP_DERIVED_QNAME, extendedDerived);
+        artifact.getOtherAttributes().put(ArtificerConstants.SRAMP_DERIVED_QNAME, extendedDerived);
     }
 
     /**
@@ -341,8 +341,8 @@ public class JCRNodeToArtifactVisitor extends HierarchicalArtifactVisitor {
 
         artifact.setExtendedType(extendedType);
         if (contentType != null && contentLength != null) {
-            artifact.getOtherAttributes().put(SrampConstants.SRAMP_CONTENT_SIZE_QNAME, contentLength);
-            artifact.getOtherAttributes().put(SrampConstants.SRAMP_CONTENT_TYPE_QNAME, contentType);
+            artifact.getOtherAttributes().put(ArtificerConstants.SRAMP_CONTENT_SIZE_QNAME, contentLength);
+            artifact.getOtherAttributes().put(ArtificerConstants.SRAMP_CONTENT_TYPE_QNAME, contentType);
         }
     }
 

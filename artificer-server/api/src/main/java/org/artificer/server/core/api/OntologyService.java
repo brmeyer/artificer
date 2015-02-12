@@ -15,7 +15,7 @@
  */
 package org.artificer.server.core.api;
 
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ import java.util.List;
  */
 public interface OntologyService extends AbstractService {
 
-    public SrampOntology create(SrampOntology ontology) throws Exception;
+    public ArtificerOntology create(ArtificerOntology ontology) throws Exception;
 
-    public void update(String uuid, SrampOntology ontology) throws Exception;
+    public void update(String uuid, ArtificerOntology ontology) throws Exception;
 
-    public SrampOntology get(String uuid) throws Exception;
+    public ArtificerOntology get(String uuid) throws Exception;
 
-    public List<SrampOntology> get() throws Exception;
+    public List<ArtificerOntology> get() throws Exception;
 
     public void delete(String uuid) throws Exception;
 }

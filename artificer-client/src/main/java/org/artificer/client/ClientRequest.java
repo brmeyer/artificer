@@ -21,10 +21,10 @@ import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.util.HttpHeaderNames;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.atom.i18n.Messages;
 import org.artificer.atom.providers.HttpResponseProvider;
-import org.artificer.atom.providers.SrampAtomExceptionProvider;
+import org.artificer.atom.providers.ArtificerAtomExceptionProvider;
 
 import javax.ws.rs.core.UriBuilder;
 import java.lang.reflect.Method;
@@ -47,7 +47,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	private static final ResteasyProviderFactory providerFactory = new ResteasyProviderFactory();
 	static {
 		RegisterBuiltin.register(providerFactory);
-		providerFactory.registerProvider(SrampAtomExceptionProvider.class);
+		providerFactory.registerProvider(ArtificerAtomExceptionProvider.class);
 		providerFactory.registerProvider(HttpResponseProvider.class);
 	}
 
@@ -195,7 +195,7 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 			Exception error = new Exception(Messages.i18n.format("UNKNOWN_SRAMP_ERROR")); //$NON-NLS-1$
 			if (MediaType.APPLICATION_SRAMP_ATOM_EXCEPTION.equals(contentType)) {
 				try {
-					SrampAtomException entity = response.getEntity(SrampAtomException.class);
+					ArtificerAtomException entity = response.getEntity(ArtificerAtomException.class);
 					if (entity != null)
 						error = entity;
 				} catch (Throwable t) {
@@ -205,15 +205,15 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 			throw error;
 		}
 		if (response.getStatus() == 404 || response.getStatus() == 415) {
-			SrampAtomException error = new SrampAtomException(Messages.i18n.format("ENDPOINT_NOT_FOUND")); //$NON-NLS-1$
+			ArtificerAtomException error = new ArtificerAtomException(Messages.i18n.format("ENDPOINT_NOT_FOUND")); //$NON-NLS-1$
 			throw error;
 		}
 		if (response.getStatus() == 403) {
-			SrampAtomException error = new SrampAtomException(Messages.i18n.format("AUTHORIZATION_FAILED")); //$NON-NLS-1$
+			ArtificerAtomException error = new ArtificerAtomException(Messages.i18n.format("AUTHORIZATION_FAILED")); //$NON-NLS-1$
 			throw error;
 		}
 		if (response.getStatus() == 401) {
-            SrampAtomException error = new SrampAtomException(Messages.i18n.format("AUTHENTICATION_FAILED")); //$NON-NLS-1$
+            ArtificerAtomException error = new ArtificerAtomException(Messages.i18n.format("AUTHENTICATION_FAILED")); //$NON-NLS-1$
             throw error;
 		}
 	}

@@ -20,13 +20,13 @@ import org.artificer.repository.error.InvalidQueryException;
 import org.artificer.repository.jcr.i18n.Messages;
 import org.artificer.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
 import org.artificer.repository.jcr.util.JCRUtils;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
-import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property;
+import org.jboss.downloads.artificer._2013.auditing.AuditEntry;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType;
+import org.jboss.downloads.artificer._2013.auditing.AuditItemType.Property;
 import org.artificer.common.error.ArtifactNotFoundException;
 import org.artificer.common.error.AuditEntryNotFoundException;
-import org.artificer.common.SrampException;
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.repository.AuditManager;
 import org.artificer.repository.jcr.audit.JCRAuditEntrySet;
 import org.slf4j.Logger;
@@ -68,10 +68,10 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
 	}
 
     /**
-     * @see org.artificer.repository.AuditManager#addAuditEntry(java.lang.String, org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry)
+     * @see org.artificer.repository.AuditManager#addAuditEntry(java.lang.String, org.jboss.downloads.artificer._2013.auditing.AuditEntry)
      */
     @Override
-    public AuditEntry addAuditEntry(String artifactUuid, AuditEntry entry) throws SrampException {
+    public AuditEntry addAuditEntry(String artifactUuid, AuditEntry entry) throws ArtificerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -104,10 +104,10 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
             } else {
                 throw new ArtifactNotFoundException(artifactUuid);
             }
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
@@ -117,7 +117,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
      * @see org.artificer.repository.AuditManager#getArtifactAuditEntry(java.lang.String, java.lang.String)
      */
     @Override
-    public AuditEntry getArtifactAuditEntry(String artifactUuid, String auditEntryUuid) throws SrampException {
+    public AuditEntry getArtifactAuditEntry(String artifactUuid, String auditEntryUuid) throws ArtificerException {
         // Prevent injection.
         if (artifactUuid.indexOf('\'') >= 0 || auditEntryUuid.indexOf('\'') >= 0)
             throw new InvalidQueryException();
@@ -141,7 +141,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
             }
         } catch (Throwable t) {
             JCRRepositoryFactory.logoutQuietly(session);
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 
@@ -149,7 +149,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
      * @see org.artificer.repository.AuditManager#getArtifactAuditEntries(java.lang.String)
      */
     @Override
-    public AuditEntrySet getArtifactAuditEntries(String artifactUuid) throws SrampException {
+    public AuditEntrySet getArtifactAuditEntries(String artifactUuid) throws ArtificerException {
         // Prevent injection.
         if (artifactUuid.indexOf('\'') >= 0)
             throw new InvalidQueryException();
@@ -161,7 +161,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
      * @see org.artificer.repository.AuditManager#getUserAuditEntries(java.lang.String)
      */
     @Override
-    public AuditEntrySet getUserAuditEntries(String username) throws SrampException {
+    public AuditEntrySet getUserAuditEntries(String username) throws ArtificerException {
         // Prevent injection.
         if (username.indexOf('\'') >= 0)
             throw new InvalidQueryException();
@@ -172,9 +172,9 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
     /**
      * Performs the audit query and returns the result as an audit entry set.
      * @param query
-     * @throws SrampServerException
+     * @throws org.artificer.common.error.ArtificerServerException
      */
-    private AuditEntrySet doAuditQuery(String query) throws SrampServerException {
+    private AuditEntrySet doAuditQuery(String query) throws ArtificerServerException {
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
@@ -188,7 +188,7 @@ public class JCRAuditManager extends JCRAbstractManager implements AuditManager 
             return new JCRAuditEntrySet(session, jcrQueryResult.getNodes());
         } catch (Throwable t) {
             JCRRepositoryFactory.logoutQuietly(session);
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 

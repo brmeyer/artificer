@@ -20,7 +20,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 
@@ -36,7 +36,7 @@ public class StoredQueryClientTest extends AbstractClientTest {
     
     @Test
     public void testStoredQuery() throws Exception {
-        SrampAtomApiClient client = client(); 
+        ArtificerAtomApiClient client = client();
         
         // create an artifact to use
         ExtendedArtifactType artifact = new ExtendedArtifactType();

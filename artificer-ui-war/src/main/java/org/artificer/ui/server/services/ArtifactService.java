@@ -26,14 +26,14 @@ import org.artificer.ui.server.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.client.SrampClientException;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.client.ArtificerClientException;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.ui.client.shared.beans.ArtifactBean;
 import org.artificer.ui.client.shared.beans.ArtifactRelationshipsIndexBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 import org.artificer.ui.server.services.util.RelationshipResolver;
 
 /**
@@ -57,9 +57,9 @@ public class ArtifactService implements IArtifactService {
      * @see org.artificer.ui.client.shared.services.IArtifactService#get(java.lang.String)
      */
     @Override
-    public ArtifactBean get(String uuid) throws SrampUiException {
+    public ArtifactBean get(String uuid) throws ArtificerUiException {
         try {
-            BaseArtifactType artifact = SrampApiClientAccessor.getClient().getArtifactMetaData(uuid);
+            BaseArtifactType artifact = ArtificerApiClientAccessor.getClient().getArtifactMetaData(uuid);
             ArtifactType artifactType = ArtifactType.valueOf(artifact);
             
             ArtifactBean bean = new ArtifactBean();
@@ -77,11 +77,11 @@ public class ArtifactService implements IArtifactService {
             bean.setDerived(artifactType.isDerived());
             bean.setRepositoryLink(getRepositoryLink(artifact, artifactType));
             bean.setRepositoryMediaLink(getRepositoryMediaLink(artifact, artifactType));
-            if (SrampModelUtils.isDocumentArtifact(artifact)) {
+            if (ArtificerModelUtils.isDocumentArtifact(artifact)) {
                 DocumentArtifactType doc = (DocumentArtifactType) artifact;
                 bean.setContentSize(doc.getContentSize());
                 bean.setContentType(doc.getContentType());
-                if  (SrampModelUtils.isTextDocumentArtifact(doc)) {
+                if  (ArtificerModelUtils.isTextDocumentArtifact(doc)) {
                     bean.setTextDocument(true);
                 }
             }
@@ -96,10 +96,10 @@ public class ArtifactService implements IArtifactService {
             bean.setNumRelationships(numRelationships);
 
             return bean;
-        } catch (SrampClientException e) {
-            throw new SrampUiException(e.getMessage());
-        } catch (SrampAtomException e) {
-            throw new SrampUiException(e.getMessage());
+        } catch (ArtificerClientException e) {
+            throw new ArtificerUiException(e.getMessage());
+        } catch (ArtificerAtomException e) {
+            throw new ArtificerUiException(e.getMessage());
         }
     }
 
@@ -107,17 +107,17 @@ public class ArtifactService implements IArtifactService {
      * @see org.artificer.ui.client.shared.services.IArtifactService#getDocumentContent(java.lang.String, java.lang.String)
      */
     @Override
-    public String getDocumentContent(String uuid, String artifactType) throws SrampUiException {
+    public String getDocumentContent(String uuid, String artifactType) throws ArtificerUiException {
         try {
             ArtifactType at = ArtifactType.valueOf(artifactType);
-            BaseArtifactType artifact = SrampApiClientAccessor.getClient().getArtifactMetaData(at, uuid);
+            BaseArtifactType artifact = ArtificerApiClientAccessor.getClient().getArtifactMetaData(at, uuid);
             String response = Messages.i18n.format("ArtifactService.DownloadContent"); //$NON-NLS-1$
-            if (SrampModelUtils.isDocumentArtifact(artifact)) {
+            if (ArtificerModelUtils.isDocumentArtifact(artifact)) {
                 DocumentArtifactType doc = (DocumentArtifactType) artifact;
-                if (SrampModelUtils.isTextDocumentArtifact(doc) && doc.getContentSize() <= TWO_MEG) {
+                if (ArtificerModelUtils.isTextDocumentArtifact(doc) && doc.getContentSize() <= TWO_MEG) {
                     InputStream content = null;
                     try {
-                        content = SrampApiClientAccessor.getClient().getArtifactContent(at, uuid);
+                        content = ArtificerApiClientAccessor.getClient().getArtifactContent(at, uuid);
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         IOUtils.copy(content, baos);
                         // TODO: obey the document's encoding here (if we can find it) but default to UTF-8
@@ -129,7 +129,7 @@ public class ArtifactService implements IArtifactService {
             }
             return response;
         } catch (Exception e) {
-            throw new SrampUiException(e.getMessage());
+            throw new ArtificerUiException(e.getMessage());
         }
     }
 
@@ -138,17 +138,17 @@ public class ArtifactService implements IArtifactService {
      */
     @Override
     public ArtifactRelationshipsIndexBean getRelationships(String uuid, String artifactType)
-            throws SrampUiException {
+            throws ArtificerUiException {
         ArtifactRelationshipsIndexBean rval = new ArtifactRelationshipsIndexBean();
         try {
             ArtifactType at = ArtifactType.valueOf(artifactType);
-            BaseArtifactType artifact = SrampApiClientAccessor.getClient().getArtifactMetaData(at, uuid);
-            RelationshipResolver relResolver = new RelationshipResolver(SrampApiClientAccessor.getClient(), rval);
+            BaseArtifactType artifact = ArtificerApiClientAccessor.getClient().getArtifactMetaData(at, uuid);
+            RelationshipResolver relResolver = new RelationshipResolver(ArtificerApiClientAccessor.getClient(), rval);
             relResolver.resolveAll(artifact);
-        } catch (SrampClientException e) {
-            throw new SrampUiException(e.getMessage());
-        } catch (SrampAtomException e) {
-            throw new SrampUiException(e.getMessage());
+        } catch (ArtificerClientException e) {
+            throw new ArtificerUiException(e.getMessage());
+        } catch (ArtificerAtomException e) {
+            throw new ArtificerUiException(e.getMessage());
         }
 
         return rval;
@@ -158,29 +158,29 @@ public class ArtifactService implements IArtifactService {
      * @see org.artificer.ui.client.shared.services.IArtifactService#update(org.artificer.ui.client.shared.beans.ArtifactBean)
      */
     @Override
-    public void update(ArtifactBean bean) throws SrampUiException {
+    public void update(ArtifactBean bean) throws ArtificerUiException {
         try {
             ArtifactType artifactType = ArtifactType.valueOf(bean.getModel(), bean.getRawType(), null);
             // Grab the latest from the server
-            BaseArtifactType artifact = SrampApiClientAccessor.getClient().getArtifactMetaData(artifactType, bean.getUuid());
+            BaseArtifactType artifact = ArtificerApiClientAccessor.getClient().getArtifactMetaData(artifactType, bean.getUuid());
             // Update it with new data from the bean
             artifact.setName(bean.getName());
             artifact.setDescription(bean.getDescription());
             artifact.setVersion(bean.getVersion());
             artifact.getProperty().clear();
             for (String propName : bean.getPropertyNames()) {
-                SrampModelUtils.setCustomProperty(artifact, propName, bean.getProperty(propName));
+                ArtificerModelUtils.setCustomProperty(artifact, propName, bean.getProperty(propName));
             }
             artifact.getClassifiedBy().clear();
             for (String classifier : bean.getClassifiedBy()) {
                 artifact.getClassifiedBy().add(classifier);
             }
             // Push the changes back to the server
-            SrampApiClientAccessor.getClient().updateArtifactMetaData(artifact);
-        } catch (SrampClientException e) {
-            throw new SrampUiException(e.getMessage());
-        } catch (SrampAtomException e) {
-            throw new SrampUiException(e.getMessage());
+            ArtificerApiClientAccessor.getClient().updateArtifactMetaData(artifact);
+        } catch (ArtificerClientException e) {
+            throw new ArtificerUiException(e.getMessage());
+        } catch (ArtificerAtomException e) {
+            throw new ArtificerUiException(e.getMessage());
         }
     }
 
@@ -188,14 +188,14 @@ public class ArtifactService implements IArtifactService {
      * @see org.artificer.ui.client.shared.services.IArtifactService#delete(org.artificer.ui.client.shared.beans.ArtifactBean)
      */
     @Override
-    public void delete(ArtifactBean bean) throws SrampUiException {
+    public void delete(ArtifactBean bean) throws ArtificerUiException {
         try {
             ArtifactType artifactType = ArtifactType.valueOf(bean.getModel(), bean.getRawType(), null);
-            SrampApiClientAccessor.getClient().deleteArtifact(bean.getUuid(), artifactType);
-        } catch (SrampClientException e) {
-            throw new SrampUiException(e.getMessage());
-        } catch (SrampAtomException e) {
-            throw new SrampUiException(e.getMessage());
+            ArtificerApiClientAccessor.getClient().deleteArtifact(bean.getUuid(), artifactType);
+        } catch (ArtificerClientException e) {
+            throw new ArtificerUiException(e.getMessage());
+        } catch (ArtificerAtomException e) {
+            throw new ArtificerUiException(e.getMessage());
         }
     }
 
@@ -206,7 +206,7 @@ public class ArtifactService implements IArtifactService {
      */
     private String getRepositoryLink(BaseArtifactType artifact, ArtifactType artifactType) {
         StringBuilder builder = new StringBuilder();
-        String endpoint = SrampApiClientAccessor.getClient().getEndpoint();
+        String endpoint = ArtificerApiClientAccessor.getClient().getEndpoint();
         builder.append(endpoint);
         if (!endpoint.endsWith("/")) { //$NON-NLS-1$
             builder.append("/"); //$NON-NLS-1$

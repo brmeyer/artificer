@@ -32,7 +32,7 @@ import org.artificer.ui.client.local.services.callback.IServiceInvocationHandler
 import org.artificer.ui.client.local.widgets.ontologies.LoadingOntologies;
 import org.artificer.ui.client.shared.beans.OntologyResultSetBean;
 import org.artificer.ui.client.shared.beans.OntologySummaryBean;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.artificer.ui.client.local.widgets.ontologies.NoOntologiesFound;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -176,8 +176,8 @@ public class ClassifierFilterContainer extends FlowPanel implements HasValue<Map
             public void onError(Throwable error) {
                 clear();
                 add(noOntologiesFoundFactory.get());
-                if (error instanceof SrampUiException) {
-                    notificationService.sendErrorNotification(i18n.format("classifier-filter-container.error"), (SrampUiException) error); //$NON-NLS-1$
+                if (error instanceof ArtificerUiException) {
+                    notificationService.sendErrorNotification(i18n.format("classifier-filter-container.error"), (ArtificerUiException) error); //$NON-NLS-1$
                 } else {
                     notificationService.sendErrorNotification(i18n.format("classifier-filter-container.error"), error.getMessage(), null); //$NON-NLS-1$
                 }

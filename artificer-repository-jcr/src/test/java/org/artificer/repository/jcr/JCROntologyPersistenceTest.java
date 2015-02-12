@@ -17,8 +17,8 @@ package org.artificer.repository.jcr;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.artificer.common.ontology.SrampOntology;
-import org.artificer.common.ontology.SrampOntology.SrampOntologyClass;
+import org.artificer.common.ontology.ArtificerOntology;
+import org.artificer.common.ontology.ArtificerOntology.ArtificerOntologyClass;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -37,14 +37,14 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
 
     @Test
     public void testPersistOntology_Empty() throws Exception {
-    	SrampOntology ontology = new SrampOntology();
+    	ArtificerOntology ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test1");
     	ontology.setLabel("Test Ontology #1");
     	ontology.setComment("This is my first test ontology.");
     	String uuid = persistenceManager.persistOntology(ontology).getUuid();
     	Assert.assertNotNull(uuid);
 
-    	SrampOntology actual = persistenceManager.getOntology(uuid);
+    	ArtificerOntology actual = persistenceManager.getOntology(uuid);
     	Assert.assertEquals(ontology.getUuid(), actual.getUuid());
     	Assert.assertEquals(ontology.getBase(), actual.getBase());
     	Assert.assertEquals(ontology.getLabel(), actual.getLabel());
@@ -54,18 +54,18 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
 
     @Test
     public void testPersistOntology_Full() throws Exception {
-    	SrampOntology ontology = new SrampOntology();
+    	ArtificerOntology ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test2");
     	ontology.setLabel("Test Ontology #2");
     	ontology.setComment("This is my second test ontology.");
 
-    	SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-    	SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-    	SrampOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
-    	SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-    	SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
-    	SrampOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
-    	SrampOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
+    	ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+    	ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+    	ArtificerOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
+    	ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+    	ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+    	ArtificerOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
+    	ArtificerOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
 
     	ontology.getRootClasses().add(world);
 
@@ -79,7 +79,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	String uuid = persistenceManager.persistOntology(ontology).getUuid();
     	Assert.assertNotNull(uuid);
 
-    	SrampOntology actual = persistenceManager.getOntology(uuid);
+    	ArtificerOntology actual = persistenceManager.getOntology(uuid);
     	Assert.assertEquals(ontology.getUuid(), actual.getUuid());
     	Assert.assertEquals(ontology.getBase(), actual.getBase());
     	Assert.assertEquals(ontology.getLabel(), actual.getLabel());
@@ -87,7 +87,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	Assert.assertEquals(ontology.getId(), actual.getId());
     	Assert.assertEquals(1, actual.getRootClasses().size());
 
-    	SrampOntologyClass actualWorld = actual.getRootClasses().get(0);
+    	ArtificerOntologyClass actualWorld = actual.getRootClasses().get(0);
     	Assert.assertEquals(world.getUri(), actualWorld.getUri());
     	Assert.assertEquals(world.getLabel(), actualWorld.getLabel());
     	Assert.assertEquals(world.getComment(), actualWorld.getComment());
@@ -95,7 +95,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	Assert.assertNull(actualWorld.getParent());
     	Assert.assertEquals(2, actualWorld.getChildren().size());
 
-    	SrampOntologyClass actualAsia = actualWorld.getChildren().get(0);
+    	ArtificerOntologyClass actualAsia = actualWorld.getChildren().get(0);
     	Assert.assertEquals(asia.getUri(), actualAsia.getUri());
     	Assert.assertEquals(asia.getLabel(), actualAsia.getLabel());
     	Assert.assertEquals(asia.getComment(), actualAsia.getComment());
@@ -104,7 +104,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	Assert.assertEquals(actualWorld, actualAsia.getParent());
     	Assert.assertEquals(2, actualAsia.getChildren().size());
 
-    	SrampOntologyClass actualJapan = actualAsia.getChildren().get(0);
+    	ArtificerOntologyClass actualJapan = actualAsia.getChildren().get(0);
     	Assert.assertEquals(japan.getUri(), actualJapan.getUri());
     	Assert.assertEquals(japan.getLabel(), actualJapan.getLabel());
     	Assert.assertEquals(japan.getComment(), actualJapan.getComment());
@@ -123,23 +123,23 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     @Test
     public void testGetOntologies() throws Exception {
     	// Ensure that a "get" will return 0 ontologies first
-    	List<SrampOntology> ontologies = persistenceManager.getOntologies();
+    	List<ArtificerOntology> ontologies = persistenceManager.getOntologies();
     	Assert.assertNotNull(ontologies);
     	Assert.assertEquals(0, ontologies.size());
 
     	// Now add one
-    	SrampOntology ontology = new SrampOntology();
+    	ArtificerOntology ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test3");
     	ontology.setLabel("Test Ontology #3");
     	ontology.setComment("This is my third test ontology.");
 
-    	SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-    	SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-    	SrampOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
-    	SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-    	SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
-    	SrampOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
-    	SrampOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
+    	ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+    	ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+    	ArtificerOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
+    	ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+    	ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+    	ArtificerOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
+    	ArtificerOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
 
     	ontology.getRootClasses().add(world);
 
@@ -156,7 +156,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	ontologies = persistenceManager.getOntologies();
     	Assert.assertNotNull(ontologies);
     	Assert.assertEquals(1, ontologies.size());
-    	SrampOntology actual = ontologies.get(0);
+    	ArtificerOntology actual = ontologies.get(0);
     	Assert.assertEquals(ontology.getUuid(), actual.getUuid());
     	Assert.assertEquals(ontology.getBase(), actual.getBase());
     	Assert.assertEquals(ontology.getLabel(), actual.getLabel());
@@ -165,18 +165,18 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	Assert.assertEquals(1, actual.getRootClasses().size());
 
     	// Now add another one
-    	ontology = new SrampOntology();
+    	ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test4");
     	ontology.setLabel("Test Ontology #4");
 
-    	SrampOntologyClass colors = createClass(ontology, null, "Colors", "Colors", null);
-    	SrampOntologyClass numbers = createClass(ontology, null, "Numbers", "Numbers", null);
-    	SrampOntologyClass red = createClass(ontology, colors, "Red", "Red", null);
-    	SrampOntologyClass green = createClass(ontology, colors, "Green", "Green", null);
-    	SrampOntologyClass blue = createClass(ontology, colors, "Blue", "Blue", null);
-    	SrampOntologyClass one = createClass(ontology, numbers, "One", "One", null);
-    	SrampOntologyClass two = createClass(ontology, numbers, "Two", "Two", null);
-    	SrampOntologyClass three = createClass(ontology, numbers, "Three", "Three", null);
+    	ArtificerOntologyClass colors = createClass(ontology, null, "Colors", "Colors", null);
+    	ArtificerOntologyClass numbers = createClass(ontology, null, "Numbers", "Numbers", null);
+    	ArtificerOntologyClass red = createClass(ontology, colors, "Red", "Red", null);
+    	ArtificerOntologyClass green = createClass(ontology, colors, "Green", "Green", null);
+    	ArtificerOntologyClass blue = createClass(ontology, colors, "Blue", "Blue", null);
+    	ArtificerOntologyClass one = createClass(ontology, numbers, "One", "One", null);
+    	ArtificerOntologyClass two = createClass(ontology, numbers, "Two", "Two", null);
+    	ArtificerOntologyClass three = createClass(ontology, numbers, "Three", "Three", null);
 
     	ontology.getRootClasses().add(colors);
     	ontology.getRootClasses().add(numbers);
@@ -199,19 +199,19 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     @Test
     public void testDeleteOntologies() throws Exception {
     	// Ensure that a "get" will return 0 ontologies first
-    	List<SrampOntology> ontologies = persistenceManager.getOntologies();
+    	List<ArtificerOntology> ontologies = persistenceManager.getOntologies();
     	Assert.assertNotNull(ontologies);
     	Assert.assertEquals(0, ontologies.size());
 
     	// Now add one
-    	SrampOntology ontology = new SrampOntology();
+    	ArtificerOntology ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test6");
     	ontology.setLabel("Test Ontology #6");
     	ontology.setComment("This is my sixth test ontology.");
-    	SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-    	SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-    	SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-    	SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+    	ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+    	ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+    	ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+    	ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
     	ontology.getRootClasses().add(world);
     	world.getChildren().add(asia);
     	asia.getChildren().add(japan);
@@ -224,13 +224,13 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     	Assert.assertEquals(1, ontologies.size());
 
     	// Now add another one
-    	ontology = new SrampOntology();
+    	ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test4");
     	ontology.setLabel("Test Ontology #4");
-    	SrampOntologyClass colors = createClass(ontology, null, "Colors", "Colors", null);
-    	SrampOntologyClass red = createClass(ontology, colors, "Red", "Red", null);
-    	SrampOntologyClass green = createClass(ontology, colors, "Green", "Green", null);
-    	SrampOntologyClass blue = createClass(ontology, colors, "Blue", "Blue", null);
+    	ArtificerOntologyClass colors = createClass(ontology, null, "Colors", "Colors", null);
+    	ArtificerOntologyClass red = createClass(ontology, colors, "Red", "Red", null);
+    	ArtificerOntologyClass green = createClass(ontology, colors, "Green", "Green", null);
+    	ArtificerOntologyClass blue = createClass(ontology, colors, "Blue", "Blue", null);
     	ontology.getRootClasses().add(colors);
     	colors.getChildren().add(red);
     	colors.getChildren().add(green);
@@ -254,18 +254,18 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
 
     @Test
     public void testUpdate() throws Exception {
-        SrampOntology ontology = new SrampOntology();
+        ArtificerOntology ontology = new ArtificerOntology();
         ontology.setBase("urn:example.org/test2");
         ontology.setLabel("Test Ontology #2");
         ontology.setComment("This is my second test ontology.");
 
-        SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-        SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-        SrampOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
-        SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-        SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
-        SrampOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
-        SrampOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
+        ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+        ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+        ArtificerOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
+        ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+        ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+        ArtificerOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
+        ArtificerOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
 
         ontology.getRootClasses().add(world);
 
@@ -279,7 +279,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         String uuid = persistenceManager.persistOntology(ontology).getUuid();
         Assert.assertNotNull(uuid);
 
-        SrampOntology actual = persistenceManager.getOntology(uuid);
+        ArtificerOntology actual = persistenceManager.getOntology(uuid);
         Assert.assertEquals(ontology.getUuid(), actual.getUuid());
         Assert.assertEquals(ontology.getBase(), actual.getBase());
         Assert.assertEquals(ontology.getLabel(), actual.getLabel());
@@ -287,7 +287,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         Assert.assertEquals(ontology.getId(), actual.getId());
         Assert.assertEquals(1, actual.getRootClasses().size());
 
-        SrampOntologyClass actualWorld = actual.getRootClasses().get(0);
+        ArtificerOntologyClass actualWorld = actual.getRootClasses().get(0);
         Assert.assertEquals(world.getUri(), actualWorld.getUri());
         Assert.assertEquals(world.getLabel(), actualWorld.getLabel());
         Assert.assertEquals(world.getComment(), actualWorld.getComment());
@@ -295,7 +295,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         Assert.assertNull(actualWorld.getParent());
         Assert.assertEquals(2, actualWorld.getChildren().size());
 
-        SrampOntologyClass actualAsia = actualWorld.getChildren().get(0);
+        ArtificerOntologyClass actualAsia = actualWorld.getChildren().get(0);
         Assert.assertEquals(asia.getUri(), actualAsia.getUri());
         Assert.assertEquals(asia.getLabel(), actualAsia.getLabel());
         Assert.assertEquals(asia.getComment(), actualAsia.getComment());
@@ -304,7 +304,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         Assert.assertEquals(actualWorld, actualAsia.getParent());
         Assert.assertEquals(2, actualAsia.getChildren().size());
 
-        SrampOntologyClass actualJapan = actualAsia.getChildren().get(0);
+        ArtificerOntologyClass actualJapan = actualAsia.getChildren().get(0);
         Assert.assertEquals(japan.getUri(), actualJapan.getUri());
         Assert.assertEquals(japan.getLabel(), actualJapan.getLabel());
         Assert.assertEquals(japan.getComment(), actualJapan.getComment());
@@ -313,10 +313,10 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         Assert.assertEquals(actualAsia, actualJapan.getParent());
         Assert.assertEquals(0, actualJapan.getChildren().size());
 
-        SrampOntologyClass northAmerica = createClass(ontology, world, "NorthAmerica", "North America", null);
-        SrampOntologyClass sweden = createClass(ontology, europe, "Sweden", "Sweden", "Bork bork bork");
-        SrampOntologyClass usa = createClass(ontology, northAmerica, "USA", "USA", "Cheeseburger, cheeseburger, cheeseburger...no Pepsi, Coke");
-        SrampOntologyClass mexico = createClass(ontology, northAmerica, "Mexico", "Mexico", null);
+        ArtificerOntologyClass northAmerica = createClass(ontology, world, "NorthAmerica", "North America", null);
+        ArtificerOntologyClass sweden = createClass(ontology, europe, "Sweden", "Sweden", "Bork bork bork");
+        ArtificerOntologyClass usa = createClass(ontology, northAmerica, "USA", "USA", "Cheeseburger, cheeseburger, cheeseburger...no Pepsi, Coke");
+        ArtificerOntologyClass mexico = createClass(ontology, northAmerica, "Mexico", "Mexico", null);
 
         world.getChildren().remove(asia);
         world.getChildren().add(northAmerica);
@@ -328,7 +328,7 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
         persistenceManager.updateOntology(ontology);
 
         actual = persistenceManager.getOntology(uuid);
-        Map<String, SrampOntologyClass> all = index(actual.getRootClasses().get(0));
+        Map<String, ArtificerOntologyClass> all = index(actual.getRootClasses().get(0));
         Assert.assertEquals(6, all.size());
         Assert.assertTrue(all.containsKey("NorthAmerica"));
         Assert.assertTrue(all.containsKey("USA"));
@@ -350,8 +350,8 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
 	 * @param label
 	 * @param comment
 	 */
-	private SrampOntologyClass createClass(SrampOntology ontology, SrampOntologyClass parent, String id, String label, String comment) {
-		SrampOntologyClass rval = ontology.createClass(id);
+	private ArtificerOntologyClass createClass(ArtificerOntology ontology, ArtificerOntologyClass parent, String id, String label, String comment) {
+		ArtificerOntologyClass rval = ontology.createClass(id);
 		rval.setParent(parent);
 		rval.setComment(comment);
 		rval.setLabel(label);
@@ -361,10 +361,10 @@ public class JCROntologyPersistenceTest extends AbstractNoAuditingJCRPersistence
     /**
      * @param actualWorld
      */
-    private Map<String, SrampOntologyClass> index(SrampOntologyClass actualWorld) {
-        Map<String, SrampOntologyClass> all = new HashMap<String, SrampOntologyClass>();
-        List<SrampOntologyClass> children = actualWorld.getChildren();
-        for (SrampOntologyClass class1 : children) {
+    private Map<String, ArtificerOntologyClass> index(ArtificerOntologyClass actualWorld) {
+        Map<String, ArtificerOntologyClass> all = new HashMap<String, ArtificerOntologyClass>();
+        List<ArtificerOntologyClass> children = actualWorld.getChildren();
+        for (ArtificerOntologyClass class1 : children) {
             all.put(class1.getId(), class1);
             all.putAll(index(class1));
         }

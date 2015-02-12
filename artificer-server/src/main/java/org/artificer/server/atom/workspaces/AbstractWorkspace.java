@@ -20,7 +20,7 @@ import org.jboss.resteasy.plugins.providers.atom.app.AppAccept;
 import org.jboss.resteasy.plugins.providers.atom.app.AppCategories;
 import org.jboss.resteasy.plugins.providers.atom.app.AppCollection;
 import org.jboss.resteasy.plugins.providers.atom.app.AppWorkspace;
-import org.artificer.atom.SrampAtomConstants;
+import org.artificer.atom.ArtificerAtomConstants;
 import org.artificer.common.ArtifactTypeEnum;
 
 /**
@@ -83,7 +83,7 @@ public abstract class AbstractWorkspace extends AppWorkspace {
         }
 
         Category category = new Category();
-        category.setScheme(SrampAtomConstants.X_S_RAMP_TYPE_URN);
+        category.setScheme(ArtificerAtomConstants.X_S_RAMP_TYPE_URN);
         category.setTerm(term);
         category.setLabel(label);
         categories.getCategory().add(category);

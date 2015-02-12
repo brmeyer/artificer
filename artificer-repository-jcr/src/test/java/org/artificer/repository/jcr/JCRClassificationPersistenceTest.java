@@ -22,8 +22,8 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Document;
 import org.artificer.common.ArtifactContent;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampException;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ontology.ArtificerOntology;
 
 import java.io.InputStream;
 
@@ -37,7 +37,7 @@ public class JCRClassificationPersistenceTest extends AbstractNoAuditingJCRPersi
 
     @Test
     public void testPersistClassifications() throws Exception {
-    	SrampOntology ontology = createOntology();
+    	ArtificerOntology ontology = createOntology();
 
         String artifactFileName = "s-ramp-press-release.pdf";
         InputStream contentStream = this.getClass().getResourceAsStream("/sample-files/core/" + artifactFileName);
@@ -60,21 +60,21 @@ public class JCRClassificationPersistenceTest extends AbstractNoAuditingJCRPersi
     }
 
 	/**
-	 * @throws org.artificer.common.SrampException
+	 * @throws org.artificer.common.ArtificerException
 	 */
-	private SrampOntology createOntology() throws SrampException {
-    	SrampOntology ontology = new SrampOntology();
+	private ArtificerOntology createOntology() throws ArtificerException {
+    	ArtificerOntology ontology = new ArtificerOntology();
     	ontology.setBase("urn:example.org/test2");
     	ontology.setLabel("Test Ontology #2");
     	ontology.setComment("This is my second test ontology.");
 
-    	SrampOntology.SrampOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
-    	SrampOntology.SrampOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
-    	SrampOntology.SrampOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
-    	SrampOntology.SrampOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
-    	SrampOntology.SrampOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
-    	SrampOntology.SrampOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
-    	SrampOntology.SrampOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
+    	ArtificerOntology.ArtificerOntologyClass world = createClass(ontology, null, "World", "World", "The entire world");
+    	ArtificerOntology.ArtificerOntologyClass asia = createClass(ontology, world, "Asia", "Asia", null);
+    	ArtificerOntology.ArtificerOntologyClass europe = createClass(ontology, world, "Europe", "Europe", "Two world wars");
+    	ArtificerOntology.ArtificerOntologyClass japan = createClass(ontology, asia, "Japan", "Japan", "Samurai *and* ninja?  Not fair.");
+    	ArtificerOntology.ArtificerOntologyClass china = createClass(ontology, asia, "China", "China", "Gunpowder!");
+    	ArtificerOntology.ArtificerOntologyClass uk = createClass(ontology, europe, "UnitedKingdom", "United Kingdom", "The food could be better");
+    	ArtificerOntology.ArtificerOntologyClass germany = createClass(ontology, europe, "Germany", "Germany", "The fatherland");
 
     	ontology.getRootClasses().add(world);
 
@@ -96,8 +96,8 @@ public class JCRClassificationPersistenceTest extends AbstractNoAuditingJCRPersi
 	 * @param label
 	 * @param comment
 	 */
-	private SrampOntology.SrampOntologyClass createClass(SrampOntology ontology, SrampOntology.SrampOntologyClass parent, String id, String label, String comment) {
-		SrampOntology.SrampOntologyClass rval = ontology.createClass(id);
+	private ArtificerOntology.ArtificerOntologyClass createClass(ArtificerOntology ontology, ArtificerOntology.ArtificerOntologyClass parent, String id, String label, String comment) {
+		ArtificerOntology.ArtificerOntologyClass rval = ontology.createClass(id);
 		rval.setParent(parent);
 		rval.setComment(comment);
 		rval.setLabel(label);

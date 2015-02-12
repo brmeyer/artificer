@@ -43,7 +43,7 @@
       <!-- Download the artifacts jar from the Maven integration. -->
       <repositories>
         <repository>
-          <id>local-sramp-repo</id>
+          <id>local-artificer-repo</id>
           <name>Local Artificer Repository</name>
           <url>http://localhost:8080/artificer-server/maven/repository</url>
           <layout>default</layout>

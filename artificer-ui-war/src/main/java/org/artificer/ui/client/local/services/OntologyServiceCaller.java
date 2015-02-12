@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 import org.artificer.ui.client.local.services.callback.DelegatingErrorCallback;
 import org.artificer.ui.client.local.services.callback.IServiceInvocationHandler;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.artificer.ui.client.shared.services.IOntologyService;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
@@ -88,7 +88,7 @@ public class OntologyServiceCaller {
             ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
             try {
                 remoteOntologyService.call(successCallback, errorCallback).list();
-            } catch (SrampUiException e) {
+            } catch (ArtificerUiException e) {
                 errorCallback.error(null, e);
             }
         }
@@ -115,7 +115,7 @@ public class OntologyServiceCaller {
             ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
             try {
                 remoteOntologyService.call(successCallback, errorCallback).get(uuid);
-            } catch (SrampUiException e) {
+            } catch (ArtificerUiException e) {
                 errorCallback.error(null, e);
             }
         }
@@ -171,7 +171,7 @@ public class OntologyServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteOntologyService.call(successCallback, errorCallback).update(ontology);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -184,7 +184,7 @@ public class OntologyServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteOntologyService.call(successCallback, errorCallback).add(ontology);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }
@@ -198,7 +198,7 @@ public class OntologyServiceCaller {
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
             remoteOntologyService.call(successCallback, errorCallback).delete(uuid);
-        } catch (SrampUiException e) {
+        } catch (ArtificerUiException e) {
             errorCallback.error(null, e);
         }
     }

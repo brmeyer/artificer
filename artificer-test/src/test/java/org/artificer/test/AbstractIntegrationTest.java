@@ -30,10 +30,10 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.artificer.atom.err.SrampAtomException;
+import org.artificer.atom.err.ArtificerAtomException;
 import org.artificer.client.ClientRequest;
-import org.artificer.client.SrampAtomApiClient;
-import org.artificer.client.SrampClientException;
+import org.artificer.client.ArtificerAtomApiClient;
+import org.artificer.client.ArtificerClientException;
 import org.artificer.client.ontology.OntologySummary;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
@@ -65,7 +65,7 @@ public abstract class AbstractIntegrationTest {
 
         // delete all artifacts
         try {
-            SrampAtomApiClient client = client();
+            ArtificerAtomApiClient client = client();
             // Rather than mess with pagination, just set the count to something sufficiently large.
             QueryResultSet results = client.query("/s-ramp", 0, 10000, "name", true); //$NON-NLS-1$ //$NON-NLS-2$
             for (ArtifactSummary summary : results) {
@@ -94,7 +94,7 @@ public abstract class AbstractIntegrationTest {
         
         // delete all stored queries
         try {
-            SrampAtomApiClient client = client();
+            ArtificerAtomApiClient client = client();
             List<StoredQuery> storedQueries = client.getStoredQueries();
             for (StoredQuery storedQuery : storedQueries) {
                 client.deleteStoredQuery(storedQuery.getQueryName());
@@ -106,7 +106,7 @@ public abstract class AbstractIntegrationTest {
 
         // delete all ontologies
         try {
-            SrampAtomApiClient client = client();
+            ArtificerAtomApiClient client = client();
             List<OntologySummary> ontologies = client.getOntologies();
             for (OntologySummary ontology : ontologies) {
                 String uuid = ontology.getUuid().replace("urn:uuid:", "");
@@ -134,8 +134,8 @@ public abstract class AbstractIntegrationTest {
         return PASSWORD;
     }
 
-    protected SrampAtomApiClient client() throws SrampClientException, SrampAtomException {
-        return new SrampAtomApiClient(BASE_URL, USERNAME, PASSWORD, true);
+    protected ArtificerAtomApiClient client() throws ArtificerClientException, ArtificerAtomException {
+        return new ArtificerAtomApiClient(BASE_URL, USERNAME, PASSWORD, true);
     }
 
     protected ClientRequest clientRequest(String endpoint) {

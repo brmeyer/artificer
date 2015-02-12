@@ -16,11 +16,11 @@
 package org.artificer.demos.derived;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlDocument;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates how to get and set artifact classifications.  Also shows how to query
@@ -56,7 +56,7 @@ public class DerivedArtifactsDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -79,7 +79,7 @@ public class DerivedArtifactsDemo {
 				"sample.wsdl");
 		System.out.println("uploaded.");
 		// Tag this artifact as coming from this demo.
-        SrampModelUtils.setCustomProperty(wsdlArtifact, "from-demo", DerivedArtifactsDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(wsdlArtifact, "from-demo", DerivedArtifactsDemo.class.getSimpleName());
         client.updateArtifactMetaData(wsdlArtifact);
 
 		// Now we should have a number of artifacts in the repo - the WSDL

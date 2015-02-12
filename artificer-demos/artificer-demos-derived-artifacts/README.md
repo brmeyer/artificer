@@ -11,12 +11,12 @@ query for artifacts based on derived content such as relationships and propertie
 To run the demo, you will need to supply valid user credentials.  You can do this
 by passing the following properties using -D:
 
-* sramp.auth.username - sets the BASIC auth username to use during the demo
-* sramp.auth.password - sets the BASIC auth password to use during the demo
+* artificer.auth.username - sets the BASIC auth username to use during the demo
+* artificer.auth.password - sets the BASIC auth password to use during the demo
 
 In short, it might look something like this:
 
-	$ mvn -Pdemo -Dsramp.auth.username=admin -Dsramp.auth.password=MYPASSWORD clean test
+	$ mvn -Pdemo -Dartificer.auth.username=admin -Dartificer.auth.password=MYPASSWORD clean test
 
 *Note* - the demo expects the S-RAMP Atom API endpoint to be located at:
 
@@ -25,7 +25,7 @@ In short, it might look something like this:
 If you are running the S-RAMP repository on some other port or deployed in some other way
 you can customize where the demo looks for the Atom API.  For example:
 
-	$ mvn -Pdemo -Dsramp.endpoint=http://myhost:8081/s-ramp-server clean test
+	$ mvn -Pdemo -Dartificer.endpoint=http://myhost:8081/s-ramp-server clean test
 
 The demo should output some interesting information before completing successfully.  Please
 take a look at the code found in the DerivedArtifactsDemo Java class for more information.

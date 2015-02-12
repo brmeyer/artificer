@@ -40,12 +40,12 @@ For more information see:  http://maven.apache.org/settings.html
 Your settings.xml file should contain two additional server entries in the servers section:
 
     <server>
-      <id>local-sramp-repo</id>
+      <id>local-artificer-repo</id>
       <username>admin</username>
       <password>PASSWORD</password>
     </server>
     <server>
-      <id>local-sramp-repo-snapshots</id>
+      <id>local-artificer-repo-snapshots</id>
       <username>admin</username>
       <password>PASSWORD</password>
     </server>

@@ -20,8 +20,8 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.artificer.common.error.ArtifactNotFoundException;
-import org.artificer.common.SrampException;
-import org.artificer.common.error.SrampServerException;
+import org.artificer.common.ArtificerException;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.repository.jcr.mapper.ArtifactToJCRNodeVisitor.JCRReferenceFactory;
 import org.artificer.repository.jcr.util.JCRUtils;
 
@@ -52,7 +52,7 @@ public class JCRReferenceFactoryImpl implements JCRReferenceFactory {
     }
 
     @Override
-    public Value createReference(String uuid) throws SrampException {
+    public Value createReference(String uuid) throws ArtificerException {
         try {
             Node node;
             if (nodes.containsKey(uuid)) {
@@ -66,10 +66,10 @@ public class JCRReferenceFactoryImpl implements JCRReferenceFactory {
             }
 
             return session.getValueFactory().createValue(node, true);
-        } catch (SrampException se) {
+        } catch (ArtificerException se) {
             throw se;
         } catch (Throwable t) {
-            throw new SrampServerException(t);
+            throw new ArtificerServerException(t);
         }
     }
 

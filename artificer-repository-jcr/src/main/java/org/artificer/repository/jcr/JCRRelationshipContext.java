@@ -24,9 +24,9 @@ import javax.jcr.Session;
 
 import org.artificer.repository.query.ArtifactSet;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.common.SrampException;
+import org.artificer.common.ArtificerException;
 import org.artificer.integration.artifactbuilder.RelationshipContext;
-import org.artificer.repository.jcr.query.JCRSrampQuery;
+import org.artificer.repository.jcr.query.JCRArtificerQuery;
 
 /**
  * RelationshipContext provided by the JCR implementation.
@@ -67,7 +67,7 @@ public class JCRRelationshipContext implements RelationshipContext {
             builder.append("]");
         }
         String xpath = builder.toString();
-        JCRSrampQuery query = new JCRSrampQuery(xpath, "createdTimestamp", false);
+        JCRArtificerQuery query = new JCRArtificerQuery(xpath, "createdTimestamp", false);
         query.setSession(session);
         try {
             ArtifactSet artifactSet = query.executeQuery();
@@ -76,7 +76,7 @@ public class JCRRelationshipContext implements RelationshipContext {
                 artifacts.add(artifact);
             }
             return artifacts;
-        } catch (SrampException e) {
+        } catch (ArtificerException e) {
             throw new RuntimeException(e);
         }
     }

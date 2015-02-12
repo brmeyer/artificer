@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
 
@@ -44,7 +44,7 @@ public class StatusCommand extends BuiltInShellCommand {
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName feedVarName = new QName("s-ramp", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		QueryResultSet feed = (QueryResultSet) getContext().getVariable(feedVarName);
 

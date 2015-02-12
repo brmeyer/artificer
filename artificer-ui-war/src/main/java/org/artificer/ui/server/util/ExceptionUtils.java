@@ -18,7 +18,7 @@ package org.artificer.ui.server.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 /**
  * Provides some util methods for dealing with exceptions.
@@ -54,14 +54,14 @@ public class ExceptionUtils {
 	 * @param message
 	 * @param root
 	 */
-	public static SrampUiException createUiException(String message, Throwable root) {
-	    SrampUiException re = null;
+	public static ArtificerUiException createUiException(String message, Throwable root) {
+	    ArtificerUiException re = null;
 		if (message != null && root != null) {
-			re = new SrampUiException(message, root);
+			re = new ArtificerUiException(message, root);
 		} else if (root != null) {
-			re = new SrampUiException(root);
+			re = new ArtificerUiException(root);
 		} else {
-			re = new SrampUiException();
+			re = new ArtificerUiException();
 		}
 		// TODO also pass the root stack trace
 //		if (root != null)
@@ -73,7 +73,7 @@ public class ExceptionUtils {
 	 * Creates a remote exception that can be thrown to the client.
 	 * @param root
 	 */
-	public static SrampUiException createRemoteException(Throwable root) {
+	public static ArtificerUiException createRemoteException(Throwable root) {
 		return createUiException(null, root);
 	}
 

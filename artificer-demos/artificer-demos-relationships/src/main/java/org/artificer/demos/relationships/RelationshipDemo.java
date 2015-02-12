@@ -16,10 +16,10 @@
 package org.artificer.demos.relationships;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 
 /**
  * Demonstrates how user defined relationships between artifacts can be
@@ -57,7 +57,7 @@ public class RelationshipDemo {
         }
         System.out.println("S-RAMP Endpoint: " + endpoint);
         System.out.println("S-RAMP User: " + username);
-        SrampAtomApiClient client = new SrampAtomApiClient(endpoint, username, password, true);
+        ArtificerAtomApiClient client = new ArtificerAtomApiClient(endpoint, username, password, true);
 
         // Have we already run this demo?
         QueryResultSet rs = client.buildQuery("/s-ramp[@from-demo = ?]")
@@ -78,14 +78,14 @@ public class RelationshipDemo {
 		System.out.println("uploaded.");
 
 		// Tag these artifacts as coming from this demo.
-        SrampModelUtils.setCustomProperty(artifact1, "from-demo", RelationshipDemo.class.getSimpleName());
-        SrampModelUtils.setCustomProperty(artifact2, "from-demo", RelationshipDemo.class.getSimpleName());
-        SrampModelUtils.setCustomProperty(artifact3, "from-demo", RelationshipDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact1, "from-demo", RelationshipDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact2, "from-demo", RelationshipDemo.class.getSimpleName());
+        ArtificerModelUtils.setCustomProperty(artifact3, "from-demo", RelationshipDemo.class.getSimpleName());
 
 		// Now let's set up some relationships.  Let's make artifacts 2 and 3 "relatedTo"
 		// artifact 1.
-		SrampModelUtils.addGenericRelationship(artifact2, "relatedTo", artifact1.getUuid());
-		SrampModelUtils.addGenericRelationship(artifact3, "relatedTo", artifact1.getUuid());
+		ArtificerModelUtils.addGenericRelationship(artifact2, "relatedTo", artifact1.getUuid());
+		ArtificerModelUtils.addGenericRelationship(artifact3, "relatedTo", artifact1.getUuid());
 
 		// Now make sure to update the changed artifacts
 		System.out.print("Updating artifacts...");

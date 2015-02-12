@@ -16,8 +16,8 @@
 package org.artificer.repository.jcr;
 
 import org.artificer.repository.QueryManager;
-import org.artificer.repository.jcr.query.JCRSrampQuery;
-import org.artificer.repository.query.SrampQuery;
+import org.artificer.repository.jcr.query.JCRArtificerQuery;
+import org.artificer.repository.query.ArtificerQuery;
 
 /**
  * An implementation of the {@link QueryManager} using JCR.  Works along with the
@@ -34,12 +34,12 @@ public class JCRQueryManager extends JCRAbstractManager implements QueryManager 
 	}
 
 	@Override
-	public SrampQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) {
-		return new JCRSrampQuery(xpathTemplate, orderByProperty, orderAscending);
+	public ArtificerQuery createQuery(String xpathTemplate, String orderByProperty, boolean orderAscending) {
+		return new JCRArtificerQuery(xpathTemplate, orderByProperty, orderAscending);
 	}
 
 	@Override
-	public SrampQuery createQuery(String xpathTemplate) {
+	public ArtificerQuery createQuery(String xpathTemplate) {
 		return createQuery(xpathTemplate, null, false);
 	}
 

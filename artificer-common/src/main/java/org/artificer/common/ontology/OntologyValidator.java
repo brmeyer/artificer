@@ -32,14 +32,14 @@ public class OntologyValidator {
      * Validates the ontology.
      * @param ontology
      */
-    public static void validateOntology(SrampOntology ontology) throws Exception {
+    public static void validateOntology(ArtificerOntology ontology) throws Exception {
         try {
             new URI(ontology.getId());
         } catch (Exception e) {
             throw new Exception(Messages.i18n.format("INVALID_ONTOLOGY_ID", ontology.getId())); //$NON-NLS-1$
         }
-        List<SrampOntology.SrampOntologyClass> classes = ontology.getAllClasses();
-        for (SrampOntology.SrampOntologyClass oclass : classes) {
+        List<ArtificerOntology.ArtificerOntologyClass> classes = ontology.getAllClasses();
+        for (ArtificerOntology.ArtificerOntologyClass oclass : classes) {
             try {
                 new URI(oclass.getId());
             } catch (Exception e) {

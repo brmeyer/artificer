@@ -36,7 +36,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactTarget;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Relationship;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.artificer.common.ArtifactContent;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.query.xpath.StaticNamespaceContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,9 +101,9 @@ public class XmlArtifactBuilder extends AbstractArtifactBuilder {
                         dat.setRelatedDocument(related);
                     }
                 } else {
-                    Relationship genericRelationship = SrampModelUtils.getGenericRelationship(derivedArtifact, "relatedDocument"); //$NON-NLS-1$
+                    Relationship genericRelationship = ArtificerModelUtils.getGenericRelationship(derivedArtifact, "relatedDocument"); //$NON-NLS-1$
                     if (genericRelationship == null) {
-                        SrampModelUtils.addGenericRelationship(derivedArtifact, "relatedDocument", primaryArtifact.getUuid()); //$NON-NLS-1$
+                        ArtificerModelUtils.addGenericRelationship(derivedArtifact, "relatedDocument", primaryArtifact.getUuid()); //$NON-NLS-1$
                     }
                 }
             }

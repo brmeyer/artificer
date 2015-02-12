@@ -37,7 +37,7 @@ import org.artificer.ui.client.local.services.notification.Notification;
 import org.artificer.ui.client.local.services.notification.NotificationConstants;
 import org.artificer.ui.client.local.services.notification.NotificationWidget;
 import org.artificer.ui.client.shared.beans.NotificationType;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -111,7 +111,7 @@ public class NotificationService {
      * @param message
      * @param exception
      */
-    public final void sendErrorNotification(String title, String message, SrampUiException exception) {
+    public final void sendErrorNotification(String title, String message, ArtificerUiException exception) {
         NotificationBean bean = new NotificationBean();
         bean.setUuid(String.valueOf(notificationCounter++));
         bean.setType(NotificationType.error);
@@ -141,7 +141,7 @@ public class NotificationService {
      * @param title
      * @param exception
      */
-    public final void sendErrorNotification(String title, SrampUiException exception) {
+    public final void sendErrorNotification(String title, ArtificerUiException exception) {
         sendErrorNotification(title, exception.getMessage(), exception);
     }
 
@@ -151,8 +151,8 @@ public class NotificationService {
      * @param exception
      */
     public final void sendErrorNotification(String title, Throwable exception) {
-        if (exception instanceof SrampUiException) {
-            sendErrorNotification(title, (SrampUiException) exception);
+        if (exception instanceof ArtificerUiException) {
+            sendErrorNotification(title, (ArtificerUiException) exception);
         } else {
             sendErrorNotification(title, exception.getMessage(), null);
         }
@@ -211,7 +211,7 @@ public class NotificationService {
      * @param message
      * @param exception
      */
-    public final void completeProgressNotification(String uuid, String title, SrampUiException error) {
+    public final void completeProgressNotification(String uuid, String title, ArtificerUiException error) {
         NotificationBean bean = new NotificationBean();
         bean.setUuid(uuid);
         bean.setType(NotificationType.progressErrored);
@@ -227,10 +227,10 @@ public class NotificationService {
      * @param error
      */
     public void completeProgressNotification(String uuid, String title, Throwable error) {
-        if (error instanceof SrampUiException) {
-            completeProgressNotification(uuid, title, (SrampUiException) error);
+        if (error instanceof ArtificerUiException) {
+            completeProgressNotification(uuid, title, (ArtificerUiException) error);
         } else {
-            completeProgressNotification(uuid, title, new SrampUiException(error));
+            completeProgressNotification(uuid, title, new ArtificerUiException(error));
         }
     }
 

@@ -25,16 +25,16 @@ import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileNameCompleter;
 import org.artificer.shell.util.PrintArtifactMetaDataVisitor;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.client.SrampAtomApiClient;
-import org.artificer.client.SrampClientException;
-import org.artificer.client.SrampClientQuery;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.client.ArtificerAtomApiClient;
+import org.artificer.client.ArtificerClientException;
+import org.artificer.client.ArtificerClientQuery;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.ArtifactTypeEnum;
-import org.artificer.common.SrampConfig;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerConfig;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.maven.MavenGavInfo;
 import org.artificer.common.maven.MavenUtil;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
@@ -78,7 +78,7 @@ public class DeployCommand extends BuiltInShellCommand {
      * Constructor.
      */
     public DeployCommand() {
-        allowSnapshot = SrampConfig.isSnapshotAllowed();
+        allowSnapshot = ArtificerConfig.isSnapshotAllowed();
     }
 
     /**
@@ -95,7 +95,7 @@ public class DeployCommand extends BuiltInShellCommand {
         String artifactTypeArg = this.optionalArgument(2);
 
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
-        SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+        ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
             print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;
@@ -143,22 +143,22 @@ public class DeployCommand extends BuiltInShellCommand {
             // Process GAV and other meta-data, then update the artifact
             String artifactName = mavenGavInfo.getArtifactId() + '-' + mavenGavInfo.getVersion();
             String pomName = mavenGavInfo.getArtifactId() + '-' + mavenGavInfo.getVersion() + ".pom"; //$NON-NLS-1$
-            SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_GROUP_ID, mavenGavInfo.getGroupId());
-            SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_ARTIFACT_ID, mavenGavInfo.getArtifactId());
-            SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_VERSION, mavenGavInfo.getVersion());
-            SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_HASH_MD5, mavenGavInfo.getMd5());
-            SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_HASH_SHA1, mavenGavInfo.getSha1());
+            ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_GROUP_ID, mavenGavInfo.getGroupId());
+            ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_ARTIFACT_ID, mavenGavInfo.getArtifactId());
+            ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_VERSION, mavenGavInfo.getVersion());
+            ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_HASH_MD5, mavenGavInfo.getMd5());
+            ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_HASH_SHA1, mavenGavInfo.getSha1());
             if (StringUtils.isNotBlank(mavenGavInfo.getSnapshotId())) {
-                SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_SNAPSHOT_ID, mavenGavInfo.getSnapshotId());
+                ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_SNAPSHOT_ID, mavenGavInfo.getSnapshotId());
             } else if (mavenGavInfo.isSnapshot()) {
-                SrampModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_SNAPSHOT_ID, generateSnapshotTimestamp());
+                ArtificerModelUtils.setCustomProperty(artifact, JavaModel.PROP_MAVEN_SNAPSHOT_ID, generateSnapshotTimestamp());
             }
             if (mavenGavInfo.getClassifier() != null) {
-                SrampModelUtils.setCustomProperty(artifact, "maven.classifier", mavenGavInfo.getClassifier()); //$NON-NLS-1$
+                ArtificerModelUtils.setCustomProperty(artifact, "maven.classifier", mavenGavInfo.getClassifier()); //$NON-NLS-1$
                 artifactName += '-' + mavenGavInfo.getClassifier();
             }
             if (mavenGavInfo.getType() != null) {
-                SrampModelUtils.setCustomProperty(artifact, "maven.type", mavenGavInfo.getType()); //$NON-NLS-1$
+                ArtificerModelUtils.setCustomProperty(artifact, "maven.type", mavenGavInfo.getType()); //$NON-NLS-1$
                 artifactName += '.' + mavenGavInfo.getType();
             }
             artifact.setName(artifactName);
@@ -169,9 +169,9 @@ public class DeployCommand extends BuiltInShellCommand {
             InputStream pomContent = new ByteArrayInputStream(pom.getBytes("UTF-8")); //$NON-NLS-1$
             BaseArtifactType pomArtifact = ArtifactType.ExtendedDocument(JavaModel.TYPE_MAVEN_POM_XML).newArtifactInstance();
             pomArtifact.setName(pomName);
-            SrampModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_TYPE, "pom"); //$NON-NLS-1$
-            SrampModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_HASH_MD5, DigestUtils.md5Hex(pom));
-            SrampModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_HASH_SHA1, DigestUtils.shaHex(pom));
+            ArtificerModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_TYPE, "pom"); //$NON-NLS-1$
+            ArtificerModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_HASH_MD5, DigestUtils.md5Hex(pom));
+            ArtificerModelUtils.setCustomProperty(pomArtifact, JavaModel.PROP_MAVEN_HASH_SHA1, DigestUtils.shaHex(pom));
 
             BaseArtifactType returned = client.uploadArtifact(pomArtifact, pomContent);
 
@@ -252,17 +252,17 @@ public class DeployCommand extends BuiltInShellCommand {
      *            the client
      * @param mavenGavInfo
      * @return an s-ramp artifact (if found) or null (if not found)
-     * @throws SrampAtomException
+     * @throws org.artificer.atom.err.ArtificerAtomException
      *             the sramp atom exception
-     * @throws SrampClientException
+     * @throws org.artificer.client.ArtificerClientException
      *             the sramp client exception
      * @throws JAXBException
      *             the JAXB exception
      */
-    private BaseArtifactType findExistingArtifactByGAV(SrampAtomApiClient client, MavenGavInfo mavenGavInfo) throws SrampAtomException,
-            SrampClientException, JAXBException {
+    private BaseArtifactType findExistingArtifactByGAV(ArtificerAtomApiClient client, MavenGavInfo mavenGavInfo) throws ArtificerAtomException,
+            ArtificerClientException, JAXBException {
         String query = MavenUtil.gavQuery(mavenGavInfo);
-        SrampClientQuery clientQuery = client.buildQuery(query);
+        ArtificerClientQuery clientQuery = client.buildQuery(query);
 
         QueryResultSet rset = clientQuery.count(100).query();
         if (rset.size() > 0) {

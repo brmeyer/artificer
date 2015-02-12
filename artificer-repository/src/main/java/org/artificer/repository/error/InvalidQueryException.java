@@ -15,14 +15,14 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampUserException;
+import org.artificer.common.error.ArtificerUserException;
 
 /**
  * Exception thrown when an s-ramp query is not valid.
  *
  * @author eric.wittmann@redhat.com
  */
-public class InvalidQueryException extends SrampUserException {
+public class InvalidQueryException extends ArtificerUserException {
 
     private static final long serialVersionUID = InvalidQueryException.class.hashCode();
 

@@ -15,7 +15,7 @@
  */
 package org.artificer.common.ontology;
 
-import org.artificer.common.error.SrampConflictException;
+import org.artificer.common.error.ArtificerConflictException;
 import org.artificer.common.i18n.Messages;
 
 /**
@@ -23,7 +23,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class OntologyConflictException extends SrampConflictException {
+public class OntologyConflictException extends ArtificerConflictException {
 
     private static final long serialVersionUID = -6428175672605313348L;
 

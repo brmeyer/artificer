@@ -22,7 +22,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class ArtifactNotFoundException extends SrampNotFoundException {
+public class ArtifactNotFoundException extends ArtificerNotFoundException {
 
     private static final long serialVersionUID = 1131976536249817281L;
 

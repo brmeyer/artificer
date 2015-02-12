@@ -25,21 +25,21 @@ import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.client.SrampAtomApiClient;
-import org.artificer.client.SrampClientException;
-import org.artificer.client.SrampClientQuery;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.client.ArtificerAtomApiClient;
+import org.artificer.client.ArtificerClientException;
+import org.artificer.client.ArtificerClientQuery;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
-import org.artificer.ui.client.shared.exceptions.SrampUiException;
+import org.artificer.ui.client.shared.exceptions.ArtificerUiException;
 import org.artificer.ui.client.shared.services.IArtifactSearchService;
 import org.artificer.ui.client.shared.beans.ArtifactFilterBean;
 import org.artificer.ui.client.shared.beans.ArtifactOriginEnum;
 import org.artificer.ui.client.shared.beans.ArtifactResultSetBean;
 import org.artificer.ui.client.shared.beans.ArtifactSearchBean;
 import org.artificer.ui.client.shared.beans.ArtifactSummaryBean;
-import org.artificer.ui.server.api.SrampApiClientAccessor;
+import org.artificer.ui.server.api.ArtificerApiClientAccessor;
 
 /**
  * Concrete implementation of the artifact search service.
@@ -59,19 +59,19 @@ public class ArtifactSearchService implements IArtifactSearchService {
      * @see org.artificer.ui.client.shared.services.IArtifactSearchService#search(org.artificer.ui.client.shared.beans.ArtifactFilterBean, java.lang.String, int, java.lang.String, boolean)
      */
     @Override
-    public ArtifactResultSetBean search(ArtifactSearchBean searchBean) throws SrampUiException {
+    public ArtifactResultSetBean search(ArtifactSearchBean searchBean) throws ArtificerUiException {
         int pageSize = 20;
         try {
             ArtifactResultSetBean rval = new ArtifactResultSetBean();
 
             int req_startIndex = (searchBean.getPage() - 1) * pageSize;
-            SrampClientQuery query = null;
+            ArtificerClientQuery query = null;
             if (searchBean.getSearchText() != null && searchBean.getSearchText().startsWith("/")) { //$NON-NLS-1$
-                query = SrampApiClientAccessor.getClient().buildQuery(searchBean.getSearchText());
+                query = ArtificerApiClientAccessor.getClient().buildQuery(searchBean.getSearchText());
             } else {
                 query = createQuery(searchBean.getFilters(), searchBean.getSearchText());
             }
-            SrampClientQuery sq = query.startIndex(req_startIndex).orderBy(searchBean.getSortColumnId());
+            ArtificerClientQuery sq = query.startIndex(req_startIndex).orderBy(searchBean.getSortColumnId());
             if (searchBean.isSortAscending()) {
                 sq.ascending();
             } else {
@@ -113,17 +113,17 @@ public class ArtifactSearchService implements IArtifactSearchService {
 
             rval.setArtifacts(artifacts);
             return rval;
-        } catch (SrampClientException e) {
-            throw new SrampUiException(e.getMessage());
-        } catch (SrampAtomException e) {
-            throw new SrampUiException(e.getMessage());
+        } catch (ArtificerClientException e) {
+            throw new ArtificerUiException(e.getMessage());
+        } catch (ArtificerAtomException e) {
+            throw new ArtificerUiException(e.getMessage());
         }
     }
 
     /**
      * Creates a query given the selected filters and search text.
      */
-    protected SrampClientQuery createQuery(ArtifactFilterBean filters, String searchText) {
+    protected ArtificerClientQuery createQuery(ArtifactFilterBean filters, String searchText) {
         StringBuilder queryBuilder = new StringBuilder();
         // Initial query
         queryBuilder.append("/s-ramp"); //$NON-NLS-1$
@@ -232,8 +232,8 @@ public class ArtifactSearchService implements IArtifactSearchService {
         }
 
         // Create the query, and parameterize it
-        SrampAtomApiClient client = SrampApiClientAccessor.getClient();
-        SrampClientQuery query = client.buildQuery(queryBuilder.toString());
+        ArtificerAtomApiClient client = ArtificerApiClientAccessor.getClient();
+        ArtificerClientQuery query = client.buildQuery(queryBuilder.toString());
         for (Object param : params) {
             if (param instanceof String) {
                 query.parameter((String) param);

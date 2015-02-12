@@ -32,7 +32,7 @@
       <id>with-demos</id>
       <activation>
         <property>
-          <name>!srampExcludeDemos</name>
+          <name>!artificerExcludeDemos</name>
         </property>
       </activation>
 

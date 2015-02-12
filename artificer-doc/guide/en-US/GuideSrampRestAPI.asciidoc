@@ -2056,7 +2056,7 @@ GET /s-ramp/audit/artifact/b086c558-58d6-4837-bb38-6c3da760ae80/2947f90e-0f5a-40
 HTTP/1.1 200 OK
 
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<atom:entry xmlns="http://downloads.jboss.org/overlord/sramp/2013/auditing.xsd" xmlns:atom="http://www.w3.org/2005/Atom">
+<atom:entry xmlns="http://downloads.jboss.org/artificer/2013/auditing.xsd" xmlns:atom="http://www.w3.org/2005/Atom">
   <atom:title>artifact:update</atom:title>
   <atom:updated>2013-07-23T11:14:03.225-04:00</atom:updated>
   <atom:id>2947f90e-0f5a-4099-b3dc-29124c96c7d0</atom:id>

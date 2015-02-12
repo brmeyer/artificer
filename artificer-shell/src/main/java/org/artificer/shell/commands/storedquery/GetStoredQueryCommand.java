@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.StoredQuery;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.shell.BuiltInShellCommand;
 import org.artificer.shell.i18n.Messages;
 
@@ -36,7 +36,7 @@ public class GetStoredQueryCommand extends BuiltInShellCommand {
     public boolean execute() throws Exception {
         String name = this.requiredArgument(0, Messages.i18n.format("StoredQuery.Name.Mandatory")); //$NON-NLS-1$
 
-        SrampAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
+        ArtificerAtomApiClient client = StoredQueryCommandUtil.client(this, getContext());
         if (client == null) {
             return false;
         }

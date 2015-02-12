@@ -21,8 +21,8 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jboss.resteasy.util.GenericType;
 import org.artificer.atom.MediaType;
-import org.artificer.atom.err.SrampAtomException;
-import org.artificer.common.SrampConfig;
+import org.artificer.atom.err.ArtificerAtomException;
+import org.artificer.common.ArtificerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +61,7 @@ public class QueryResource extends AbstractFeedResource {
 	 * @param count
 	 * @param orderBy
 	 * @param asc
-	 * @throws SrampAtomException
+	 * @throws org.artificer.atom.err.ArtificerAtomException
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_ATOM_XML_FEED)
@@ -73,28 +73,28 @@ public class QueryResource extends AbstractFeedResource {
 			@QueryParam("count") Integer count,
 			@QueryParam("orderBy") String orderBy,
 			@QueryParam("ascending") Boolean asc,
-			@QueryParam("propertyName") Set<String> propNames) throws SrampAtomException {
+			@QueryParam("propertyName") Set<String> propNames) throws ArtificerAtomException {
 		try {
-			String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+			String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
 			return createArtifactFeed(query, startPage, startIndex, count, orderBy, asc, propNames, baseUrl);
 		} catch (Throwable e) {
 			logError(logger, Messages.i18n.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
 
 	/**
 	 * Handles clients that POST the query to the /s-ramp endpoint.
 	 * @param input the multipart form data
-	 * @throws SrampAtomException
+	 * @throws org.artificer.atom.err.ArtificerAtomException
 	 */
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_ATOM_XML_FEED)
-	public Feed queryFromPost(@Context HttpServletRequest request, MultipartFormDataInput input) throws SrampAtomException {
+	public Feed queryFromPost(@Context HttpServletRequest request, MultipartFormDataInput input) throws ArtificerAtomException {
 		String query = null;
 		try {
-			String baseUrl = SrampConfig.getBaseUrl(request.getRequestURL().toString());
+			String baseUrl = ArtificerConfig.getBaseUrl(request.getRequestURL().toString());
 			query = input.getFormDataPart("query", new GenericType<String>() { }); //$NON-NLS-1$
 			Integer startPage = input.getFormDataPart("startPage", new GenericType<Integer>() { }); //$NON-NLS-1$
 			Integer startIndex = input.getFormDataPart("startIndex", new GenericType<Integer>() { }); //$NON-NLS-1$
@@ -110,11 +110,11 @@ public class QueryResource extends AbstractFeedResource {
 			}
 
 			return createArtifactFeed(query, startPage, startIndex, count, orderBy, asc, propNames, baseUrl);
-		} catch (SrampAtomException e) {
+		} catch (ArtificerAtomException e) {
 			throw e;
 		} catch (Throwable e) {
 			logError(logger, Messages.i18n.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
-			throw new SrampAtomException(e);
+			throw new ArtificerAtomException(e);
 		}
 	}
 }

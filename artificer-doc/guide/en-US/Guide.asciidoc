@@ -14,23 +14,21 @@ include::GuideSrampQueryLanguage.asciidoc[]
 
 include::GuideSrampRestAPI.asciidoc[]
 
-include::GuideOverlordSrampClients.asciidoc[]
+include::GuideArtificerClients.asciidoc[]
 
-include::GuideOverlordSrampCLI.asciidoc[]
+include::GuideArtificerCLI.asciidoc[]
 
-include::GuideOverlordSrampMaven.asciidoc[]
+include::GuideArtificerMaven.asciidoc[]
 
-include::GuideOverlordSrampBrowser.asciidoc[]
+include::GuideArtificerBrowser.asciidoc[]
 
 include::GuideUserManagement.asciidoc[]
 
 include::GuideExtensionPoints.asciidoc[]
 
-include::GuideOverlordSrampImplementation.asciidoc[]
+include::GuideArtificerImplementation.asciidoc[]
 
-include::GuideSrampSamples.asciidoc[]
-
-include::GuideSrampServerConfiguration.asciidoc[]
+include::GuideArtificerServerConfiguration.asciidoc[]
 
 :numbered!:
 

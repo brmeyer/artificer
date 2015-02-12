@@ -17,7 +17,7 @@ package org.artificer.repository.query;
 
 
 /**
- * A single replacement value in an {@link SrampQuery}.
+ * A single replacement value in an {@link ArtificerQuery}.
  *
  * @author eric.wittmann@redhat.com
  */

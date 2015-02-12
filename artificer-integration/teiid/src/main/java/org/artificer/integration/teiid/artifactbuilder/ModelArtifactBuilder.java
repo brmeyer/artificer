@@ -23,7 +23,7 @@ import org.artificer.integration.teiid.model.TeiidArtifactType;
 import org.artificer.integration.teiid.model.TeiidModel;
 import org.artificer.integration.teiid.model.TeiidModelObject;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
-import org.artificer.common.SrampModelUtils;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.common.query.xpath.StaticNamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +117,7 @@ public final class ModelArtifactBuilder extends XmlArtifactBuilder {
                               final String attributeName,
                               final String propertyName ) {
         final String propValue = element.getAttribute(attributeName);
-        SrampModelUtils.setCustomProperty(getPrimaryArtifact(), propertyName, propValue);
+        ArtificerModelUtils.setCustomProperty(getPrimaryArtifact(), propertyName, propValue);
     }
 
 }

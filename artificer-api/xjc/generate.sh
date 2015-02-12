@@ -17,7 +17,7 @@ XSDDIR=$PARENTDIR/src/main/resources/s-ramp
 # Directory where java classes will be generated
 JAVADIR=$PARENTDIR/src/main/java
 # The classpath with the compiled version of the generated java classes
-CP=$PARENTDIR/target/s-ramp-api-0.8.0-SNAPSHOT.jar
+CP=$PARENTDIR/target/artificer-api-0.8.0-SNAPSHOT.jar
 ########## CONFIG PARAMS ############################
 
 echo Generating java classes in $JAVADIR using $CURDIR/jaxb-bindings.xml ...

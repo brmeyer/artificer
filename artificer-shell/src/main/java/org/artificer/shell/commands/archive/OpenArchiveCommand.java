@@ -18,7 +18,7 @@ package org.artificer.shell.commands.archive;
 import java.io.File;
 import java.util.List;
 
-import org.artificer.atom.archive.SrampArchive;
+import org.artificer.atom.archive.ArtificerArchive;
 import org.artificer.shell.AbstractShellContextVariableLifecycleHandler;
 import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileNameCompleter;
@@ -48,15 +48,15 @@ public class OpenArchiveCommand extends AbstractArchiveCommand {
 
 		File archiveFile = new File(pathToArchive);
 
-		archive = new SrampArchive(archiveFile);
+		archive = new ArtificerArchive(archiveFile);
 		getContext().setVariable(varName, archive, new AbstractShellContextVariableLifecycleHandler() {
 			@Override
 			public void onRemove(Object object) {
-				SrampArchive.closeQuietly((SrampArchive) object);
+				ArtificerArchive.closeQuietly((ArtificerArchive) object);
 			}
 			@Override
 			public void onContextDestroyed(Object object) {
-				SrampArchive.closeQuietly((SrampArchive) object);
+				ArtificerArchive.closeQuietly((ArtificerArchive) object);
 			}
 		});
 		print(Messages.i18n.format("OpenArchive.Opened", archiveFile.getCanonicalPath())); //$NON-NLS-1$

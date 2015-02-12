@@ -16,7 +16,7 @@
 package org.artificer.events;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.common.ontology.SrampOntology;
+import org.artificer.common.ontology.ArtificerOntology;
 
 /**
  * EventProducer is a service contract that allows events to be published to external subscribers (ex: JMS).
@@ -52,7 +52,7 @@ public interface EventProducer {
      * 
      * @param ontology The new ontology
      */
-    public void ontologyCreated(SrampOntology ontology);
+    public void ontologyCreated(ArtificerOntology ontology);
     
     /**
      * An ontology was replaced
@@ -60,14 +60,14 @@ public interface EventProducer {
      * @param updatedOntology The new version of the ontology
      * @param oldOntology The previous version of the ontology
      */
-    public void ontologyUpdated(SrampOntology updatedOntology, SrampOntology oldOntology);
+    public void ontologyUpdated(ArtificerOntology updatedOntology, ArtificerOntology oldOntology);
     
     /**
      * An ontology was deleted
      * 
      * @param ontology The deleted ontology
      */
-    public void ontologyDeleted(SrampOntology ontology);
+    public void ontologyDeleted(ArtificerOntology ontology);
     
     /**
      * Called by SrampLifeCycle during startup.  This method should be utilized for internal logic setup, rather than

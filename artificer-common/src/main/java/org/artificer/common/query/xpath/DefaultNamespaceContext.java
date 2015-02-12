@@ -15,7 +15,7 @@
  */
 package org.artificer.common.query.xpath;
 
-import org.artificer.common.SrampConstants;
+import org.artificer.common.ArtificerConstants;
 
 
 /**
@@ -30,7 +30,7 @@ public class DefaultNamespaceContext extends StaticNamespaceContext {
 	 * Default constructor.
 	 */
 	public DefaultNamespaceContext() {
-		addMapping(SrampConstants.SRAMP_PREFIX, SrampConstants.SRAMP_NS);
+		addMapping(ArtificerConstants.SRAMP_PREFIX, ArtificerConstants.SRAMP_NS);
 		addMapping("xs", "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$ //$NON-NLS-2$
 		addMapping("fn", "http://www.w3.org/2005/xpath-functions"); //$NON-NLS-1$ //$NON-NLS-2$
 		addMapping("xp2", "http://www.w3.org/2005/xpath-functions"); //$NON-NLS-1$ //$NON-NLS-2$

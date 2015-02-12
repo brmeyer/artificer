@@ -15,13 +15,13 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampConflictException;
+import org.artificer.common.error.ArtificerConflictException;
 import org.artificer.common.i18n.Messages;
 
 /**
  * @author Brett Meyer.
  */
-public class ClassifierConstraintException extends SrampConflictException {
+public class ClassifierConstraintException extends ArtificerConflictException {
 
     public ClassifierConstraintException(String uuid) {
         super(Messages.i18n.format("CLASSIFIER_CONSTRAINT", uuid));

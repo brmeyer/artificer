@@ -20,7 +20,7 @@ import org.artificer.test.client.AbstractClientTest;
 import org.junit.Test;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.integration.kie.model.KieJarModel;
@@ -38,7 +38,7 @@ public class KieArtifactTypeDetectorTest extends AbstractClientTest {
 	@Test
 	public void testKieIntegration() throws Exception {
 	    InputStream stream = getClass().getResourceAsStream("kie.jar"); //$NON-NLS-1$
-        SrampAtomApiClient client = client();
+        ArtificerAtomApiClient client = client();
 	    try {
             BaseArtifactType artifact = client.uploadArtifact(stream, "kie.jar");
 

@@ -16,12 +16,11 @@
 package org.artificer.client.auth;
 
 import org.apache.http.HttpRequest;
-import org.artificer.client.SrampAtomApiClient;
 
 /**
  * Clients can supply their own authentication implementation by
  * implementing this interface.  Simply provide one of these when
- * constructing the {@link SrampAtomApiClient}.
+ * constructing the {@link org.artificer.client.ArtificerAtomApiClient}.
  *
  * @author eric.wittmann@redhat.com
  */

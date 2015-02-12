@@ -25,8 +25,8 @@ import org.artificer.shell.i18n.Messages;
 import org.artificer.shell.util.FileNameCompleter;
 import org.artificer.shell.util.PrintArtifactMetaDataVisitor;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.artificer.atom.archive.SrampArchiveJaxbUtils;
-import org.artificer.client.SrampAtomApiClient;
+import org.artificer.atom.archive.ArtificerArchiveJaxbUtils;
+import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.visitors.ArtifactVisitorHelper;
@@ -54,7 +54,7 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 		}
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName feedVarName = new QName("s-ramp", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
-		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
+		ArtificerAtomApiClient client = (ArtificerAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
 			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
@@ -100,7 +100,7 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 				outFile = new File(outFile, fileName);
 			}
 			outFile.getParentFile().mkdirs();
-			SrampArchiveJaxbUtils.writeMetaData(outFile, artifact, false);
+			ArtificerArchiveJaxbUtils.writeMetaData(outFile, artifact, false);
 			print(Messages.i18n.format("GetMetaData.SavedTo", outFile.getCanonicalPath())); //$NON-NLS-1$
 		}
         return true;

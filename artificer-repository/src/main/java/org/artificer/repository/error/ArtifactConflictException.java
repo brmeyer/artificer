@@ -15,7 +15,7 @@
  */
 package org.artificer.repository.error;
 
-import org.artificer.common.error.SrampConflictException;
+import org.artificer.common.error.ArtificerConflictException;
 import org.artificer.common.i18n.Messages;
 
 /**
@@ -23,7 +23,7 @@ import org.artificer.common.i18n.Messages;
  *
  * @author eric.wittmann@redhat.com
  */
-public class ArtifactConflictException extends SrampConflictException {
+public class ArtifactConflictException extends ArtificerConflictException {
 
     private static final long serialVersionUID = 1131976536249817281L;
 
