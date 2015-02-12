@@ -5,7 +5,7 @@
 
   <servlet>
     <servlet-name>JCRRepositoryCleaner</servlet-name>
-    <servlet-class>org.overlord.sramp.test.JCRRepositoryCleaner</servlet-class>
+    <servlet-class>org.artificer.test.JCRRepositoryCleaner</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>JCRRepositoryCleaner</servlet-name>

@@ -5,7 +5,7 @@
 
   <servlet>
     <servlet-name>OrderService</servlet-name>
-    <servlet-class>org.overlord.sramp.demos.webapp.multimodule.web.OrderService</servlet-class>
+    <servlet-class>org.artificer.demos.webapp.multimodule.web.OrderService</servlet-class>
   </servlet>
 
   <servlet-mapping>

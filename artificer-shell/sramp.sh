@@ -3,4 +3,4 @@
 SCRIPTDIR=$(dirname $0)
 cd $SCRIPTDIR
 
-mvn -Dexec.mainClass=org.overlord.sramp.shell.SrampShell exec:java
+mvn -Dexec.mainClass=SrampShell exec:java

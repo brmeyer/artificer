@@ -53,7 +53,7 @@
   
   <filter>
     <filter-name>LocaleFilter</filter-name>
-    <filter-class>org.overlord.sramp.ui.server.filters.LocaleFilter</filter-class>
+    <filter-class>org.artificer.ui.server.filters.LocaleFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>LocaleFilter</filter-name>
@@ -66,7 +66,7 @@
 
   <filter>
     <filter-name>KeycloakBearerTokenFilter</filter-name>
-    <filter-class>org.overlord.sramp.ui.server.filters.KeycloakBearerTokenFilter</filter-class>
+    <filter-class>org.artificer.ui.server.filters.KeycloakBearerTokenFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>KeycloakBearerTokenFilter</filter-name>
@@ -79,7 +79,7 @@
 
   <servlet>
     <servlet-name>ArtifactDownload</servlet-name>
-    <servlet-class>org.overlord.sramp.ui.server.servlets.ArtifactDownloadServlet</servlet-class>
+    <servlet-class>org.artificer.ui.server.servlets.ArtifactDownloadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ArtifactDownload</servlet-name>
@@ -88,7 +88,7 @@
 
   <servlet>
     <servlet-name>ArtifactUpload</servlet-name>
-    <servlet-class>org.overlord.sramp.ui.server.servlets.ArtifactUploadServlet</servlet-class>
+    <servlet-class>org.artificer.ui.server.servlets.ArtifactUploadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ArtifactUpload</servlet-name>
@@ -97,7 +97,7 @@
 
   <servlet>
     <servlet-name>OntologyUpload</servlet-name>
-    <servlet-class>org.overlord.sramp.ui.server.servlets.OntologyUploadServlet</servlet-class>
+    <servlet-class>org.artificer.ui.server.servlets.OntologyUploadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>OntologyUpload</servlet-name>
@@ -106,7 +106,7 @@
   
   <servlet>
     <servlet-name>OntologyDownload</servlet-name>
-    <servlet-class>org.overlord.sramp.ui.server.servlets.OntologyDownloadServlet</servlet-class>
+    <servlet-class>org.artificer.ui.server.servlets.OntologyDownloadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>OntologyDownload</servlet-name>
@@ -115,7 +115,7 @@
 
   <servlet>
     <servlet-name>KeyCloakLogout</servlet-name>
-    <servlet-class>org.overlord.sramp.ui.server.servlets.KeyCloakLogoutServlet</servlet-class>
+    <servlet-class>org.artificer.ui.server.servlets.KeyCloakLogoutServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>KeyCloakLogout</servlet-name>

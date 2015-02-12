@@ -23,7 +23,7 @@ is done by performing the following steps:
 1. Write a custom ArtifactBuilder Java class - it must implement *ArtifactBuilder*
 2. Create an ArtifactBuilderProvider (a class that implements *ArtifactBuilderProvider*) - 
    used to map artifact types to implementations of ArtifactBuilder
-3. Provide a text file named *org.overlord.sramp.integration.artifactbuilder.ArtifactBuilderProvider* in the following
+3. Provide a text file named *org.artificer.integration.artifactbuilder.ArtifactBuilderProvider* in the following
    location:  *META-INF/services*.  The content of that file should simply be one line containing
    the fully qualified classname of the class defined in #2
 4. Package everything up into a JAR and make it available either on the classpath or in an
@@ -46,7 +46,7 @@ mechanism that allows users to provide their own ArtifactTypeDetectors .  This
 is done by performing the following steps:
 
 1. Write a custom ArtifactTypeDetector Java class - it must implement *ArtifactTypeDetector*
-2. Provide a text file named *org.overlord.sramp.integration.artifacttypedetector.ArtifactTypeDetector* in the following
+2. Provide a text file named *org.artificer.integration.artifacttypedetector.ArtifactTypeDetector* in the following
    location:  *META-INF/services*.  The content of that file should simply be one line containing
    the fully qualified classname of the class defined in #1
 3. Package everything up into a JAR and make it available either on the classpath or in an

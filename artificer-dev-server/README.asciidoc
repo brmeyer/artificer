@@ -97,7 +97,7 @@ The s-ramp-dev-server project comes with a file named *S-RAMP Dev Server.launch*
 the "launches" directory.  Eclipse should have automatically found that file and added it to your available
 launches.  To run it simply choose it from either the Debug or Run toolbar menus.
 
-This launch will execute the *org.overlord.sramp.devsvr.JettyDevServer* class with some default parameters.
+This launch will execute the *org.artificer.devsvr.JettyDevServer* class with some default parameters.
 The JettyDevServer application should automatically detect that it is being run from an IDE such as Eclipse
 and therefore it should launch Jetty against the local web application directories.  In other words, if
 s-ramp-ui-war is imported into Eclipse, then the Dev Server will launch Jetty with the following as the

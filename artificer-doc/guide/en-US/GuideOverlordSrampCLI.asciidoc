@@ -299,7 +299,7 @@ commands (command name -> command).  The provider and command implementations sh
 packaged up into a JAR along with a file named:
 
 ----
-META-INF/services/org.overlord.sramp.shell.api.ShellCommandProvider
+META-INF/services/org.artificer.shell.api.ShellCommandProvider
 ----
 
 The JAR must be made available to the S-RAMP CLI, either by putting it on the classpath,

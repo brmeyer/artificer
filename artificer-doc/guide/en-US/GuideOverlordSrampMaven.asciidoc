@@ -81,7 +81,7 @@ normally would in a maven project.  For example:
 
 ----
 <dependency>
-  <groupId>org.overlord.sramp.wiki</groupId>
+  <groupId>org.artificer.wiki</groupId>
   <artifactId>s-ramp-wiki-example</artifactId>
   <version>1.0</version>
 </dependency>

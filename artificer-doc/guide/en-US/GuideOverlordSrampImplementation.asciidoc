@@ -46,7 +46,7 @@ The UI is configured with numerous properties in the Wildfly/EAP
             <!-- Whether or not to validate the S-RAMP server endpoint when connecting to it -->
             <property name="s-ramp-ui.atom-api.validating" value="true" />
             <!-- The authentication provider to use when connecting -->
-            <property name="s-ramp-ui.atom-api.authentication.provider" value="org.overlord.sramp.ui.server.api.KeycloakBearerTokenAuthenticationProvider" />
+            <property name="s-ramp-ui.atom-api.authentication.provider" value="org.artificer.ui.server.api.KeycloakBearerTokenAuthenticationProvider" />
           </properties>
         </configuration>
       </configurations>

@@ -10,9 +10,9 @@
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.1" />
     
     <property name="s-ramp.s-ramp-server.war.path"
-      value="${maven.dependency.org.overlord.sramp.s-ramp-server-eap6.war.path}" />
+      value="${maven.dependency.org.artificer.s-ramp-server-eap6.war.path}" />
     <property name="s-ramp.s-ramp-ui.war.path"
-      value="${maven.dependency.org.overlord.sramp.s-ramp-ui-war-eap6.war.path}" />
+      value="${maven.dependency.org.artificer.s-ramp-ui-war-eap6.war.path}" />
     
     <property name="s-ramp.modeshape-distribution.zip.path"
         location="${project.build.directory}/modeshape-distribution-3.6.0.Final-jbosseap-61-dist.zip" />
@@ -30,9 +30,9 @@
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.2" />
 
     <property name="s-ramp.s-ramp-server.war.path"
-      value="${maven.dependency.org.overlord.sramp.s-ramp-server-eap6.war.path}" />
+      value="${maven.dependency.org.artificer.s-ramp-server-eap6.war.path}" />
     <property name="s-ramp.s-ramp-ui.war.path"
-      value="${maven.dependency.org.overlord.sramp.s-ramp-ui-war-eap6.war.path}" />
+      value="${maven.dependency.org.artificer.s-ramp-ui-war-eap6.war.path}" />
     
     <property name="s-ramp.modeshape-distribution.zip.path"
         value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
@@ -50,9 +50,9 @@
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/jboss-eap-6.3" />
 
     <property name="s-ramp.s-ramp-server.war.path"
-              value="${maven.dependency.org.overlord.sramp.s-ramp-server-eap6.war.path}" />
+              value="${maven.dependency.org.artificer.s-ramp-server-eap6.war.path}" />
     <property name="s-ramp.s-ramp-ui.war.path"
-              value="${maven.dependency.org.overlord.sramp.s-ramp-ui-war-eap6.war.path}" />
+              value="${maven.dependency.org.artificer.s-ramp-ui-war-eap6.war.path}" />
 
     <property name="s-ramp.modeshape-distribution.zip.path"
               value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
@@ -70,9 +70,9 @@
     <property name="s-ramp.appserver.dir" location="${project.build.directory}/wildfly-8.2.0.Final" />
 
     <property name="s-ramp.s-ramp-server.war.path"
-              value="${maven.dependency.org.overlord.sramp.s-ramp-server-wildfly8.war.path}" />
+              value="${maven.dependency.org.artificer.s-ramp-server-wildfly8.war.path}" />
     <property name="s-ramp.s-ramp-ui.war.path"
-              value="${maven.dependency.org.overlord.sramp.s-ramp-ui-war-wildfly8.war.path}" />
+              value="${maven.dependency.org.artificer.s-ramp-ui-war-wildfly8.war.path}" />
 
     <property name="s-ramp.modeshape-distribution.zip.path"
               value="${maven.dependency.org.modeshape.modeshape-distribution.jboss-wf8-dist.zip.path}" />

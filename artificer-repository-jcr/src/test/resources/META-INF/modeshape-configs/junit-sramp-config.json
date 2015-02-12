@@ -20,7 +20,7 @@
         },
         "providers" : [
             {
-                "classname" : "org.overlord.sramp.repository.jcr.auth.MockAuthenticationProvider",
+                "classname" : "org.artificer.repository.jcr.auth.MockAuthenticationProvider",
                 "policyName" : "overlord-idp"
             }
          ]
