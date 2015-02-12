@@ -9,62 +9,6 @@
 
   <name>Artificer</name>
   <description>Artificer is a SOA Repository Artifact Model and Protocol (Artificer) implementation.</description>
-  <url>http://www.jboss.org/overlord</url>
-  <inceptionYear>2011</inceptionYear>
-
-  <organization>
-    <name>JBoss, a division of Red Hat</name>
-    <url>http://www.jboss.org</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>Apache License Version 2.0</name>
-      <url>http://repository.jboss.org/licenses/apache-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://issues.jboss.org/browse/SRAMP</url>
-  </issueManagement>
-
-  <scm>
-    <connection>scm:git:git@github.com:Governance/artificer.git</connection>
-    <developerConnection>scm:git:git@github.com:Governance/artificer.git</developerConnection>
-    <url>scm:git:git@github.com:Governance/artificer.git</url>
-  </scm>
-
-  <developers>
-    <developer>
-      <name>Kurt Stam</name>
-      <id>kstam</id>
-      <email>kstam@jboss.com</email>
-      <organization>JBoss, a division of Red Hat</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Randall Hauch</name>
-      <id>randall</id>
-      <email>rhauch@redhat.com</email>
-      <organization>JBoss, a division of Red Hat</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Eric Wittmann</name>
-      <id>ewittman</id>
-      <email>eric.wittmann@redhat.com</email>
-      <organization>Red Hat</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
 
   <properties>
     <!-- Instruct the build to use only UTF-8 encoding for source code -->

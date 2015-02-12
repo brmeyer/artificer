@@ -5,7 +5,7 @@
   "dashboard.footer" : "© Artificer 2015",
   "dashboard.hero-description" : " Welcome to the Artificer browser. This browser is intended to allow you to manage the content in your Artificer repository. It provides a low level view of the data - you may want to learn more about Artificer by reviewing the specification and other documentation. ",
   "dashboard.hero-link-docs" : "Artificer Documentation",
-  "dashboard.hero-link-overlord" : "JBoss Overlord",
+  "dashboard.hero-link-overlord" : "Artificer",
   "dashboard.hero-link-project" : "Artificer Project",
   "dashboard.hero-link-spec" : "Artificer Specification",
   "dashboard.hero-title" : "Artificer Browser",

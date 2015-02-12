@@ -37,9 +37,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:git:git@github.com:Governance/artificer.git</connection>
-    <developerConnection>scm:git:git@github.com:Governance/artificer.git</developerConnection>
-    <url>scm:git:git@github.com:Governance/artificer.git</url>
+    <connection>scm:git:git@github.com:ArtificerRepo/artificer.git</connection>
+    <developerConnection>scm:git:git@github.com:ArtificerRepo/artificer.git</developerConnection>
+    <url>scm:git:git@github.com:ArtificerRepo/artificer.git</url>
     <tag>HEAD</tag>
   </scm>
 

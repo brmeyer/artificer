@@ -118,9 +118,9 @@
         <configuration>
           <minmemory>128m</minmemory>
           <maxmemory>768m</maxmemory>
-          <header>Overlord Artificer</header>
-          <footer>Overlord Artificer</footer>
-          <doctitle>Overlord Artificer ${project.version} API</doctitle>
+          <header>Artificer</header>
+          <footer>Artificer</footer>
+          <doctitle>Artificer ${project.version} API</doctitle>
           <notimestamp>true</notimestamp>
         </configuration>
       </plugin>
