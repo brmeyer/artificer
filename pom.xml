@@ -360,32 +360,27 @@
       </dependency>
       <dependency>
         <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-war</artifactId>
+        <artifactId>artificer-ui</artifactId>
         <version>${project.version}</version>
         <type>war</type>
       </dependency>
       <dependency>
         <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-war</artifactId>
+        <artifactId>artificer-ui</artifactId>
         <version>${project.version}</version>
         <classifier>classes</classifier>
       </dependency>
       <dependency>
         <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-war-eap6</artifactId>
+        <artifactId>artificer-ui-eap6</artifactId>
         <version>${project.version}</version>
         <type>war</type>
       </dependency>
       <dependency>
         <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-war-wildfly8</artifactId>
+        <artifactId>artificer-ui-wildfly8</artifactId>
         <version>${project.version}</version>
         <type>war</type>
-      </dependency>
-      <dependency>
-        <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-widgets</artifactId>
-        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.artificer.demos</groupId>
@@ -467,7 +462,7 @@
       </dependency>
       <dependency>
         <groupId>org.artificer</groupId>
-        <artifactId>artificer-ui-war</artifactId>
+        <artifactId>artificer-ui</artifactId>
         <version>${project.version}</version>
         <classifier>sources</classifier>
       </dependency>
@@ -1005,36 +1000,35 @@
 
   <!-- modules in alphabetical order -->
   <modules>
-    <module>artificer-api</module>
-    <module>artificer-atom</module>
-    <module>artificer-client</module>
-    <module>artificer-common</module>
-    <module>artificer-demos</module>
-    <module>artificer-dev-server</module>
-    <module>artificer-distro</module>
-    <module>artificer-events</module>
-    <module>artificer-events-jms</module>
-    <module>artificer-installer</module>
-    <module>artificer-integration</module>
-    <module>artificer-integration/java</module>
-    <module>artificer-integration/kie</module>
-    <module>artificer-integration/rtgov</module>
-    <module>artificer-integration/switchyard</module>
-    <module>artificer-integration/teiid</module>
-    <module>artificer-javadoc</module>
-    <module>artificer-repository</module>
-    <module>artificer-repository-jcr</module>
-    <module>artificer-server</module>
-    <module>artificer-server/api</module>
-    <module>artificer-server/eap6</module>
-    <module>artificer-server/wildfly8</module>
-    <module>artificer-shell</module>
-    <module>artificer-shell-api</module>
-    <module>artificer-test</module>
-    <module>artificer-ui-war</module>
-    <module>artificer-ui-war/eap6</module>
-    <module>artificer-ui-war/wildfly8</module>
-    <module>artificer-ui-widgets</module>
+    <module>api</module>
+    <module>atom</module>
+    <module>client</module>
+    <module>common</module>
+    <module>demos</module>
+    <module>dev-server</module>
+    <module>distro</module>
+    <module>events</module>
+    <module>events-jms</module>
+    <module>installer</module>
+    <module>integration</module>
+    <module>integration/java</module>
+    <module>integration/kie</module>
+    <module>integration/rtgov</module>
+    <module>integration/switchyard</module>
+    <module>integration/teiid</module>
+    <module>javadoc</module>
+    <module>repository</module>
+    <module>repository/jcr</module>
+    <module>server</module>
+    <module>server/api</module>
+    <module>server/eap6</module>
+    <module>server/wildfly8</module>
+    <module>shell</module>
+    <module>shell/api</module>
+    <module>test</module>
+    <module>ui</module>
+    <module>ui/eap6</module>
+    <module>ui/wildfly8</module>
   </modules>
   
   <profiles>
@@ -1042,7 +1036,7 @@
       <id>generate-docs</id>
       <modules>
         <!-- Don't run asciidoctor/jdocbook by default.  CI and the release plugin will use this profile. -->
-        <module>artificer-doc</module>
+        <module>doc</module>
       </modules>
     </profile>
   </profiles>
