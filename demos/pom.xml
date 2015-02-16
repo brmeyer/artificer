@@ -37,29 +37,29 @@
       </activation>
 
       <modules>
-        <module>demos-simple-client</module>
-        <module>demos-archive-package</module>
-        <module>demos-query</module>
-        <module>demos-properties</module>
-        <module>demos-ontologies</module>
-        <module>demos-classifications</module>
-        <module>demos-mvn-integration</module>
-        <module>demos-relationships</module>
-        <module>demos-derived-artifacts</module>
-        <module>demos-shell-command</module>
-        <module>demos-webapp-multimodule/artifacts</module>
-        <module>demos-webapp-multimodule/web</module>
-        <module>demos-custom-artifact-builder</module>
+        <module>simple-client</module>
+        <module>archive-package</module>
+        <module>query</module>
+        <module>properties</module>
+        <module>ontologies</module>
+        <module>classifications</module>
+        <module>mvn-integration</module>
+        <module>relationships</module>
+        <module>derived-artifacts</module>
+        <module>shell-command</module>
+        <module>webapp-multimodule/artifacts</module>
+        <module>webapp-multimodule/web</module>
+        <module>custom-artifact-builder</module>
       </modules>
     </profile>
     <profile>
       <activation>
         <file>
-          <exists>demos-assembly</exists>
+          <exists>assembly</exists>
         </file>
       </activation>
       <modules>
-        <module>demos-assembly</module>
+        <module>assembly</module>
       </modules>
     </profile>
   </profiles>
