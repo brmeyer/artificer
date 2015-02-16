@@ -100,14 +100,8 @@ public abstract class AbstractArtificerShell {
 	private void displayWelcomeMessage() {
 		System.out.println(
 				"**********************************************************************\n" + //$NON-NLS-1$
-				"           _____       ______  ___ ___  ________  \n" + //$NON-NLS-1$
-				"          /  ___|      | ___ \\/ _ \\|  \\/  | ___ \\ \n" + //$NON-NLS-1$
-				"          \\ `--. ______| |_/ / /_\\ \\ .  . | |_/ / \n" + //$NON-NLS-1$
-				"           `--. \\______|    /|  _  | |\\/| |  __/  \n" + //$NON-NLS-1$
-				"          /\\__/ /      | |\\ \\| | | | |  | | |     \n" + //$NON-NLS-1$
-				"          \\____/       \\_| \\_\\_| |_|_|  |_|_|     \n" + //$NON-NLS-1$
-				"                                                  \n" + //$NON-NLS-1$
-				"  Artificer, Licensed under Apache License V2.0, Copyright 2014\n" + //$NON-NLS-1$
+				"  Artificer CLI\n" + //$NON-NLS-1$
+                "  Licensed under Apache License V2.0, Copyright 2014\n" + //$NON-NLS-1$
 				"  Locale: " + Locale.getDefault().toString().trim() + "\n" + //$NON-NLS-1$ //$NON-NLS-2$
 				"**********************************************************************" //$NON-NLS-1$
 				);
