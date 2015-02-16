@@ -54,7 +54,7 @@ public abstract class AbstractIntegrationTest {
 
     private static final int PORT = Integer.parseInt(System.getProperty("artificer.test.port", "8080")); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final String BASE_URL = "http://" + HOST + ":" + PORT + "/s-ramp-server"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final String BASE_URL = "http://" + HOST + ":" + PORT + "/artificer-server"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     protected static final String USERNAME = System.getProperty("artificer.test.username", "admin"); //$NON-NLS-1$ //$NON-NLS-2$
 

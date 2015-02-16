@@ -11,8 +11,8 @@
     <property name="s-ramp.jboss.module.path" location="${s-ramp.appserver.dir}/modules" />
     <property name="s-ramp.jboss.deployments.dir" location="${s-ramp.appserver.dir}/standalone/deployments" />
 
-    <property name="s-ramp.s-ramp-server.war.path" location="bin/s-ramp-server-eap6-${s-ramp.version}.war" />
-    <property name="s-ramp.s-ramp-ui.war.path" location="bin/s-ramp-ui-war-eap6-${s-ramp.version}.war" />
+    <property name="s-ramp.s-ramp-server.war.path" location="bin/artificer-server-eap6-${s-ramp.version}.war" />
+    <property name="s-ramp.s-ramp-ui.war.path" location="bin/artificer-ui-eap6-${s-ramp.version}.war" />
   </target>
 
   <!-- Install Artificer -->
@@ -41,9 +41,9 @@
     <echo>Deploying Artificer and Artificer UI</echo>
     <echo>-----------------------------------</echo>
     <copy file="${s-ramp.s-ramp-server.war.path}"
-          tofile="${s-ramp.jboss.deployments.dir}/s-ramp-server.war" overwrite="true" />
+          tofile="${s-ramp.jboss.deployments.dir}/artificer-server.war" overwrite="true" />
     <copy file="${s-ramp.s-ramp-ui.war.path}"
-          tofile="${s-ramp.jboss.deployments.dir}/s-ramp-ui.war" overwrite="true" />
+          tofile="${s-ramp.jboss.deployments.dir}/artificer-ui.war" overwrite="true" />
     <copy file="${s-ramp.updates.dir}/artificer.properties" todir="${s-ramp.jboss.config.dir}" overwrite="true" />
     <copy file="${s-ramp.updates.dir}/artificer-ui.properties" todir="${s-ramp.jboss.config.dir}" overwrite="true" />
 

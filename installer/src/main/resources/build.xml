@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Install Artificer and Artificer-UI" default="install">
 
+  <property name="s-ramp.version" value="" />
   <!-- Override properties by putting them in s-ramp-build.properties -->
   <property name="s-ramp.build.properties" location="s-ramp-build.properties" />
   <property file="${s-ramp.build.properties}" />
-  <property name="s-ramp.version" value="" />
 
 
   <!-- ****************************************************** -->

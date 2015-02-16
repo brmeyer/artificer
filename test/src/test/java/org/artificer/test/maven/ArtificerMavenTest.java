@@ -203,7 +203,7 @@ public class ArtificerMavenTest extends AbstractIntegrationTest {
         rset = client.query("/s-ramp/ext/MavenPom");
         Assert.assertEquals(1, rset.size());
 
-        rset = client.query("/s-ramp[@maven.groupId = 'org.artificer.test']");
+        rset = client.query("/s-ramp[@maven.groupId = 'org.overlord.sramp.test']");
         Assert.assertEquals(2, rset.size());
     }
 
@@ -263,7 +263,7 @@ public class ArtificerMavenTest extends AbstractIntegrationTest {
 	}
 
     private ClientRequest createClientRequest(String urlAppend) {
-        String url = "http://localhost:8080/s-ramp-server/maven/repository/" + urlAppend;
+        String url = "http://localhost:8080/artificer-server/maven/repository/" + urlAppend;
         ClientExecutor executor = createClientExecutor();
         ClientRequest request = new ClientRequest(url, executor);
         return request;

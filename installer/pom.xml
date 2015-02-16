@@ -122,32 +122,32 @@
                 <configuration>
                   <tasks>
                     <property name="appserver.id" value="jboss-wildfly-8" />
-                    <property name="artificer.install.dir" value="${project.build.directory}" />
-                    <property name="artificer.appserver.dir" location="${artificer.install.dir}/wildfly-8.2.0.Final" />
+                    <property name="s-ramp.install.dir" value="${project.build.directory}" />
+                    <property name="s-ramp.appserver.dir" location="${s-ramp.install.dir}/wildfly-8.2.0.Final" />
 
                     <!-- Overlord Commons Installer and Dependencies -->
-                    <property name="artificer-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
+                    <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
 
                     <!-- Artificer WARs -->
-                    <property name="artificer.artificer-server.war.path" value="${maven.dependency.org.artificer.artificer-server-wildfly8.war.path}" />
-                    <property name="artificer.artificer-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-wildfly8.war.path}" />
+                    <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.artificer.artificer-server-wildfly8.war.path}" />
+                    <property name="s-ramp.s-ramp-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-wildfly8.war.path}" />
 
                     <!-- ModeShape Distribution -->
-                    <property name="artificer.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jboss-wf8-dist.zip.path}" />
+                    <property name="s-ramp.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jboss-wf8-dist.zip.path}" />
 
                     <property file="build.properties" />
-                    <property name="artificer.appserver.zip" value="${basedir}/wildfly-8.2.0.Final.zip" />
-                    <unzip src="${artificer.appserver.zip}" dest="${artificer.install.dir}" overwrite="false" />
-                    <chmod perm="a+x" dir="${artificer.appserver.dir}/bin">
+                    <property name="s-ramp.appserver.zip" value="${basedir}/wildfly-8.2.0.Final.zip" />
+                    <unzip src="${s-ramp.appserver.zip}" dest="${s-ramp.install.dir}" overwrite="false" />
+                    <chmod perm="a+x" dir="${s-ramp.appserver.dir}/bin">
                       <include name="*.sh" />
                     </chmod>
 
                     <!-- The commons ant jar location -->
-                    <property name="overlord-commons.ant.jar" location="${artificer-overlord-commons.ant.jar.path}" />
+                    <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
 
                     <unzip src="${maven.dependency.org.keycloak.keycloak-war-dist-all.zip.path}" dest="${project.build.directory}"/>
-                    <property name="artificer.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
-                    <property name="artificer.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-wildfly-adapter-dist.zip.path}" />
+                    <property name="s-ramp.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
+                    <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-wildfly-adapter-dist.zip.path}" />
 
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
@@ -244,32 +244,32 @@
                 <configuration>
                   <tasks>
                     <property name="appserver.id" value="jboss-eap-6" />
-                    <property name="artificer.install.dir" value="${project.build.directory}" />
-                    <property name="artificer.appserver.dir" location="${artificer.install.dir}/jboss-eap-6.3" />
+                    <property name="s-ramp.install.dir" value="${project.build.directory}" />
+                    <property name="s-ramp.appserver.dir" location="${s-ramp.install.dir}/jboss-eap-6.3" />
 
                     <!-- Overlord Commons Installer and Dependencies -->
-                    <property name="artificer-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
+                    <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
 
                     <!-- Artificer WARs -->
-                    <property name="artificer.artificer-server.war.path" value="${maven.dependency.org.artificer.artificer-server-eap6.war.path}" />
-                    <property name="artificer.artificer-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-eap6.war.path}" />
+                    <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.artificer.artificer-server-eap6.war.path}" />
+                    <property name="s-ramp.s-ramp-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-eap6.war.path}" />
 
                     <!-- ModeShape Distribution -->
-                    <property name="artificer.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
+                    <property name="s-ramp.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
 
                     <property file="build.properties" />
-                    <property name="artificer.appserver.zip" value="${basedir}/jboss-eap-6.3.0.zip" />
-                    <unzip src="${artificer.appserver.zip}" dest="${artificer.install.dir}" overwrite="false" />
-                    <chmod perm="a+x" dir="${artificer.appserver.dir}/bin">
+                    <property name="s-ramp.appserver.zip" value="${basedir}/jboss-eap-6.3.0.zip" />
+                    <unzip src="${s-ramp.appserver.zip}" dest="${s-ramp.install.dir}" overwrite="false" />
+                    <chmod perm="a+x" dir="${s-ramp.appserver.dir}/bin">
                       <include name="*.sh" />
                     </chmod>
 
                     <!-- The commons ant jar location -->
-                    <property name="overlord-commons.ant.jar" location="${artificer-overlord-commons.ant.jar.path}" />
+                    <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
 
                     <unzip src="${maven.dependency.org.keycloak.keycloak-war-dist-all.zip.path}" dest="${project.build.directory}"/>
-                    <property name="artificer.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
-                    <property name="artificer.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-eap6-adapter-dist.zip.path}" />
+                    <property name="s-ramp.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
+                    <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-eap6-adapter-dist.zip.path}" />
 
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
@@ -366,32 +366,32 @@
                 <configuration>
                   <tasks>
                     <property name="appserver.id" value="jboss-eap-6" />
-                    <property name="artificer.install.dir" value="${project.build.directory}" />
-                    <property name="artificer.appserver.dir" location="${artificer.install.dir}/jboss-eap-6.4" />
+                    <property name="s-ramp.install.dir" value="${project.build.directory}" />
+                    <property name="s-ramp.appserver.dir" location="${s-ramp.install.dir}/jboss-eap-6.4" />
 
                     <!-- Overlord Commons Installer and Dependencies -->
-                    <property name="artificer-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
+                    <property name="s-ramp-overlord-commons.ant.jar.path" value="${maven.dependency.org.overlord.overlord-commons-ant.jar.path}"/>
 
                     <!-- Artificer WARs -->
-                    <property name="artificer.artificer-server.war.path" value="${maven.dependency.org.artificer.artificer-server-eap6.war.path}" />
-                    <property name="artificer.artificer-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-eap6.war.path}" />
+                    <property name="s-ramp.s-ramp-server.war.path" value="${maven.dependency.org.artificer.artificer-server-eap6.war.path}" />
+                    <property name="s-ramp.s-ramp-ui.war.path" value="${maven.dependency.org.artificer.artificer-ui-eap6.war.path}" />
 
                     <!-- ModeShape Distribution -->
-                    <property name="artificer.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
+                    <property name="s-ramp.modeshape-distribution.zip.path" value="${maven.dependency.org.modeshape.modeshape-distribution.jbosseap-dist.zip.path}" />
 
                     <property file="build.properties" />
-                    <property name="artificer.appserver.zip" value="${basedir}/jboss-eap-6.4.0.Alpha.zip" />
-                    <unzip src="${artificer.appserver.zip}" dest="${artificer.install.dir}" overwrite="false" />
-                    <chmod perm="a+x" dir="${artificer.appserver.dir}/bin">
+                    <property name="s-ramp.appserver.zip" value="${basedir}/jboss-eap-6.4.0.Alpha.zip" />
+                    <unzip src="${s-ramp.appserver.zip}" dest="${s-ramp.install.dir}" overwrite="false" />
+                    <chmod perm="a+x" dir="${s-ramp.appserver.dir}/bin">
                       <include name="*.sh" />
                     </chmod>
 
                     <!-- The commons ant jar location -->
-                    <property name="overlord-commons.ant.jar" location="${artificer-overlord-commons.ant.jar.path}" />
+                    <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
 
                     <unzip src="${maven.dependency.org.keycloak.keycloak-war-dist-all.zip.path}" dest="${project.build.directory}"/>
-                    <property name="artificer.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
-                    <property name="artificer.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-eap6-adapter-dist.zip.path}" />
+                    <property name="s-ramp.keycloak.path" location="${project.build.directory}/keycloak-war-dist-all-${version.org.keycloak}" />
+                    <property name="s-ramp.keycloak.adapter" location="${maven.dependency.org.keycloak.keycloak-eap6-adapter-dist.zip.path}" />
 
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
