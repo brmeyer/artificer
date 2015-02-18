@@ -15,6 +15,9 @@
  */
 package org.artificer.ui.server.services.util;
 
+import org.artificer.client.query.ArtifactSummary;
+import org.artificer.client.query.QueryResultSet;
+import org.artificer.common.ArtificerConstants;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Target;
 import org.artificer.client.ArtificerAtomApiClient;
@@ -23,6 +26,8 @@ import org.artificer.common.visitors.ArtifactVisitorHelper;
 import org.artificer.common.visitors.RelationshipArtifactVisitor;
 import org.artificer.ui.client.shared.beans.ArtifactRelationshipBean;
 import org.artificer.ui.client.shared.beans.ArtifactRelationshipsIndexBean;
+
+import java.util.Iterator;
 
 /**
  * Visits an artifact to resolve all of its relationships.
@@ -48,6 +53,7 @@ public class RelationshipResolver {
      * @param artifact
      */
     public void resolveAll(BaseArtifactType artifact) {
+        // relationships originating from artifact
         ArtifactVisitorHelper.visitArtifact(new RelationshipArtifactVisitor() {
             @Override
             protected void visitRelationship(String type, Target target) {
@@ -59,10 +65,10 @@ public class RelationshipResolver {
                     ArtifactType targetArtifactType = ArtifactType.valueOf(targetArtifact);
                     ArtifactRelationshipBean bean = new ArtifactRelationshipBean();
                     bean.setRelationshipType(type);
-                    bean.setTargetLastModified(targetArtifact.getLastModifiedTimestamp().toGregorianCalendar().getTime());
-                    bean.setTargetName(targetArtifact.getName());
-                    bean.setTargetUuid(targetUuid);
-                    bean.setTargetType(targetArtifactType.getType());
+                    bean.setLastModified(targetArtifact.getLastModifiedTimestamp().toGregorianCalendar().getTime());
+                    bean.setName(targetArtifact.getName());
+                    bean.setUuid(targetUuid);
+                    bean.setType(targetArtifactType.getType());
                     indexedRelationships.addRelationship(bean);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -70,6 +76,28 @@ public class RelationshipResolver {
                 }
             }
         }, artifact);
+
+        try {
+            // relationships *targeting* artifact ("reverse")
+            QueryResultSet results = client.reverseRelationships(artifact.getUuid());
+            Iterator<ArtifactSummary> itr = results.iterator();
+            while (itr.hasNext()) {
+                ArtifactSummary sourceArtifactSummary = itr.next();
+                BaseArtifactType source = sourceArtifactSummary.getArtifact();
+                ArtifactType sourceArtifactType = ArtifactType.valueOf(source);
+                ArtifactRelationshipBean bean = new ArtifactRelationshipBean();
+                bean.setRelationshipType((String) sourceArtifactSummary.getExtensionAttribute(
+                        ArtificerConstants.ARTIFICER_RELATIONSHIP_TYPE_QNAME));
+                bean.setLastModified(source.getLastModifiedTimestamp().toGregorianCalendar().getTime());
+                bean.setName(source.getName());
+                bean.setUuid(source.getUuid());
+                bean.setType(sourceArtifactType.getType());
+                indexedRelationships.addReverseRelationship(bean);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+            // TODO handle the error case here?  what to do?
+        }
     }
 
 }

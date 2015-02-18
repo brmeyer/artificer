@@ -115,11 +115,8 @@ public class ArtifactSummary {
 	 * @return the property value or null if not present
 	 */
 	public String getCustomPropertyValue(String propertyName) {
-	    if (artifact == null) {
-	        artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
-	    }
-	    if (artifact != null) {
-	        return ArtificerModelUtils.getCustomProperty(artifact, propertyName);
+	    if (getArtifact() != null) {
+	        return ArtificerModelUtils.getCustomProperty(getArtifact(), propertyName);
 	    } else {
 	        return null;
 	    }
@@ -140,5 +137,16 @@ public class ArtifactSummary {
             result = ArtificerModelUtils.getCustomPropertiesByPrefix(artifact, prefix);
         }
         return result;
+    }
+
+    public Object getExtensionAttribute(Object name) {
+        return entry.getExtensionAttributes().get(name);
+    }
+
+    public BaseArtifactType getArtifact() {
+        if (artifact == null) {
+            artifact = ArtificerAtomUtils.unwrapSrampArtifact(entry);
+        }
+        return artifact;
     }
 }

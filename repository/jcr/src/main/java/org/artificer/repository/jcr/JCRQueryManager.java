@@ -15,9 +15,23 @@
  */
 package org.artificer.repository.jcr;
 
+import org.artificer.common.ArtificerException;
+import org.artificer.common.ReverseRelationship;
+import org.artificer.common.error.ArtificerServerException;
 import org.artificer.repository.QueryManager;
 import org.artificer.repository.jcr.query.JCRArtificerQuery;
+import org.artificer.repository.jcr.util.JCRUtils;
 import org.artificer.repository.query.ArtificerQuery;
+import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Session;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An implementation of the {@link QueryManager} using JCR.  Works along with the
@@ -42,5 +56,28 @@ public class JCRQueryManager extends JCRAbstractManager implements QueryManager 
 	public ArtificerQuery createQuery(String xpathTemplate) {
 		return createQuery(xpathTemplate, null, false);
 	}
+
+    @Override
+    public List<ReverseRelationship> reverseRelationships(String uuid) throws ArtificerException {
+        Session session = null;
+        try {
+            session = JCRRepositoryFactory.getSession();
+            RowIterator rows = JCRUtils.reverseRelationships(uuid, session);
+            List<ReverseRelationship> relationships = new ArrayList<ReverseRelationship>();
+            while (rows.hasNext()) {
+                Row row = rows.nextRow();
+//                ReverseRelationship relationship = new ReverseRelationship();
+//
+//                relationships.add(relationship);
+            }
+            return relationships;
+        } catch (ArtificerException se) {
+            throw se;
+        } catch (Throwable t) {
+            throw new ArtificerServerException(t);
+        } finally {
+            JCRRepositoryFactory.logoutQuietly(session);
+        }
+    }
 
 }
