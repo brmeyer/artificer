@@ -502,19 +502,20 @@ public class JCRUtils {
     /**
      * Finds any relationships targeting the given artifact UUID.
      *
-     * @param uuid
+     * @param targetedUuid
      * @param session
      * @return NodeIterator
      * @throws Exception
      */
-    public static NodeIterator reverseRelationships(String uuid, Session session) throws Exception {
+    public static NodeIterator reverseRelationships(String targetedUuid, Session session) throws Exception {
+        Node targetedNode = findArtifactNodeByUuid(session, targetedUuid);
         String query = String.format("SELECT r.* FROM [sramp:relationship] AS r " +
                         "JOIN [sramp:target] AS t ON ISCHILDNODE(t, r) " +
                         // root path, *not* in the trash
                         "WHERE ISDESCENDANTNODE(r, '" + JCRConstants.ROOT_PATH + "') " +
                         // targets the primary artifact
                         "AND REFERENCE(t) = '%1$s'",
-                uuid);
+                targetedNode.getIdentifier());
         javax.jcr.query.QueryManager jcrQueryManager = session.getWorkspace().getQueryManager();
         javax.jcr.query.Query jcrQuery = jcrQueryManager.createQuery(query, JCRConstants.JCR_SQL2);
         QueryResult jcrQueryResult = jcrQuery.execute();

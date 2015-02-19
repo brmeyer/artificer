@@ -351,7 +351,7 @@ public class ArtifactDetailsPage extends AbstractPage {
         artifactService.getRelationships(artifact.getUuid(), artifact.getType(), new IServiceInvocationHandler<ArtifactRelationshipsIndexBean>() {
             @Override
             public void onReturn(ArtifactRelationshipsIndexBean data) {
-                relationshipsHeader.setText("Owned by " + artifact.getName());
+                relationshipsHeader.setText("Targeted by " + artifact.getName());
                 reverseRelationshipsHeader.setText("Targets " + artifact.getName());
 
                 relationships.setValue(data.getRelationships());

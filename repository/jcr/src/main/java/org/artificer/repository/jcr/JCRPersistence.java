@@ -173,15 +173,6 @@ public class JCRPersistence extends JCRAbstractManager implements PersistenceMan
             session = JCRRepositoryFactory.getSession();
             Node artifactNode = JCRUtils.findArtifactNode(uuid, type, session);
             if (artifactNode != null) {
-                // In the case of an extended type, we might be wrong about which one...
-                if (type.isExtendedType()) {
-                    String t = artifactNode.getProperty(JCRConstants.SRAMP_ARTIFACT_TYPE).getString();
-                    if (ExtendedDocument.class.getSimpleName().equals(t)) {
-                        String e = type.getExtendedType();
-                        type = ArtifactType.valueOf(BaseArtifactEnum.EXTENDED_DOCUMENT);
-                        type.setExtendedType(e);
-                    }
-                }
                 // Create an artifact from the sequenced node
                 return JCRNodeToArtifactFactory.createArtifact(session, artifactNode, type);
             } else {
