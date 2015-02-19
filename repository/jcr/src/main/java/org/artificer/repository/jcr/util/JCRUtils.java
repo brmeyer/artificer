@@ -504,13 +504,12 @@ public class JCRUtils {
      *
      * @param uuid
      * @param session
-     * @return RowIterator
+     * @return NodeIterator
      * @throws Exception
      */
-    public static RowIterator reverseRelationships(String uuid, Session session) throws Exception {
-        String query = String.format("SELECT r.*, a.* FROM [sramp:relationship] AS r " +
+    public static NodeIterator reverseRelationships(String uuid, Session session) throws Exception {
+        String query = String.format("SELECT r.* FROM [sramp:relationship] AS r " +
                         "JOIN [sramp:target] AS t ON ISCHILDNODE(t, r) " +
-                        "JOIN [sramp:baseArtifactType] AS a ON ISCHILDNODE(r, a) " +
                         // root path, *not* in the trash
                         "WHERE ISDESCENDANTNODE(r, '" + JCRConstants.ROOT_PATH + "') " +
                         // targets the primary artifact
@@ -519,7 +518,7 @@ public class JCRUtils {
         javax.jcr.query.QueryManager jcrQueryManager = session.getWorkspace().getQueryManager();
         javax.jcr.query.Query jcrQuery = jcrQueryManager.createQuery(query, JCRConstants.JCR_SQL2);
         QueryResult jcrQueryResult = jcrQuery.execute();
-        return jcrQueryResult.getRows();
+        return jcrQueryResult.getNodes();
     }
 
     /**

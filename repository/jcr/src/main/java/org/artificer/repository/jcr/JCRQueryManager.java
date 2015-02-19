@@ -62,10 +62,10 @@ public class JCRQueryManager extends JCRAbstractManager implements QueryManager 
         Session session = null;
         try {
             session = JCRRepositoryFactory.getSession();
-            RowIterator rows = JCRUtils.reverseRelationships(uuid, session);
+            NodeIterator nodes = JCRUtils.reverseRelationships(uuid, session);
             List<ReverseRelationship> relationships = new ArrayList<ReverseRelationship>();
-            while (rows.hasNext()) {
-                Row row = rows.nextRow();
+            while (nodes.hasNext()) {
+                Node node = nodes.nextNode();
 //                ReverseRelationship relationship = new ReverseRelationship();
 //
 //                relationships.add(relationship);

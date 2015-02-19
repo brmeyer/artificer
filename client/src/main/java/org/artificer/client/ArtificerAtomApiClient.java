@@ -465,7 +465,7 @@ public class ArtificerAtomApiClient {
 		try {
 			String type = artifactType.getType();
 			String atomUrl = String.format("%1$s/%2$s/%3$s", srampEndpoint,
-					artifactType.getArtifactType().getModel(), type);
+                    artifactType.getArtifactType().getModel(), type);
 			ClientRequest request = createClientRequest(atomUrl);
 
 			MultipartRelatedOutput output = new MultipartRelatedOutput();
