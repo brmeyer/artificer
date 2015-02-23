@@ -972,6 +972,7 @@
     <module>distro</module>
     <module>events</module>
     <module>events/jms</module>
+    <module>ide/eclipse</module>
     <module>installer</module>
     <module>integration</module>
     <module>integration/java</module>
