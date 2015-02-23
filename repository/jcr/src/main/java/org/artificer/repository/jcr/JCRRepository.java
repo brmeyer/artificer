@@ -19,6 +19,11 @@ import org.apache.commons.io.IOUtils;
 import org.artificer.repository.jcr.i18n.Messages;
 import org.modeshape.common.collection.Problems;
 import org.modeshape.jcr.RepositoryConfiguration;
+import org.modeshape.jcr.api.Workspace;
+import org.modeshape.jcr.api.index.IndexColumnDefinitionTemplate;
+import org.modeshape.jcr.api.index.IndexDefinition;
+import org.modeshape.jcr.api.index.IndexDefinitionTemplate;
+import org.modeshape.jcr.api.index.IndexManager;
 import org.modeshape.jcr.api.nodetype.NodeTypeManager;
 import org.overlord.commons.services.ServiceRegistryUtil;
 import org.artificer.common.ArtificerConfig;
@@ -29,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.LoginException;
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.NoSuchWorkspaceException;
+import javax.jcr.PropertyType;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.RepositoryFactory;
@@ -117,7 +123,10 @@ public class JCRRepository {
                 }
             }
         }
+
         configureNodeTypes();
+
+        createQueryIndexes();
     }
 
     /**
@@ -200,6 +209,32 @@ public class JCRRepository {
             throw e;
         } finally {
             IOUtils.closeQuietly(is);
+            JCRRepositoryFactory.logoutQuietly(session);
+        }
+    }
+
+    private void createQueryIndexes() throws RepositoryException {
+        Session session = null;
+        try {
+            session = JCRRepositoryFactory.getSession();
+
+            Workspace workspace = (Workspace) session.getWorkspace();
+            IndexManager indexManager = workspace.getIndexManager();
+
+            IndexDefinitionTemplate indexDefinitionTemplate = indexManager.createIndexDefinitionTemplate();
+            indexDefinitionTemplate.setName("sramp:baseArtifactType:uuid");
+            indexDefinitionTemplate.setProviderName("local"); // defined in standalone.xml
+            indexDefinitionTemplate.setKind(IndexDefinition.IndexKind.VALUE);
+            indexDefinitionTemplate.setSynchronous(true);
+            indexDefinitionTemplate.setNodeTypeName("sramp:baseArtifactType");
+            IndexColumnDefinitionTemplate indexColumnDefinitionTemplate = indexManager.createIndexColumnDefinitionTemplate();
+            indexColumnDefinitionTemplate.setPropertyName("sramp:uuid");
+            indexColumnDefinitionTemplate.setColumnType(PropertyType.STRING);
+            indexDefinitionTemplate.setColumnDefinitions(indexColumnDefinitionTemplate);
+            indexManager.registerIndex(indexDefinitionTemplate, true);
+        } catch (RepositoryException e) {
+            throw e;
+        } finally {
             JCRRepositoryFactory.logoutQuietly(session);
         }
     }
