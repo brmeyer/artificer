@@ -55,6 +55,10 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.modeshape</groupId>
+      <artifactId>modeshape-extractor-tika</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.jboss.marshalling</groupId>
       <artifactId>jboss-marshalling</artifactId>
     </dependency>

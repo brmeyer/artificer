@@ -18,6 +18,7 @@ package org.artificer.repository.jcr.query;
 import org.artificer.common.ArtifactTypeEnum;
 import org.artificer.common.ArtificerConstants;
 import org.artificer.common.ArtificerException;
+import org.artificer.common.query.xpath.ast.AbstractXPathNode;
 import org.artificer.common.query.xpath.ast.AndExpr;
 import org.artificer.common.query.xpath.ast.Argument;
 import org.artificer.common.query.xpath.ast.ArtifactSet;
@@ -43,6 +44,7 @@ import org.modeshape.jcr.query.model.DynamicOperand;
 import org.modeshape.jcr.query.model.JoinCondition;
 import org.modeshape.jcr.query.model.Ordering;
 import org.modeshape.jcr.query.model.QueryCommand;
+import org.modeshape.jcr.query.model.QueryObjectModel;
 import org.modeshape.jcr.query.model.QueryObjectModelFactory;
 import org.modeshape.jcr.query.model.SelectQuery;
 import org.modeshape.jcr.query.model.Selector;
@@ -127,6 +129,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
 
     private List<Constraint> rootConstraints = new ArrayList<Constraint>();
     private List<Constraint> constraintsContext = rootConstraints;
+    private StringBuilder rawQueryElements = new StringBuilder();
 
     private ClassificationHelper classificationHelper;
 
@@ -180,7 +183,17 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         }
         Column[] columns = new Column[1];
         columns[0] = factory.column(selectorContext, null, null);
-        return factory.createQuery(sourceContext, compileAnd(rootConstraints), orderings, columns);
+
+        QueryObjectModel query = factory.createQuery(sourceContext, compileAnd(rootConstraints), orderings, columns);
+//        return query;
+
+        // TODO: Temporary
+        String jcrQueryString = query.getStatement() + rawQueryElements;
+        try {
+            return queryManager.createQuery(jcrQueryString, JCRConstants.JCR_SQL2);
+        } catch (Exception e) {
+            throw new QueryExecutionException(e);
+        }
     }
 
     /**
@@ -192,7 +205,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         String selectAlias = newArtifactAlias();
         this.selectorContext = selectAlias;
 
-        sourceContext = factory.selector("sramp:baseArtifactType", selectAlias);
+        sourceContext = factory.selector("sramp:baseArtifactType", selectAlias);;
 
         node.getArtifactSet().accept(this);
         if (node.getPredicate() != null) {
@@ -388,12 +401,16 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             Argument attributeArg = node.getArguments().get(0);
             Argument patternArg = node.getArguments().get(1);
 
-            ForwardPropertyStep attribute = reducePropertyArgument(attributeArg);
             String pattern = reduceStringLiteralArgument(patternArg);
-            pattern = pattern.replace(".*", "%"); // the only valid wildcard
 
-            attribute.accept(this);
-            operation(getSelectorContext(), propertyContext, QueryObjectModelConstants.JCR_OPERATOR_LIKE, pattern);
+            if (isFullTextSearch(attributeArg)) {
+                fullTextSearch(pattern);
+            } else {
+                pattern = pattern.replace(".*", "%"); // the only valid wildcard
+                ForwardPropertyStep attribute = reducePropertyArgument(attributeArg);
+                attribute.accept(this);
+                operation(getSelectorContext(), propertyContext, QueryObjectModelConstants.JCR_OPERATOR_LIKE, pattern);
+            }
         } else if (NOT.equals(node.getFunctionName())) {
             if (node.getArguments().size() != 1) {
                 throw new RuntimeException(Messages.i18n.format("XP_NOT_FUNC_NUM_ARGS_ERROR", node.getArguments().size()));
@@ -611,6 +628,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
      * Reduces an Argument subtree to the final {@link ForwardPropertyStep} that is it's (supposed)
      * final node.  This method will throw a runtime exception if it doesn't find the expected
      * {@link ForwardPropertyStep}.
+     *
      * @param argument
      */
     private ForwardPropertyStep reducePropertyArgument(Argument argument) {
@@ -623,6 +641,22 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         } catch (Throwable t) {
             throw new RuntimeException(Messages.i18n.format("XP_EXPECTED_PROPERTY_ARG"));
         }
+    }
+
+    /**
+     * Returns true if the Argument subtree's final node is the full-text seach wildcard.
+     * Example: /s-ramp[xp2:matches(., '.*foo.*')] The primary expression will be the xpath value (".") used for free-text
+     * searches.
+     *
+     * @param argument
+     */
+    private boolean isFullTextSearch(Argument argument) {
+        AbstractXPathNode node = argument.getExpr().getAndExpr().getLeft().getLeft().getLeft();
+        if (node instanceof PrimaryExpr) {
+            PrimaryExpr primaryExpr = (PrimaryExpr) node;
+            return primaryExpr.getXpathValue().equals(".");
+        }
+        return false;
     }
 
     /**
@@ -694,6 +728,16 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         } catch (RepositoryException e) {
             error = new QueryExecutionException(e);
         }
+    }
+
+    private void fullTextSearch(String query) {
+//        try {
+            rawQueryElements.append(" AND CONTAINS(").append(selectorContext).append(".*, '").append(query).append("')");
+//            Value queryValue = session.getValueFactory().createValue(query);
+//            constraintsContext.add(factory.fullTextSearch(rootFrom.getSelectorName(), null, factory.literal(queryValue)));
+//        } catch (RepositoryException e) {
+//            error = new QueryExecutionException(e);
+//        }
     }
 
     private void in(String selectorName, String propertyName, String... values) {

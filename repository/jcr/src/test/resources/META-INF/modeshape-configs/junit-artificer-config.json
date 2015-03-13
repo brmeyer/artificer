@@ -30,5 +30,13 @@
         "policyName" : "overlord-idp"
       }
     ]
+  },
+  "textExtraction": {
+    "extractors" : {
+      "tikaExtractor":{
+        "name" : "Tika content-based extractor",
+        "classname" : "tika"
+      }
+    }
   }
 }
