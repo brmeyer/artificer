@@ -98,12 +98,17 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(1, artifactSet.size());
 
-        // Ensure predicate conjunctions work w/ relationships
-        // TODO: Un-comment after ARTIF-656
-//        query = queryManager.createQuery(String.format("/s-ramp/wsdl/Part[relatedDocument[@uuid = '%1$s'] and element]", wsdlDoc.getUuid()));
+        // Test multiple levels of relationships
+//        query = queryManager.createQuery("/s-ramp/wsdl/Message/part/element");
 //        artifactSet = query.executeQuery();
 //        Assert.assertNotNull(artifactSet);
 //        Assert.assertEquals(1, artifactSet.size());
+
+        // Ensure predicate conjunctions work w/ relationships
+        query = queryManager.createQuery(String.format("/s-ramp/wsdl/Part[relatedDocument[@uuid = '%1$s'] and element]", wsdlDoc.getUuid()));
+        artifactSet = query.executeQuery();
+        Assert.assertNotNull(artifactSet);
+        Assert.assertEquals(1, artifactSet.size());
     }
 
     /**
