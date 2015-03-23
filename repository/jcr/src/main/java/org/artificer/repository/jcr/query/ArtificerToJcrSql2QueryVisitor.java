@@ -207,19 +207,21 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             SubartifactSet subartifactSet = node.getSubartifactSet();
             if (subartifactSet.getRelationshipPath() != null) {
                 String relationshipAlias = newRelationshipAlias();
-                String targetAlias = newTargetAlias();
 
                 // Add the JOIN on the relationship
                 String oldRelationshipPredicateContext = this.relationshipContext;
                 this.relationshipContext = relationshipAlias;
                 String oldTargetPredicateContext = this.targetContext;
-                this.targetContext = targetAlias;
-                subartifactSet.getRelationshipPath().accept(this);
 
                 // Now add any additional predicates included.
                 if (subartifactSet.getPredicate() != null) {
+                    String targetAlias = newTargetAlias();
+                    this.targetContext = targetAlias;
+
                     visitRelationshipPredicates(subartifactSet.getPredicate(), targetAlias);
                 }
+
+                subartifactSet.getRelationshipPath().accept(this);
 
                 this.relationshipContext = oldRelationshipPredicateContext;
                 this.targetContext = oldTargetPredicateContext;
@@ -529,15 +531,16 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             String relationshipAlias = newRelationshipAlias();
             String oldRelationshipPredicateContext = this.relationshipContext;
             this.relationshipContext = relationshipAlias;
-            String targetAlias = newTargetAlias();
             String oldTargetPredicateContext = this.targetContext;
-            this.targetContext = targetAlias;
-
-            node.getRelationshipPath().accept(this);
 
             if (node.getPredicate() != null) {
+                String targetAlias = newTargetAlias();
+                this.targetContext = targetAlias;
+
                 visitRelationshipPredicates(node.getPredicate(), targetAlias);
             }
+
+            node.getRelationshipPath().accept(this);
 
             this.relationshipContext = oldRelationshipPredicateContext;
             this.targetContext = oldTargetPredicateContext;
