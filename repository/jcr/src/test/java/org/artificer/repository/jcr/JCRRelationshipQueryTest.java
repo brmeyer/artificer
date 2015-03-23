@@ -108,7 +108,7 @@ public class JCRRelationshipQueryTest extends AbstractNoAuditingJCRPersistenceTe
         query = queryManager.createQuery(String.format("/s-ramp/wsdl/Part[relatedDocument[@uuid = '%1$s'] and element]", wsdlDoc.getUuid()));
         artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
-        Assert.assertEquals(1, artifactSet.size());
+        Assert.assertEquals(3, artifactSet.size());
     }
 
     /**
