@@ -203,10 +203,30 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         if (node.getSubartifactSet() != null) {
             SubartifactSet subartifactSet = node.getSubartifactSet();
             if (subartifactSet.getRelationshipPath() != null) {
-//                String artifactAlias = newArtifactAlias();
-//                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid");
+                String relationshipAlias = newRelationshipAlias();
+                String targetAlias = newTargetAlias();
+                String artifactAlias = newArtifactAlias();
 
-                visitRelationship(subartifactSet.getRelationshipPath(), subartifactSet.getPredicate());
+                // Add the JOIN on the relationship
+                String oldRelationshipPredicateContext = this.relationshipContext;
+                this.relationshipContext = relationshipAlias;
+                String oldTargetPredicateContext = this.targetContext;
+                this.targetContext = targetAlias;
+                subartifactSet.getRelationshipPath().accept(this);
+
+                // Now add another JOIN back around on the "artifact table"
+                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid");
+
+                // Root selector now needs to be the relationship targets.
+                selectorContext = artifactAlias;
+
+                // Now add any additional predicates included.
+                if (subartifactSet.getPredicate() != null) {
+                    subartifactSet.getPredicate().accept(this);
+                }
+
+                this.relationshipContext = oldRelationshipPredicateContext;
+                this.targetContext = oldTargetPredicateContext;
             }
             if (subartifactSet.getFunctionCall() != null) {
                 throw new RuntimeException(Messages.i18n.format("XP_SUBARTIFACTSET_NOT_SUPPORTED"));
@@ -490,6 +510,15 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         }
     }
 
+    @Override
+    public void visit(RelationshipPath node) {
+        joinChild("sramp:relationship", relationshipContext, relationshipContext, getSelectorContext());
+        if (targetContext != null) {
+            joinChild("sramp:target", targetContext, targetContext, relationshipContext);
+        }
+        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, node.getRelationshipType());
+    }
+
     /**
      * @see org.artificer.common.query.xpath.visitors.XPathVisitor#visit(org.artificer.common.query.xpath.ast.SubartifactSet)
      */
@@ -498,7 +527,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         if (node.getFunctionCall() != null) {
             node.getFunctionCall().accept(this);
         } else if (node.getRelationshipPath() != null) {
-            visitRelationship(node.getRelationshipPath(), node.getPredicate());
+            // Relationship within a predicate
+            visitRelationshipPredicate(node.getRelationshipPath(), node.getPredicate());
 
             if (node.getSubartifactSet() != null) {
                 throw new RuntimeException(Messages.i18n.format("XP_MULTILEVEL_SUBARTYSETS_NOT_SUPPORTED"));
@@ -506,15 +536,9 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         }
     }
 
-    @Override
-    public void visit(RelationshipPath node) {
-        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO,
-                node.getRelationshipType());
-    }
-
-    private void visitRelationship(RelationshipPath relationshipPath, Predicate predicate) {
-        // NOTE: Predicates on a relationship are a bit hard to deal with since ModeShape doesn't support correlated subqueries.
-        // So, we use something like this:
+    private void visitRelationshipPredicate(RelationshipPath relationshipPath, Predicate predicate) {
+        // NOTE: Relationships within a predicate are a bit hard to deal with since ModeShape doesn't support correlated
+        // subqueries.  So, we use something like this:
         //
         // AND ISCHILDNODE(SELECT r.* from Target t
         //   INNER JOIN Relationship r ON ISCHILDNODE(t, r)
@@ -537,7 +561,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         sourceContext = factory.selector(JCRConstants.SRAMP_TARGET, targetContext);
 
         // process the constraints on the relationship itself
-        relationshipPath.accept(this);
+        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO,
+                relationshipPath.getRelationshipType());
 
         // process the predicates, adding them as constraints to the subquery
         if (predicate != null) {
