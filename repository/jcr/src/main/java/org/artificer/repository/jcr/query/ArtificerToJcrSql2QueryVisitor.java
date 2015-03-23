@@ -180,9 +180,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         }
         Column[] columns = new Column[1];
         columns[0] = factory.column(selectorContext, null, null);
-        SelectQuery query = factory.select(sourceContext, compileAnd(constraintsContext),
-                orderings, columns, null, true);
-        return factory.createQuery(query);
+        return factory.createQuery(sourceContext, compileAnd(rootConstraints), orderings, columns);
     }
 
     /**
@@ -540,60 +538,64 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         // NOTE: Relationships within a predicate are a bit hard to deal with since ModeShape doesn't support correlated
         // subqueries.  So, we use something like this:
         //
-        // AND ISCHILDNODE(SELECT r.* from Target t
-        //   INNER JOIN Relationship r ON ISCHILDNODE(t, r)
-        //   INNER JOIN a ON REFERENCE(t) = a.[jcr:uuid]
-        //   WHERE <predicate constraints>), primaryArtifact)
+        // AND artifact1.[jcr:uuid] IN (
+        //   SELECT artifact3.[jcr:uuid] AS uuid FROM [sramp:relationship] AS relationship1
+        //   INNER JOIN [sramp:target] AS target1 ON ISCHILDNODE(target1,relationship1)
+        //   INNER JOIN [sramp:baseArtifactType] AS artifact2 ON target1.[sramp:targetArtifact] = artifact2.[jcr:uuid]
+        //   INNER JOIN [sramp:baseArtifactType] AS artifact3 ON ISCHILDNODE(relationship1,artifact3)
+        //   WHERE <predicate constraints>)
         //
         // Essentially, we're creating a non-correlated subquery that selects relationships based on the predicate.
         // The predicate constraints are acting upon the artifact *targeted by* (!!!) the relationship.
-        // When then wrap that subquery with another ISCHILDNODE to make sure the returned relationships are children
-        // of the root artifact in question.  Confusing?  Yes.
+        // We then map the results back to the primary query: artifact3 (the relationship's parent) == artifact1.
 
         // set up contexts for the subquery
-        String oldSelectorContext = selectorContext;
-        selectorContext = newArtifactAlias();
         relationshipContext = newRelationshipAlias();
-        targetContext = newTargetAlias();
         List<Constraint> oldConstraintsContext = constraintsContext;
         constraintsContext = new ArrayList<>();
         Source oldSourceContext = sourceContext;
-        sourceContext = factory.selector(JCRConstants.SRAMP_TARGET, targetContext);
+        sourceContext = factory.selector(JCRConstants.SRAMP_RELATIONSHIP, relationshipContext);
 
         // process the constraints on the relationship itself
         operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO,
                 relationshipPath.getRelationshipType());
 
-        // process the predicates, adding them as constraints to the subquery
+        // process the predicates, adding them as constraints to a subquery
         if (predicate != null) {
+            // If there's a predicate, then we need to add in Target handling.
+            String oldSelectorContext = selectorContext;
+            selectorContext = newArtifactAlias();
+            targetContext = newTargetAlias();
+
             predicate.accept(this);
+
+            // join the target
+            joinChild(JCRConstants.SRAMP_TARGET, targetContext, targetContext, relationshipContext);
+            // join the artifact targeted by the relationship
+            joinEq(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, targetContext, JCRConstants.SRAMP_TARGET_ARTIFACT, selectorContext, JCRConstants.JCR_UUID);
+
+            targetContext = null;
+            selectorContext = oldSelectorContext;
         }
 
         // Filter out the trash
-        descendant(selectorContext, JCRConstants.ROOT_PATH);
+        descendant(relationshipContext, JCRConstants.ROOT_PATH);
 
         // create the subquery
-        // join the relationship's target
-        joinChild(JCRConstants.SRAMP_RELATIONSHIP, relationshipContext, targetContext, relationshipContext);
-        // join the artifact targeted by the relationship
-        joinEq(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, targetContext, JCRConstants.SRAMP_TARGET_ARTIFACT, selectorContext, JCRConstants.JCR_UUID);
         // join the relationship's parent (an artifact)
         String parentArtifact = newArtifactAlias();
         joinChild(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, parentArtifact, relationshipContext, parentArtifact);
         Column[] columns = new Column[1];
         columns[0] = factory.column(parentArtifact, JCRConstants.JCR_UUID, "uuid");
         SelectQuery query = factory.select(sourceContext, compileAnd(constraintsContext),
-                null, columns, null, true);
+                null, columns, null, false);
 
         // reset constraints
         sourceContext = oldSourceContext;
-        selectorContext = oldSelectorContext;
         constraintsContext = oldConstraintsContext;
         relationshipContext = null;
-        targetContext = null;
 
-        // create the REFERENCE(targetAlias) IN (subquery) on the original constraints
-
+        // create the artifact.uuid IN (subquery) on the original constraints
         in(selectorContext, JCRConstants.JCR_UUID, query);
     }
 

@@ -416,6 +416,11 @@ public class XPathParser {
 
 			subartifactSet.setRelationshipPath(relationshipPath);
 			subartifactSet.setPredicate(predicate);
+
+            if (tokens.canConsume("/")) { //$NON-NLS-1$
+                SubartifactSet sub_subartifactSet = parseSubartifactSet(tokens);
+                subartifactSet.setSubartifactSet(sub_subartifactSet);
+            }
 		} else if (tokens.canConsume(":")) { //$NON-NLS-1$
 			String prefix = relationshipOrFunction;
 			if (!tokens.matches(TokenType.name))
@@ -438,11 +443,6 @@ public class XPathParser {
 			RelationshipPath relationshipPath = new RelationshipPath(relationshipOrFunction);
 			subartifactSet.setRelationshipPath(relationshipPath);
 		}
-
-        if (tokens.canConsume("/")) { //$NON-NLS-1$
-            SubartifactSet sub_subartifactSet = parseSubartifactSet(tokens);
-            subartifactSet.setSubartifactSet(sub_subartifactSet);
-        }
 
 		return subartifactSet;
 	}
