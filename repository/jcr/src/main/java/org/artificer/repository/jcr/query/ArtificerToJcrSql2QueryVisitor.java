@@ -15,18 +15,6 @@
  */
 package org.artificer.repository.jcr.query;
 
-import org.artificer.common.query.xpath.ast.Query;
-import org.artificer.repository.jcr.JCRConstants;
-import org.modeshape.jcr.api.query.qom.Operator;
-import org.modeshape.jcr.query.model.Column;
-import org.modeshape.jcr.query.model.DynamicOperand;
-import org.modeshape.jcr.query.model.JoinCondition;
-import org.modeshape.jcr.query.model.Ordering;
-import org.modeshape.jcr.query.model.QueryObjectModel;
-import org.modeshape.jcr.query.model.QueryObjectModelFactory;
-import org.modeshape.jcr.query.model.Selector;
-import org.modeshape.jcr.query.model.Source;
-import org.modeshape.jcr.query.model.StaticOperand;
 import org.artificer.common.ArtifactTypeEnum;
 import org.artificer.common.ArtificerConstants;
 import org.artificer.common.ArtificerException;
@@ -41,12 +29,26 @@ import org.artificer.common.query.xpath.ast.LocationPath;
 import org.artificer.common.query.xpath.ast.OrExpr;
 import org.artificer.common.query.xpath.ast.Predicate;
 import org.artificer.common.query.xpath.ast.PrimaryExpr;
+import org.artificer.common.query.xpath.ast.Query;
 import org.artificer.common.query.xpath.ast.RelationshipPath;
 import org.artificer.common.query.xpath.ast.SubartifactSet;
 import org.artificer.common.query.xpath.visitors.XPathVisitor;
 import org.artificer.repository.error.QueryExecutionException;
 import org.artificer.repository.jcr.ClassificationHelper;
+import org.artificer.repository.jcr.JCRConstants;
 import org.artificer.repository.jcr.i18n.Messages;
+import org.modeshape.jcr.api.query.qom.Operator;
+import org.modeshape.jcr.query.model.Column;
+import org.modeshape.jcr.query.model.DynamicOperand;
+import org.modeshape.jcr.query.model.JoinCondition;
+import org.modeshape.jcr.query.model.Ordering;
+import org.modeshape.jcr.query.model.QueryCommand;
+import org.modeshape.jcr.query.model.QueryObjectModelFactory;
+import org.modeshape.jcr.query.model.SelectQuery;
+import org.modeshape.jcr.query.model.Selector;
+import org.modeshape.jcr.query.model.Source;
+import org.modeshape.jcr.query.model.StaticOperand;
+import org.modeshape.jcr.query.model.Subquery;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -181,8 +183,9 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         }
         Column[] columns = new Column[1];
         columns[0] = factory.column(selectorContext, null, null);
-        QueryObjectModel query = factory.createQuery(rootSource, compileAnd(rootConstraints), orderings, columns);
-        return query;
+        SelectQuery query = factory.select(rootSource, compileAnd(constraintsContext),
+                orderings, columns, null, true);
+        return factory.createQuery(query);
     }
 
     /**
@@ -205,7 +208,6 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             if (subartifactSet.getRelationshipPath() != null) {
                 String relationshipAlias = newRelationshipAlias();
                 String targetAlias = newTargetAlias();
-                String artifactAlias = newArtifactAlias();
 
                 // Add the JOIN on the relationship
                 String oldRelationshipPredicateContext = this.relationshipContext;
@@ -214,15 +216,9 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
                 this.targetContext = targetAlias;
                 subartifactSet.getRelationshipPath().accept(this);
 
-                // Now add another JOIN back around on the "artifact table"
-                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid");
-
-                // Root selector now needs to be the relationship targets.
-                selectorContext = artifactAlias;
-
                 // Now add any additional predicates included.
                 if (subartifactSet.getPredicate() != null) {
-                    subartifactSet.getPredicate().accept(this);
+                    visitRelationshipPredicates(subartifactSet.getPredicate(), targetAlias);
                 }
 
                 this.relationshipContext = oldRelationshipPredicateContext;
@@ -533,21 +529,14 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             String relationshipAlias = newRelationshipAlias();
             String oldRelationshipPredicateContext = this.relationshipContext;
             this.relationshipContext = relationshipAlias;
-            // TODO: Incredibly hacky.  Should not create the sramp:target JOIN in visit(RelationshipPath) unless
-            // the target is actually needed below.
-            String targetAlias = node.getPredicate() != null ? newTargetAlias() : null;
+            String targetAlias = newTargetAlias();
             String oldTargetPredicateContext = this.targetContext;
             this.targetContext = targetAlias;
+
             node.getRelationshipPath().accept(this);
+
             if (node.getPredicate() != null) {
-                String artifactAlias = newArtifactAlias();
-
-                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid");
-
-                String oldArtifactPredicateContext = this.selectorContext;
-                this.selectorContext = artifactAlias;
-                node.getPredicate().accept(this);
-                this.selectorContext = oldArtifactPredicateContext;
+                visitRelationshipPredicates(node.getPredicate(), targetAlias);
             }
 
             this.relationshipContext = oldRelationshipPredicateContext;
@@ -557,6 +546,38 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
                 throw new RuntimeException(Messages.i18n.format("XP_MULTILEVEL_SUBARTYSETS_NOT_SUPPORTED"));
             }
         }
+    }
+
+    private void visitRelationshipPredicates(Predicate predicate, String targetAlias) {
+        // If a relationship path or subset has predicates, a subquery is needed:
+        // AND REFERENCE(targetAlias) IN (SELECT artifactAlias.[jcr:uuid] FROM [sramp:baseArtifactType] WHERE [predicate constraints] AND [not trash])
+
+        // set up contexts for the subquery
+        String artifactAlias = newArtifactAlias();
+        String oldSelectorContext = selectorContext;
+        selectorContext = artifactAlias;
+        List<Constraint> oldConstraintsContext = constraintsContext;
+        constraintsContext = new ArrayList<>();
+
+        // process the predicates, adding them as constraints to the subquery
+        predicate.accept(this);
+
+        // Filter out the trash
+        descendant("sramp:baseArtifactType", JCRConstants.ROOT_PATH);
+
+        // create the subquery
+        Source source = factory.selector("sramp:baseArtifactType", artifactAlias);
+        Column[] columns = new Column[1];
+        columns[0] = factory.column(selectorContext, JCRConstants.JCR_UUID, "uuid");
+        SelectQuery query = factory.select(source, compileAnd(constraintsContext),
+                null, columns, null, true);
+
+        // reset constraints
+        selectorContext = oldSelectorContext;
+        constraintsContext = oldConstraintsContext;
+
+        // create the REFERENCE(targetAlias) IN (subquery) on the original constraints
+        in(factory.referenceValue(targetAlias), query);
     }
 
     /**
@@ -578,13 +599,6 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
      */
     private String newArtifactAlias() {
         return "artifact" + uniqueAliasCounter++;
-    }
-
-    /**
-     * @return a new (unused) alias for a column
-     */
-    private String newColumnAlias() {
-        return "column" + uniqueAliasCounter++;
     }
 
     private String getSelectorContext() {
@@ -638,15 +652,15 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         return literal.replace("'", "''");
     }
 
-    private void joinEq(String nodeType, String leftSelectorName, String leftPropertyName,
-                        String rightSelectorName, String rightPropertyName) {
-        Selector rightSelector = factory.selector(nodeType, rightSelectorName);
-        JoinCondition condition =  factory.equiJoinCondition(
-                leftSelectorName, leftPropertyName, rightSelectorName, rightPropertyName);
-        // If this is the first join, convert the rootSource into the Join itself.  If it's not, rootSource is already
-        // a Join and we should simply add to it.
-        rootSource = factory.join(rootSource, rightSelector, QueryObjectModelConstants.JCR_JOIN_TYPE_INNER, condition);
-    }
+//    private void joinEq(String nodeType, String leftSelectorName, String leftPropertyName,
+//                        String rightSelectorName, String rightPropertyName) {
+//        Selector rightSelector = factory.selector(nodeType, rightSelectorName);
+//        JoinCondition condition =  factory.equiJoinCondition(
+//                leftSelectorName, leftPropertyName, rightSelectorName, rightPropertyName);
+//        // If this is the first join, convert the rootSource into the Join itself.  If it's not, rootSource is already
+//        // a Join and we should simply add to it.
+//        rootSource = factory.join(rootSource, rightSelector, QueryObjectModelConstants.JCR_JOIN_TYPE_INNER, condition);
+//    }
 
     private void joinChild(String nodeType, String childSelectorName, String parentSelectorName) {
         Selector childSelector = factory.selector(nodeType, childSelectorName);
@@ -690,6 +704,12 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         } catch (RepositoryException e) {
             error = new QueryExecutionException(e);
         }
+    }
+
+    // TODO: dynamicOperand == factory.referenceValue
+    private void in(DynamicOperand dynamicOperand, QueryCommand queryCommand) {
+        Subquery subquery = factory.subquery(queryCommand);
+        constraintsContext.add(factory.in(dynamicOperand, subquery));
     }
 
     private void exists(String selectorName, String propertyName) {
