@@ -230,7 +230,7 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
 	 */
 	private BaseArtifactType createXmlDocument(String artifactFileName, int idx) throws Exception {
 		InputStream content = this.getClass().getResourceAsStream("/sample-files/core/" + artifactFileName);
-        XmlDocument document = new XmlDocument();
+        XmlDocument document = (XmlDocument) ArtifactType.XmlDocument().newArtifactInstance();
         document.setName(artifactFileName + "-" + idx);
         document.setVersion("1.0.3");
         document.setArtifactType(BaseArtifactEnum.XML_DOCUMENT);
