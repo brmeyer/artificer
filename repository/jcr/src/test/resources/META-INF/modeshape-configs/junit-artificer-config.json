@@ -5,6 +5,18 @@
     "default" : "default",
     "allowCreation" : true
   },
+  "security" : {
+    "anonymous" : {
+      "roles" : ["readonly","readwrite","admin"],
+      "useOnFailedLogin" : false
+    },
+    "providers" : [
+      {
+        "classname": "org.artificer.repository.jcr.auth.MockAuthenticationProvider",
+        "policyName": "overlord-idp"
+      }
+    ]
+  },
   "textExtraction": {
     "extractors" : {
       "tikaExtractor":{
