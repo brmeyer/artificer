@@ -219,7 +219,7 @@ public class JCRQueryManagerTest extends AbstractNoAuditingJCRPersistenceTest {
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(1, artifactSet.size());
         query = queryManager.createQuery("/s-ramp[xp2:matches(., ?)]");
-        query.setString("Baby Monitor.*");
+        query.setString("Baby Monitor");
         artifactSet = query.executeQuery();
         Assert.assertNotNull(artifactSet);
         Assert.assertEquals(3, artifactSet.size());

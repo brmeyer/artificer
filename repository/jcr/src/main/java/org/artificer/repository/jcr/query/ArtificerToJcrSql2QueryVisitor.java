@@ -92,7 +92,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
 
     private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static final Map<QName, String> corePropertyMap = new HashMap<QName, String>();
+    private static final Map<QName, String> corePropertyMap = new HashMap<>();
     static {
         corePropertyMap.put(new QName(ArtificerConstants.SRAMP_NS, "createdBy"), JCRConstants.JCR_CREATED_BY);
         corePropertyMap.put(new QName(ArtificerConstants.SRAMP_NS, "version"), "version");
@@ -127,9 +127,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
     private String order;
     private boolean orderAscending;
 
-    private List<Constraint> rootConstraints = new ArrayList<Constraint>();
+    private List<Constraint> rootConstraints = new ArrayList<>();
     private List<Constraint> constraintsContext = rootConstraints;
-    private StringBuilder rawQueryElements = new StringBuilder();
 
     private ClassificationHelper classificationHelper;
 
@@ -141,6 +140,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
     private Value valueContext = null;
 
     private String singleUseSelectorContext = null;
+
+    private boolean contentChildJoined = false;
 
     private ArtificerException error;
 
@@ -185,15 +186,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         columns[0] = factory.column(selectorContext, null, null);
 
         QueryObjectModel query = factory.createQuery(sourceContext, compileAnd(rootConstraints), orderings, columns);
-//        return query;
-
-        // TODO: Temporary
-        String jcrQueryString = query.getStatement() + rawQueryElements;
-        try {
-            return queryManager.createQuery(jcrQueryString, JCRConstants.JCR_SQL2);
-        } catch (Exception e) {
-            throw new QueryExecutionException(e);
-        }
+        return query;
     }
 
     /**
@@ -205,7 +198,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         String selectAlias = newArtifactAlias();
         this.selectorContext = selectAlias;
 
-        sourceContext = factory.selector("sramp:baseArtifactType", selectAlias);;
+        sourceContext = factory.selector("sramp:baseArtifactType", selectAlias);
 
         node.getArtifactSet().accept(this);
         if (node.getPredicate() != null) {
@@ -226,7 +219,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
                 subartifactSet.getRelationshipPath().accept(this);
 
                 // Now add another JOIN back around on the "artifact table"
-                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid");
+                joinEq("sramp:baseArtifactType", targetAlias, "sramp:targetArtifact", artifactAlias, "jcr:uuid",
+                        QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
 
                 // Root selector now needs to be the relationship targets.
                 selectorContext = artifactAlias;
@@ -279,7 +273,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             node.getLeft().accept(this);
         } else {
             List<Constraint> oldConstraintsContext = constraintsContext;
-            constraintsContext = new ArrayList<Constraint>();
+            constraintsContext = new ArrayList<>();
             node.getLeft().accept(this);
             node.getRight().accept(this);
             oldConstraintsContext.add(compileAnd(constraintsContext));
@@ -419,7 +413,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             Argument argument = node.getArguments().get(0);
             if (argument.getExpr() != null) {
                 List<Constraint> oldConstraintsContext = constraintsContext;
-                constraintsContext = new ArrayList<Constraint>();
+                constraintsContext = new ArrayList<>();
                 argument.getExpr().accept(this);
                 // Should have resulted in only 1 constraint -- negate it and add to the original list.
                 oldConstraintsContext.add(factory.not((constraintsContext.get(0))));
@@ -436,7 +430,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
     private void visitClassifications(FunctionCall node, String propertyName, boolean isOr) {
         Collection<URI> classifications = resolveArgumentsToClassifications(node.getArguments());
         List<Constraint> oldConstraintsContext = constraintsContext;
-        constraintsContext = new ArrayList<Constraint>();
+        constraintsContext = new ArrayList<>();
         for (URI classification : classifications) {
             operation(getSelectorContext(), propertyName, QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, classification.toString());
         }
@@ -453,7 +447,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
      * @param arguments
      */
     private Collection<URI> resolveArgumentsToClassifications(List<Argument> arguments) {
-        Collection<String> classifiedBy = new HashSet<String>();
+        Collection<String> classifiedBy = new HashSet<>();
         for (int idx = 1; idx < arguments.size(); idx++) {
             Argument arg = arguments.get(idx);
             if (arg.getPrimaryExpr() == null || arg.getPrimaryExpr().getLiteral() == null) {
@@ -478,7 +472,7 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             node.getLeft().accept(this);
         } else {
             List<Constraint> oldConstraintsContext = constraintsContext;
-            constraintsContext = new ArrayList<Constraint>();
+            constraintsContext = new ArrayList<>();
             node.getLeft().accept(this);
             node.getRight().accept(this);
             oldConstraintsContext.add(compileOr(constraintsContext));
@@ -527,11 +521,14 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
 
     @Override
     public void visit(RelationshipPath node) {
-        joinChild("sramp:relationship", relationshipContext, relationshipContext, getSelectorContext());
+        joinChild("sramp:relationship", relationshipContext, relationshipContext, getSelectorContext(),
+                QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
         if (targetContext != null) {
-            joinChild("sramp:target", targetContext, targetContext, relationshipContext);
+            joinChild("sramp:target", targetContext, targetContext, relationshipContext,
+                    QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
         }
-        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO, node.getRelationshipType());
+        operation(relationshipContext, "sramp:relationshipType", QueryObjectModelConstants.JCR_OPERATOR_EQUAL_TO,
+                node.getRelationshipType());
     }
 
     /**
@@ -587,9 +584,11 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
             predicate.accept(this);
 
             // join the target
-            joinChild(JCRConstants.SRAMP_TARGET, targetContext, targetContext, relationshipContext);
+            joinChild(JCRConstants.SRAMP_TARGET, targetContext, targetContext, relationshipContext,
+                    QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
             // join the artifact targeted by the relationship
-            joinEq(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, targetContext, JCRConstants.SRAMP_TARGET_ARTIFACT, selectorContext, JCRConstants.JCR_UUID);
+            joinEq(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, targetContext, JCRConstants.SRAMP_TARGET_ARTIFACT,
+                    selectorContext, JCRConstants.JCR_UUID, QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
 
             targetContext = null;
             selectorContext = oldSelectorContext;
@@ -601,7 +600,8 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
         // create the subquery
         // join the relationship's parent (an artifact)
         String parentArtifact = newArtifactAlias();
-        joinChild(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, parentArtifact, relationshipContext, parentArtifact);
+        joinChild(JCRConstants.SRAMP_BASE_ARTIFACT_TYPE, parentArtifact, relationshipContext, parentArtifact,
+                QueryObjectModelConstants.JCR_JOIN_TYPE_INNER);
         Column[] columns = new Column[1];
         columns[0] = factory.column(parentArtifact, JCRConstants.JCR_UUID, "uuid");
         SelectQuery query = factory.select(sourceContext, compileAnd(constraintsContext),
@@ -685,21 +685,22 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
     }
 
     private void joinEq(String nodeType, String leftSelectorName, String leftPropertyName,
-                        String rightSelectorName, String rightPropertyName) {
+                        String rightSelectorName, String rightPropertyName, String joinType) {
         Selector rightSelector = factory.selector(nodeType, rightSelectorName);
         JoinCondition condition =  factory.equiJoinCondition(
                 leftSelectorName, leftPropertyName, rightSelectorName, rightPropertyName);
         // If this is the first join, convert the sourceContext into the Join itself.  If it's not, sourceContext is already
         // a Join and we should simply add to it.
-        sourceContext = factory.join(sourceContext, rightSelector, QueryObjectModelConstants.JCR_JOIN_TYPE_INNER, condition);
+        sourceContext = factory.join(sourceContext, rightSelector, joinType, condition);
     }
 
-    private void joinChild(String nodeType, String selectorName, String childSelectorName, String parentSelectorName) {
+    private void joinChild(String nodeType, String selectorName, String childSelectorName, String parentSelectorName,
+            String joinType) {
         Selector childSelector = factory.selector(nodeType, selectorName);
         JoinCondition condition = factory.childNodeJoinCondition(childSelectorName, parentSelectorName);
         // If this is the first join, convert the sourceContext into the Join itself.  If it's not, sourceContext is already
         // a Join and we should simply add to it.
-        sourceContext = factory.join(sourceContext, childSelector, QueryObjectModelConstants.JCR_JOIN_TYPE_INNER, condition);
+        sourceContext = factory.join(sourceContext, childSelector, joinType, condition);
     }
 
     private void child(String childSelectorName, String parentSelectorName) {
@@ -731,13 +732,28 @@ public class ArtificerToJcrSql2QueryVisitor implements XPathVisitor {
     }
 
     private void fullTextSearch(String query) {
-//        try {
-            rawQueryElements.append(" AND CONTAINS(").append(selectorContext).append(".*, '").append(query).append("')");
-//            Value queryValue = session.getValueFactory().createValue(query);
-//            constraintsContext.add(factory.fullTextSearch(rootFrom.getSelectorName(), null, factory.literal(queryValue)));
-//        } catch (RepositoryException e) {
-//            error = new QueryExecutionException(e);
-//        }
+        try {
+            Value queryValue = session.getValueFactory().createValue(query);
+
+            // full text search: artifact metadata *or* the file content (if there is any)
+            // note that file content is a nt:resource *child* of the primary node
+
+            String contentSelector = "content1";
+            if (!contentChildJoined) {
+                joinChild(JCRConstants.NT_RESOURCE, contentSelector, contentSelector, selectorContext,
+                        QueryObjectModelConstants.JCR_JOIN_TYPE_LEFT_OUTER);
+                contentChildJoined = true;
+            }
+
+            Constraint metadataConstraint = factory.fullTextSearch(selectorContext, null, factory.literal(queryValue));
+            Constraint contentConstraint = factory.fullTextSearch(contentSelector, null, factory.literal(queryValue));
+            Constraint or = factory.or(metadataConstraint, contentConstraint);
+            constraintsContext.add(or);
+
+
+        } catch (RepositoryException e) {
+            error = new QueryExecutionException(e);
+        }
     }
 
     private void in(String selectorName, String propertyName, String... values) {
