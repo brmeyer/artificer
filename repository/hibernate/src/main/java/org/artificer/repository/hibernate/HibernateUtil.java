@@ -47,10 +47,16 @@ public class HibernateUtil {
                 T rtn = doExecute(entityManager);
 
                 entityManager.getTransaction().commit();
-                entityManager.close();
 
                 return rtn;
             } catch (ArtificerException ae) {
+                if (entityManager != null) {
+                    try {
+                        entityManager.getTransaction().rollback();
+                    } catch (Throwable t1) {
+                        // eat it
+                    }
+                }
                 throw ae;
             } catch (Throwable t) {
                 if (entityManager != null) {
@@ -59,9 +65,12 @@ public class HibernateUtil {
                     } catch (Throwable t1) {
                         // eat it
                     }
-                    entityManager.close();
                 }
                 throw new ArtificerServerException(t);
+            } finally {
+                if (entityManager != null) {
+                    entityManager.close();
+                }
             }
         }
 

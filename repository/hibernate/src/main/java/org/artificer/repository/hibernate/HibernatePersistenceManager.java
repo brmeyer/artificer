@@ -418,6 +418,19 @@ public class HibernatePersistenceManager extends AbstractPersistenceManager {
 
     @Override
     public StoredQuery persistStoredQuery(final StoredQuery srampStoredQuery) throws ArtificerException {
+        // Validate the name
+        if (StringUtils.isBlank(srampStoredQuery.getQueryName())) {
+            throw ArtificerConflictException.storedQueryConflict();
+        }
+
+        // Check if a stored query with the given name already exists.
+        try {
+            getStoredQuery(srampStoredQuery.getQueryName());
+            throw ArtificerConflictException.storedQueryConflict(srampStoredQuery.getQueryName());
+        } catch (ArtificerNotFoundException e) {
+            // do nothing -- success
+        }
+
         new HibernateUtil.HibernateTask<Void>() {
             @Override
             protected Void doExecute(EntityManager entityManager) throws Exception {
