@@ -15,6 +15,7 @@
       <module name="org.jboss.staxmapper" />
       <module name="org.modeshape" />
       <module name="org.jboss.as.clustering.infinispan" />
+      <module name="org.hibernate.search.orm" services="export" />
     </dependencies>
     <exclusions>
       <!-- Disable Jettison/Jackson.  Need to provide fasterxml Jackson in order to support annotations (known issue with

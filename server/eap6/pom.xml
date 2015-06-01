@@ -17,6 +17,14 @@
       <artifactId>artificer-server</artifactId>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-parsers</artifactId>
+    </dependency>
   </dependencies>
   
   <build>
