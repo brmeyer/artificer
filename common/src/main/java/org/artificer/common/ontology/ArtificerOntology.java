@@ -18,6 +18,7 @@ package org.artificer.common.ontology;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import java.io.Serializable;
@@ -93,6 +94,7 @@ public class ArtificerOntology implements Serializable {
 	/**
 	 * @return the comment
 	 */
+	@Lob
 	public String getComment() {
 		return comment;
 	}
