@@ -9,12 +9,31 @@ The Artificer application is written in Java. To get started make sure your syst
 * Java JDK 1.7 or newer
 * Maven 3.0.3 or newer to build and run the examples
 
-Download and Installation
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Download
+~~~~~~~~
 
 The `artificer-<version>.zip` (or tar.gz) archive can be downloaded from the
 http://artificer.jboss.org/downloads.html[http://artificer.jboss.org/downloads.html]
-website. Grab the latest, extract the archive, and run:
+website. Grab the latest and extract it.
+
+DDL
+~~~
+
+Artificer uses RDBMS (through JPA) for all persistence.  The distribution ships with DDL SQL files for the "big 5"
+databases: Postgres, MySQL/MariaDB, Oracle, SQL Server, and DB2/IBM.  In addition, H2 is included (the default DB
+in Wildfly/EAP).
+
+For now, you'll need to manually set up the database using the provided DDL.  Once installed, be sure to update the
+relevant connection properties in `artificer.properties`.  See the "Artificer Server Configuration" section for more details.
+
+Yes, using Hibernate's Schema Exporter might be possible, but it's not recommended for production environments.
+Further, we maintain and *optimize* the DDL by-hand, as well as utilize an SQL update strategy (Liquibase) for migrations
+between Artificer versions.  So, reliance on the DDL SQL is vital.
+
+Artificer Installation
+~~~~~~~~~~~~~~~~~~~~~~
+
+From the unpacked distribution, run:
 
 ....
 ./install.sh
@@ -33,7 +52,7 @@ Simply follow the installer instructions to install onto the platform of your ch
 into a clean version of whatever platform you choose, to minimize the risk of colliding with other projects.
 Note that you must have already downloaded and installed the platform on which you wish to run
 
-Finally, please make sure the JBoss password you choose (the installer will prompt you for this) contains
+Finally, please make sure the JBoss admin password you choose (the installer will prompt you for this) contains
 letters, numbers, and punctuation (and is at least 8 characters long).
 
 TIP: Read the installer output carefully - extra instructions are given for certain platforms.
