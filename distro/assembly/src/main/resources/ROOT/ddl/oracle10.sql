@@ -72,7 +72,7 @@
     );
 
     create table ArtificerOntology (
-        uuid char(40) not null,
+        surrogateId number(19,0) not null,
         base varchar2(255 char),
         comment clob,
         createdBy varchar2(255 char),
@@ -81,24 +81,26 @@
         label varchar2(255 char),
         lastModifiedBy varchar2(255 char),
         lastModifiedOn timestamp,
-        primary key (uuid)
+        uuid char(40),
+        primary key (surrogateId)
     );
 
     create table ArtificerOntologyClass (
-        uri raw(255) not null,
+        surrogateId number(19,0) not null,
         comment clob,
         id varchar2(255 char),
         label varchar2(255 char),
-        parent_uri raw(255),
-        root_uuid char(40),
-        primary key (uri)
+        uri raw(255),
+        parent_surrogateId number(19,0),
+        root_surrogateId number(19,0),
+        primary key (surrogateId)
     );
 
     create table ArtificerProperty (
         id number(19,0) not null,
         custom number(1,0) not null,
-        key varchar2(255 char),
-        value varchar2(255 char),
+        propertyKey varchar2(255 char),
+        propertyValue varchar2(255 char),
         owner_id number(19,0) not null,
         primary key (id)
     );
@@ -326,13 +328,13 @@
         references ArtificerArtifact;
 
     alter table ArtificerOntologyClass 
-        add constraint FK_kdhuc0w4hxciekredlrs3gubu 
-        foreign key (parent_uri) 
+        add constraint FK_f0jxuyajwpmer7x36eofvsbco 
+        foreign key (parent_surrogateId) 
         references ArtificerOntologyClass;
 
     alter table ArtificerOntologyClass 
-        add constraint FK_goc89xubtxrm0yiammj7lgn2k 
-        foreign key (root_uuid) 
+        add constraint FK_20x153qbwgv4ujef0uv1yx962 
+        foreign key (root_surrogateId) 
         references ArtificerOntology;
 
     alter table ArtificerProperty 

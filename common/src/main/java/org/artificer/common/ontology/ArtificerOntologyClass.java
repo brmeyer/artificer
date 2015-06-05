@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -31,6 +32,17 @@ public class ArtificerOntologyClass implements Serializable {
     private ArtificerOntology root;
     private ArtificerOntologyClass parent;
     private List<ArtificerOntologyClass> children = new ArrayList<ArtificerOntologyClass>();
+    private long surrogateId;
+
+    @Id
+    @GeneratedValue
+    public long getSurrogateId() {
+        return surrogateId;
+    }
+
+    public void setSurrogateId(long surrogateId) {
+        this.surrogateId = surrogateId;
+    }
 
     public String getId() {
         return id;
@@ -146,7 +158,6 @@ public class ArtificerOntologyClass implements Serializable {
     /**
      * @return the uri
      */
-    @Id
     public URI getUri() {
         return uri;
     }

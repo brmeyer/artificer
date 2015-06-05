@@ -72,7 +72,7 @@
     );
 
     create table ArtificerOntology (
-        uuid char(40) not null,
+        surrogateId bigint not null auto_increment,
         base varchar(255),
         comment longtext,
         createdBy varchar(255),
@@ -81,24 +81,26 @@
         label varchar(255),
         lastModifiedBy varchar(255),
         lastModifiedOn datetime,
-        primary key (uuid)
+        uuid char(40),
+        primary key (surrogateId)
     );
 
     create table ArtificerOntologyClass (
-        uri tinyblob not null,
+        surrogateId bigint not null auto_increment,
         comment longtext,
         id varchar(255),
         label varchar(255),
-        parent_uri tinyblob,
-        root_uuid char(40),
-        primary key (uri)
+        uri tinyblob,
+        parent_surrogateId bigint,
+        root_surrogateId bigint,
+        primary key (surrogateId)
     );
 
     create table ArtificerProperty (
         id bigint not null auto_increment,
         custom boolean not null,
-        key varchar(255),
-        value varchar(255),
+        propertyKey varchar(255),
+        propertyValue varchar(255),
         owner_id bigint not null,
         primary key (id)
     );
@@ -334,16 +336,16 @@
         references ArtificerArtifact (id);
 
     alter table ArtificerOntologyClass 
-        add index FK_kdhuc0w4hxciekredlrs3gubu (parent_uri), 
-        add constraint FK_kdhuc0w4hxciekredlrs3gubu 
-        foreign key (parent_uri) 
-        references ArtificerOntologyClass (uri);
+        add index FK_f0jxuyajwpmer7x36eofvsbco (parent_surrogateId), 
+        add constraint FK_f0jxuyajwpmer7x36eofvsbco 
+        foreign key (parent_surrogateId) 
+        references ArtificerOntologyClass (surrogateId);
 
     alter table ArtificerOntologyClass 
-        add index FK_goc89xubtxrm0yiammj7lgn2k (root_uuid), 
-        add constraint FK_goc89xubtxrm0yiammj7lgn2k 
-        foreign key (root_uuid) 
-        references ArtificerOntology (uuid);
+        add index FK_20x153qbwgv4ujef0uv1yx962 (root_surrogateId), 
+        add constraint FK_20x153qbwgv4ujef0uv1yx962 
+        foreign key (root_surrogateId) 
+        references ArtificerOntology (surrogateId);
 
     alter table ArtificerProperty 
         add index FK_9tdtxjyo0sbh14w7pf4lgcjt6 (owner_id), 
