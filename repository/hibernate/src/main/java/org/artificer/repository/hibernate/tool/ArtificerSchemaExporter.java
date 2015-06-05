@@ -53,12 +53,12 @@ public class ArtificerSchemaExporter {
 
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
-        schemaExport.setOutputFile("installer/src/main/resources/ddl/h2.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ddl/mysql5.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ddl/postgres9.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ddl/oracle10.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ddl/mssql2012.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ddl/db2.sql");
+        schemaExport.setOutputFile("distro/assembly/src/main/resources/ROOT/ddl/h2.sql");
+//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/mysql5.sql");
+//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/postgres9.sql");
+//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/oracle10.sql");
+//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/mssql2012.sql");
+//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/db2.sql");
         schemaExport.execute(true, false, false, true);
     }
 }
