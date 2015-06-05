@@ -9,7 +9,7 @@
         createdTime timestamp,
         createdByUsername varchar2(50 char),
         derived number(1,0) not null,
-        description varchar2(255 char),
+        description clob,
         mimeType varchar2(100 char),
         model varchar2(255 char),
         modifiedTime timestamp,
@@ -61,7 +61,7 @@
         id number(19,0) not null,
         lastActionTime timestamp,
         username varchar2(50 char),
-        text varchar2(255 char),
+        text clob,
         artifact_id number(19,0) not null,
         primary key (id)
     );
@@ -74,7 +74,7 @@
     create table ArtificerOntology (
         uuid varchar2(36 char) not null,
         base varchar2(255 char),
-        comment varchar2(255 char),
+        comment clob,
         createdBy varchar2(255 char),
         createdOn timestamp,
         id varchar2(255 char),
@@ -86,7 +86,7 @@
 
     create table ArtificerOntologyClass (
         uri raw(255) not null,
-        comment varchar2(255 char),
+        comment clob,
         id varchar2(255 char),
         label varchar2(255 char),
         parent_uri raw(255),

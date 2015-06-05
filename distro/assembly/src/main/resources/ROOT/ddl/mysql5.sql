@@ -9,7 +9,7 @@
         createdTime datetime,
         createdByUsername varchar(50),
         derived boolean not null,
-        description varchar(255),
+        description longtext,
         mimeType varchar(100),
         model varchar(255),
         modifiedTime datetime,
@@ -61,7 +61,7 @@
         id bigint not null auto_increment,
         lastActionTime datetime,
         username varchar(50),
-        text varchar(255),
+        text longtext,
         artifact_id bigint not null,
         primary key (id)
     );
@@ -74,7 +74,7 @@
     create table ArtificerOntology (
         uuid varchar(36) not null,
         base varchar(255),
-        comment varchar(255),
+        comment longtext,
         createdBy varchar(255),
         createdOn datetime,
         id varchar(255),
@@ -86,7 +86,7 @@
 
     create table ArtificerOntologyClass (
         uri tinyblob not null,
-        comment varchar(255),
+        comment longtext,
         id varchar(255),
         label varchar(255),
         parent_uri tinyblob,
