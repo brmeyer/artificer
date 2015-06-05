@@ -27,14 +27,15 @@ Datasource
 See the "Getting Started" section for information on Artificer's provided DDL.  We currently support Postgres,
 MySQL/MariaDB, Oracle, SQL Server, DB2/IBM, and H2.
 
-By default, Artificer installs a simple, file-based H2 datasource.  However, any other Wildfly/EAP datasource can be used.
+By default, Artificer installs a simple, file-based H2 datasource
+(see `$JBOSS_HOME/standalone/deployments/artificer-h2-ds.xml`).  However, any other Wildfly/EAP datasource can be used.
 Just edit the following in artificer.properties:
 
 ----
 ...
 hibernate.dialect = org.hibernate.dialect.H2Dialect
 hibernate.connection.driver_class = org.h2.Driver
-hibernate.connection.datasource = java:jboss/datasources/artificerDS
+hibernate.connection.datasource = java:jboss/datasources/artificerH2
 hibernate.connection.username = sa
 hibernate.connection.password = sa
 ...
