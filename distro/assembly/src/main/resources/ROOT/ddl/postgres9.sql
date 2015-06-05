@@ -3,21 +3,21 @@
         id int8 not null,
         content oid,
         contentEncoding varchar(255),
-        contentHash varchar(255),
+        contentHash varchar(40),
         contentPath varchar(255),
         contentSize int8 not null,
         createdTime timestamp,
-        createdByUsername varchar(255),
+        createdByUsername varchar(50),
         derived boolean not null,
-        description text,
-        mimeType varchar(255),
+        description varchar(255),
+        mimeType varchar(100),
         model varchar(255),
         modifiedTime timestamp,
-        modifiedByUsername varchar(255),
+        modifiedByUsername varchar(50),
         name varchar(255),
         trashed boolean not null,
         type varchar(255),
-        uuid varchar(255),
+        uuid varchar(36),
         version varchar(255),
         derivedFrom_id int8,
         primary key (id)
@@ -36,16 +36,16 @@
     create table ArtificerAuditEntry (
         id int8 not null,
         lastActionTime timestamp,
-        username varchar(255),
-        type varchar(255),
-        uuid varchar(255),
+        username varchar(50),
+        type varchar(20),
+        uuid varchar(36),
         artifact_id int8,
         primary key (id)
     );
 
     create table ArtificerAuditItem (
         id int8 not null,
-        type varchar(255),
+        type varchar(20),
         auditEntry_id int8,
         primary key (id)
     );
@@ -60,8 +60,8 @@
     create table ArtificerComment (
         id int8 not null,
         lastActionTime timestamp,
-        username varchar(255),
-        text text,
+        username varchar(50),
+        text varchar(255),
         artifact_id int8 not null,
         primary key (id)
     );
@@ -72,9 +72,9 @@
     );
 
     create table ArtificerOntology (
-        uuid varchar(255) not null,
+        uuid varchar(36) not null,
         base varchar(255),
-        comment text,
+        comment varchar(255),
         createdBy varchar(255),
         createdOn timestamp,
         id varchar(255),
@@ -86,11 +86,11 @@
 
     create table ArtificerOntologyClass (
         uri bytea not null,
-        comment text,
+        comment varchar(255),
         id varchar(255),
         label varchar(255),
         parent_uri bytea,
-        root_uuid varchar(255),
+        root_uuid varchar(36),
         primary key (uri)
     );
 

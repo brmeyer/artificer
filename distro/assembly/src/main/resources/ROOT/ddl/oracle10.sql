@@ -3,21 +3,21 @@
         id number(19,0) not null,
         content blob,
         contentEncoding varchar2(255 char),
-        contentHash varchar2(255 char),
+        contentHash varchar2(40 char),
         contentPath varchar2(255 char),
         contentSize number(19,0) not null,
         createdTime timestamp,
-        createdByUsername varchar2(255 char),
+        createdByUsername varchar2(50 char),
         derived number(1,0) not null,
-        description clob,
-        mimeType varchar2(255 char),
+        description varchar2(255 char),
+        mimeType varchar2(100 char),
         model varchar2(255 char),
         modifiedTime timestamp,
-        modifiedByUsername varchar2(255 char),
+        modifiedByUsername varchar2(50 char),
         name varchar2(255 char),
         trashed number(1,0) not null,
         type varchar2(255 char),
-        uuid varchar2(255 char),
+        uuid varchar2(36 char),
         version varchar2(255 char),
         derivedFrom_id number(19,0),
         primary key (id)
@@ -36,16 +36,16 @@
     create table ArtificerAuditEntry (
         id number(19,0) not null,
         lastActionTime timestamp,
-        username varchar2(255 char),
-        type varchar2(255 char),
-        uuid varchar2(255 char),
+        username varchar2(50 char),
+        type varchar2(20 char),
+        uuid varchar2(36 char),
         artifact_id number(19,0),
         primary key (id)
     );
 
     create table ArtificerAuditItem (
         id number(19,0) not null,
-        type varchar2(255 char),
+        type varchar2(20 char),
         auditEntry_id number(19,0),
         primary key (id)
     );
@@ -60,8 +60,8 @@
     create table ArtificerComment (
         id number(19,0) not null,
         lastActionTime timestamp,
-        username varchar2(255 char),
-        text clob,
+        username varchar2(50 char),
+        text varchar2(255 char),
         artifact_id number(19,0) not null,
         primary key (id)
     );
@@ -72,9 +72,9 @@
     );
 
     create table ArtificerOntology (
-        uuid varchar2(255 char) not null,
+        uuid varchar2(36 char) not null,
         base varchar2(255 char),
-        comment clob,
+        comment varchar2(255 char),
         createdBy varchar2(255 char),
         createdOn timestamp,
         id varchar2(255 char),
@@ -86,11 +86,11 @@
 
     create table ArtificerOntologyClass (
         uri raw(255) not null,
-        comment clob,
+        comment varchar2(255 char),
         id varchar2(255 char),
         label varchar2(255 char),
         parent_uri raw(255),
-        root_uuid varchar2(255 char),
+        root_uuid varchar2(36 char),
         primary key (uri)
     );
 

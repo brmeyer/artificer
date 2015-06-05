@@ -131,6 +131,7 @@ public class ArtificerArtifact implements Serializable {
         this.id = id;
     }
 
+    @Column(length = 36)
     public String getUuid() {
         return uuid;
     }
@@ -164,7 +165,6 @@ public class ArtificerArtifact implements Serializable {
         this.type = type;
     }
 
-    @Lob
     @Field
     public String getDescription() {
         return description;
@@ -176,7 +176,7 @@ public class ArtificerArtifact implements Serializable {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "username", column = @Column(name="createdByUsername")),
+            @AttributeOverride(name = "username", column = @Column(name="createdByUsername", length = 50)),
             @AttributeOverride(name = "lastActionTime", column = @Column(name="createdTime"))
     })
     public ArtificerUser getCreatedBy() {
@@ -189,7 +189,7 @@ public class ArtificerArtifact implements Serializable {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "username", column = @Column(name="modifiedByUsername")),
+            @AttributeOverride(name = "username", column = @Column(name="modifiedByUsername", length = 50)),
             @AttributeOverride(name = "lastActionTime", column = @Column(name="modifiedTime"))
     })
     public ArtificerUser getModifiedBy() {
@@ -324,6 +324,7 @@ public class ArtificerArtifact implements Serializable {
         this.contentPath = contentPath;
     }
 
+    @Column(length = 100)
     public String getMimeType() {
         return mimeType;
     }
@@ -340,6 +341,7 @@ public class ArtificerArtifact implements Serializable {
         this.contentSize = contentSize;
     }
 
+    @Column(length = 40)
     public String getContentHash() {
         return contentHash;
     }

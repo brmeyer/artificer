@@ -27,6 +27,15 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 public class ArtificerSchemaExporter {
 
     public static void main(String[] args) {
+        export("org.hibernate.dialect.H2Dialect", "h2.sql");
+        export("org.hibernate.dialect.MySQL5Dialect", "mysql5.sql");
+        export("org.hibernate.dialect.PostgreSQL82Dialect", "postgres9.sql");
+        export("org.hibernate.dialect.Oracle10gDialect", "oracle10.sql");
+        export("org.hibernate.dialect.SQLServer2012Dialect", "mssql2012.sql");
+        export("org.hibernate.dialect.DB2Dialect", "db2.sql");
+    }
+
+    private static void export(String dialect, String filename) {
         Configuration cfg = new Configuration();
 
         cfg.addAnnotatedClass(ArtificerArtifact.class);
@@ -44,21 +53,11 @@ public class ArtificerSchemaExporter {
         cfg.addAnnotatedClass(ArtificerOntology.class);
         cfg.addAnnotatedClass(ArtificerOntologyClass.class);
 
-        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-//        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
-//        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-//        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-//        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.DB2Dialect");
+        cfg.setProperty("hibernate.dialect", dialect);
 
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
-        schemaExport.setOutputFile("distro/assembly/src/main/resources/ROOT/ddl/h2.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/mysql5.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/postgres9.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/oracle10.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/mssql2012.sql");
-//        schemaExport.setOutputFile("installer/src/main/resources/ROOT.ddl/db2.sql");
+        schemaExport.setOutputFile("distro/assembly/src/main/resources/ROOT/ddl/" + filename);
         schemaExport.execute(true, false, false, true);
     }
 }
