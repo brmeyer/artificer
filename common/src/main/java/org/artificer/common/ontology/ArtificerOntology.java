@@ -67,7 +67,7 @@ public class ArtificerOntology implements Serializable {
 	 * @return the uuid
 	 */
     @Id
-	@Column(length = 36)
+	@Column(columnDefinition = "char(40)")
     public String getUuid() {
 		return uuid;
 	}

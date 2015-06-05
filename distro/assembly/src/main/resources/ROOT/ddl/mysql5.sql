@@ -3,7 +3,7 @@
         id bigint not null auto_increment,
         content longblob,
         contentEncoding varchar(255),
-        contentHash varchar(40),
+        contentHash char(40),
         contentPath varchar(255),
         contentSize bigint not null,
         createdTime datetime,
@@ -17,7 +17,7 @@
         name varchar(255),
         trashed boolean not null,
         type varchar(255),
-        uuid varchar(36),
+        uuid char(40),
         version varchar(255),
         derivedFrom_id bigint,
         primary key (id)
@@ -38,7 +38,7 @@
         lastActionTime datetime,
         username varchar(50),
         type varchar(20),
-        uuid varchar(36),
+        uuid char(40),
         artifact_id bigint,
         primary key (id)
     );
@@ -72,7 +72,7 @@
     );
 
     create table ArtificerOntology (
-        uuid varchar(36) not null,
+        uuid char(40) not null,
         base varchar(255),
         comment longtext,
         createdBy varchar(255),
@@ -90,7 +90,7 @@
         id varchar(255),
         label varchar(255),
         parent_uri tinyblob,
-        root_uuid varchar(36),
+        root_uuid char(40),
         primary key (uri)
     );
 

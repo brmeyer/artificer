@@ -131,7 +131,7 @@ public class ArtificerArtifact implements Serializable {
         this.id = id;
     }
 
-    @Column(length = 36)
+    @Column(columnDefinition = "char(40)")
     public String getUuid() {
         return uuid;
     }
@@ -342,7 +342,7 @@ public class ArtificerArtifact implements Serializable {
         this.contentSize = contentSize;
     }
 
-    @Column(length = 40)
+    @Column(columnDefinition = "char(40)")
     public String getContentHash() {
         return contentHash;
     }

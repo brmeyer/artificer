@@ -66,7 +66,7 @@ public class ArtificerAuditEntry implements Serializable {
         this.id = id;
     }
 
-    @Column(length = 36)
+    @Column(columnDefinition = "char(40)")
     public String getUuid() {
         return uuid;
     }
