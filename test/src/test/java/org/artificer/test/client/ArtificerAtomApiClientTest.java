@@ -20,7 +20,7 @@ import org.artificer.atom.archive.ArtificerArchive;
 import org.artificer.atom.mappers.RdfToOntologyMapper;
 import org.artificer.client.ArtificerAtomApiClient;
 import org.artificer.client.ontology.OntologySummary;
-import org.artificer.client.query.ArtifactSummary;
+import org.artificer.common.query.ArtifactSummary;
 import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.ArtificerModelUtils;
@@ -314,9 +314,10 @@ public class ArtificerAtomApiClientTest extends AbstractClientTest {
         QueryResultSet rset = client.query("/s-ramp/xsd/XsdDocument[@uuid='"+uuid+"']", 0, 50, "name", false, propertyNames);
         Assert.assertEquals("Expected a single artifact returned.", 1, rset.size());
         ArtifactSummary summary = rset.get(0);
-        Assert.assertEquals("foo", summary.getCustomPropertyValue("prop1"));
-        Assert.assertEquals("bar", summary.getCustomPropertyValue("prop2"));
-        Assert.assertNull("I didn't ask for 'prop3' to be returned!", summary.getCustomPropertyValue("prop3"));
+        BaseArtifactType artifact = client.getArtifactMetaData(summary);
+        Assert.assertEquals("foo", ArtificerModelUtils.getCustomProperty(artifact, "prop1"));
+        Assert.assertEquals("bar", ArtificerModelUtils.getCustomProperty(artifact, "prop2"));
+        Assert.assertNull("I didn't ask for 'prop3' to be returned!", ArtificerModelUtils.getCustomProperty(artifact, "prop3"));
     }
 
     /**
@@ -712,7 +713,8 @@ public class ArtificerAtomApiClientTest extends AbstractClientTest {
         System.out.println("----- Query done, iterating result set");
         long start = System.currentTimeMillis();
         for (ArtifactSummary artifactSummary : rset) {
-            String prop = artifactSummary.getCustomPropertyValue("count");
+            BaseArtifactType artifact = client.getArtifactMetaData(artifactSummary);
+            String prop = ArtificerModelUtils.getCustomProperty(artifact, "count");
             builder.append(prop);
             builder.append("|");
         }
