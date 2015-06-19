@@ -15,6 +15,9 @@
  */
 package org.artificer.repository.hibernate.entity;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Store;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
@@ -33,6 +36,7 @@ public class ArtificerUser implements Serializable {
     private Calendar lastActionTime;
 
     @Column(length = 50)
+    @Field(store = Store.YES)
     public String getUsername() {
         return username;
     }
@@ -42,6 +46,7 @@ public class ArtificerUser implements Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Field(store = Store.YES)
     public Calendar getLastActionTime() {
         return lastActionTime;
     }

@@ -53,7 +53,7 @@ public class ArtifactSummary implements Serializable {
 
     }
 
-    public ArtifactSummary(String uuid, String name, String description, String model, String type, boolean derived) {
+    public ArtifactSummary(String uuid, String name, String description, String model, String type, Boolean derived) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
@@ -62,7 +62,7 @@ public class ArtifactSummary implements Serializable {
         this.derived = derived;
     }
 
-    public ArtifactSummary(String uuid, String name, String description, String model, String type, boolean derived,
+    public ArtifactSummary(String uuid, String name, String description, String model, String type, Boolean derived,
             Calendar createdTimestamp, String createdBy, Calendar lastModifiedTimestamp) {
         this(uuid, name, description, model, type, derived);
         this.createdTimestamp = createdTimestamp;

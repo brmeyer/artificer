@@ -20,11 +20,13 @@ import org.artificer.repository.hibernate.audit.ArtificerAuditEntry;
 import org.artificer.repository.hibernate.query.ArtificerTikaBridge;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Table;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -132,6 +134,7 @@ public class ArtificerArtifact implements Serializable {
     }
 
     @Column(columnDefinition = "char(36)")
+    @Field(analyze = Analyze.NO, store = Store.YES)
     public String getUuid() {
         return uuid;
     }
@@ -140,7 +143,7 @@ public class ArtificerArtifact implements Serializable {
         this.uuid = uuid;
     }
 
-    @Field
+    @Field(store = Store.YES)
     public String getName() {
         return name;
     }
@@ -149,7 +152,7 @@ public class ArtificerArtifact implements Serializable {
         this.name = name;
     }
 
-    @Field
+    @Field(store = Store.YES)
     public String getModel() {
         return model;
     }
@@ -158,7 +161,7 @@ public class ArtificerArtifact implements Serializable {
         this.model = model;
     }
 
-    @Field
+    @Field(store = Store.YES)
     public String getType() {
         return type;
     }
@@ -168,7 +171,7 @@ public class ArtificerArtifact implements Serializable {
     }
 
     @Lob
-    @Field
+    @Field(store = Store.YES)
     public String getDescription() {
         return description;
     }
@@ -182,6 +185,7 @@ public class ArtificerArtifact implements Serializable {
             @AttributeOverride(name = "username", column = @Column(name="createdByUsername", length = 50)),
             @AttributeOverride(name = "lastActionTime", column = @Column(name="createdTime"))
     })
+    @IndexedEmbedded
     public ArtificerUser getCreatedBy() {
         return createdBy;
     }
@@ -195,6 +199,7 @@ public class ArtificerArtifact implements Serializable {
             @AttributeOverride(name = "username", column = @Column(name="modifiedByUsername", length = 50)),
             @AttributeOverride(name = "lastActionTime", column = @Column(name="modifiedTime"))
     })
+    @IndexedEmbedded
     public ArtificerUser getModifiedBy() {
         return modifiedBy;
     }
@@ -240,6 +245,7 @@ public class ArtificerArtifact implements Serializable {
         this.comments = comments;
     }
 
+    @Field
     public boolean isTrashed() {
         return trashed;
     }
@@ -248,6 +254,7 @@ public class ArtificerArtifact implements Serializable {
         this.trashed = trashed;
     }
 
+    @Field(store = Store.YES)
     public boolean isDerived() {
         return derived;
     }
