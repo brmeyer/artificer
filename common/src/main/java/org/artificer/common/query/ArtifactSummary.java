@@ -39,6 +39,8 @@ public class ArtifactSummary implements Serializable {
 
     private String type;
 
+    private boolean derived;
+
     private Calendar createdTimestamp;
 
     private String createdBy;
@@ -51,17 +53,18 @@ public class ArtifactSummary implements Serializable {
 
     }
 
-    public ArtifactSummary(String uuid, String name, String description, String model, String type) {
+    public ArtifactSummary(String uuid, String name, String description, String model, String type, boolean derived) {
         this.uuid = uuid;
         this.name = name;
         this.description = description;
         this.model = model;
         this.type = type;
+        this.derived = derived;
     }
 
-    public ArtifactSummary(String uuid, String name, String description, String model, String type,
+    public ArtifactSummary(String uuid, String name, String description, String model, String type, boolean derived,
             Calendar createdTimestamp, String createdBy, Calendar lastModifiedTimestamp) {
-        this(uuid, name, description, model, type);
+        this(uuid, name, description, model, type, derived);
         this.createdTimestamp = createdTimestamp;
         this.createdBy = createdBy;
         this.lastModifiedTimestamp = lastModifiedTimestamp;
@@ -107,6 +110,14 @@ public class ArtifactSummary implements Serializable {
         this.type = type;
     }
 
+    public boolean isDerived() {
+        return derived;
+    }
+
+    public void setDerived(boolean derived) {
+        this.derived = derived;
+    }
+
     public Calendar getCreatedTimestamp() {
         return createdTimestamp;
     }
@@ -144,6 +155,8 @@ public class ArtifactSummary implements Serializable {
     }
 
     public ArtifactType getArtifactType() {
-        return ArtifactType.valueOf(model, type, false);
+        ArtifactType artifactType = ArtifactType.valueOf(model, type, false);
+        artifactType.setExtendedDerivedType(derived);
+        return artifactType;
     }
 }

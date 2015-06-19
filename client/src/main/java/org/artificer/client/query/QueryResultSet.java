@@ -170,6 +170,7 @@ public class QueryResultSet implements Iterable<ArtifactSummary> {
         ArtifactType artifactType = ArtificerAtomUtils.getArtifactType(entry);
         summary.setModel(artifactType.getModel());
         summary.setType(artifactType.getType());
+        summary.setDerived(artifactType.isDerived());
         summary.setExtensionAttributes(entry.getExtensionAttributes());
         Calendar published = Calendar.getInstance();
         published.setTime(entry.getPublished());

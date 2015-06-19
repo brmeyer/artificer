@@ -190,6 +190,8 @@ public final class ArtificerAtomUtils {
         category.setTerm(artifact.getType());
         entry.getCategories().add(category);
 
+        entry.getExtensionAttributes().put(ArtificerConstants.SRAMP_DERIVED_QNAME, String.valueOf(artifact.isDerived()));
+
         return entry;
     }
     

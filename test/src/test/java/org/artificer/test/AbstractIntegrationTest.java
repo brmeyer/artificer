@@ -69,7 +69,7 @@ public abstract class AbstractIntegrationTest {
             QueryResultSet results = client.query("/s-ramp", 0, 10000, "name", true); //$NON-NLS-1$ //$NON-NLS-2$
             for (ArtifactSummary summary : results) {
                 String uuid = summary.getUuid().replace("urn:uuid:", "");
-                if (!summary.getArtifactType().isDerived()) {
+                if (!summary.isDerived()) {
                     client.deleteArtifact(uuid, summary.getArtifactType(), true);
                 }
             }

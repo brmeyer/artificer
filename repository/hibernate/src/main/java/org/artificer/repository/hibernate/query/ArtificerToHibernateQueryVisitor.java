@@ -159,7 +159,7 @@ public class ArtificerToHibernateQueryVisitor extends AbstractArtificerQueryVisi
         totalSize = (Long) entityManager.createQuery(query).getSingleResult();
 
         // Setup the select.  Note that we're only grabbing the fields we need for the summary.
-        query.multiselect(from.get("uuid"), from.get("name"), from.get("description"), from.get("model"), from.get("type"),
+        query.multiselect(from.get("uuid"), from.get("name"), from.get("description"), from.get("model"), from.get("type"), from.get("derived"),
                 from.get("createdBy").get("lastActionTime"), from.get("createdBy").get("username"), from.get("modifiedBy").get("lastActionTime"))
                 .distinct(true);
 
