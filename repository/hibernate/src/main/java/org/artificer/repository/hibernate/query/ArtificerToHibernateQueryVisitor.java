@@ -229,6 +229,9 @@ public class ArtificerToHibernateQueryVisitor extends AbstractArtificerQueryVisi
                 searchResults.add(sqlFrom.get("id").in(ids));
             }
             if (searchResults.size() > 0) {
+                // A "delegate" predicate was set in #fullTextSearch.  This allows us to delay its processing until
+                // we know all the possible lucenePredicates.  Otherwise, we wouldn't be able to restrict the Lucene
+                // query as much as possible.
                 fullTextSearchPredicate.setDelegate((AbstractPredicateImpl) compileOr(searchResults));
             }
 
@@ -805,6 +808,8 @@ public class ArtificerToHibernateQueryVisitor extends AbstractArtificerQueryVisi
                 .andField("contentPath").ignoreFieldBridge()
                 .matching(query)
                 .createQuery();
+        // Set up a placeholder/delegate predicate.  This will be filled in by #query, after all possible predicates
+        // have been collected.
         fullTextSearchPredicate = new DelayedPredicate();
         sqlPredicates.add(fullTextSearchPredicate);
     }
