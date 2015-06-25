@@ -63,5 +63,10 @@ public class ArchiveExpansionTest extends AbstractNoAuditingPersistenceTest {
                 ArtificerConstants.ARTIFICER_EXPANDED_FROM_ARCHIVE_PATH_QNAME, "foo/path/jcr-sample-externalrefs.wsdl");
         wsdlArtifact = persistenceManager.persistArtifact(wsdlArtifact,
                 new ArtifactContent("foo/path/jcr-sample-externalrefs.wsdl", wsdlUrl.openStream()));
+
+        // TODO: search all
+        // TODO: /s-ramp[@derived = 'false' and xp2:not(expandedFromArchive)]
+        // TODO: /s-ramp[@derived = 'false' and expandedFromArchive]
+        // TODO: /s-ramp[@derived = 'true']
     }
 }
