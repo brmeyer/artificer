@@ -26,14 +26,14 @@ import org.jboss.aesh.console.command.registry.CommandRegistry;
 import org.jboss.aesh.console.settings.Settings;
 import org.jboss.aesh.console.settings.SettingsBuilder;
 import org.jboss.aesh.terminal.TestTerminal;
+import org.junit.After;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-
-import static org.mockito.Mockito.mock;
 
 /**
  * Taken and modified from aesh-example's AeshTestCommons.
@@ -64,7 +64,7 @@ public class AbstractCommandTest {
         }
         stream = new ByteArrayOutputStream();
 
-        clientMock = mock(ArtificerAtomApiClient.class);
+        clientMock = Mockito.mock(ArtificerAtomApiClient.class);
 
         settings = new SettingsBuilder()
                 .terminal(new TestTerminal())
@@ -88,12 +88,24 @@ public class AbstractCommandTest {
     }
 
     // TODO: Added arguments
-    protected void pushToOutput(String command, String... args) throws IOException {
+    protected void pushToOutput(String command, Object... args) throws IOException {
         String literalCommand = String.format(command, args);
         pos.write((literalCommand).getBytes());
         pos.write(Config.getLineSeparator().getBytes());
         pos.flush();
         smallPause();
+    }
+
+    @After
+    public void after() {
+        smallPause();
+//        System.out.println("Got out: " + getStream().toString());
+        aeshConsole.stop();
+        Mockito.reset(clientMock);
+    }
+
+    protected ByteArrayOutputStream getStream() {
+        return stream;
     }
 
     protected void smallPause() {

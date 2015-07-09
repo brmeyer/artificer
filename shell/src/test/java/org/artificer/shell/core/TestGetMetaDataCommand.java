@@ -15,12 +15,20 @@
  */
 package org.artificer.shell.core;
 
+import org.artificer.atom.ArtificerAtomUtils;
+import org.artificer.client.query.QueryResultSet;
+import org.artificer.common.ArtifactType;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.query.ArtifactSummary;
 import org.artificer.shell.AbstractCommandTest;
+import org.jboss.resteasy.plugins.providers.atom.Entry;
+import org.jboss.resteasy.plugins.providers.atom.Feed;
+import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 
 import java.util.UUID;
-
-import static org.mockito.Mockito.verify;
 
 /**
  * @author Brett Meyer.
@@ -28,12 +36,60 @@ import static org.mockito.Mockito.verify;
 public class TestGetMetaDataCommand extends AbstractCommandTest {
 
     @Test
-    public void testGetMetaData() throws Exception {
+    public void testGetMetaDataByUuid() throws Exception {
         prepare(GetMetaDataCommand.class);
 
+        BaseArtifactType artifact = createArtifact();
+
+        pushToOutput("getMetaData --uuid %s", artifact.getUuid());
+        Mockito.verify(getClientMock()).getArtifactMetaData(artifact.getUuid());
+        Assert.assertTrue(getStream().toString().contains("Type: FooType"));
+        Assert.assertTrue(getStream().toString().contains("Model: ext"));
+        Assert.assertTrue(getStream().toString().contains("UUID: " + artifact.getUuid()));
+    }
+
+    @Test
+    public void testGetMetaDataByFeed() throws Exception {
+        prepare(GetMetaDataCommand.class, QueryCommand.class);
+
+        BaseArtifactType artifact = createArtifact();
+
+        pushToOutput("query /s-ramp");
+        System.out.println(getStream().toString());
+        pushToOutput("getMetaData --feed %d", 1);
+        Mockito.verify(getClientMock()).getArtifactMetaData(ArtifactType.valueOf(artifact), artifact.getUuid());
+        Assert.assertTrue(getStream().toString().contains("Type: FooType"));
+        Assert.assertTrue(getStream().toString().contains("Model: ext"));
+        Assert.assertTrue(getStream().toString().contains("UUID: " + artifact.getUuid()));
+    }
+
+    // TODO: Generalize and move to the superclass!
+    private BaseArtifactType createArtifact() throws Exception {
         String uuid = UUID.randomUUID().toString();
 
-        pushToOutput("getMetaData --uuid %s", uuid);
-        verify(getClientMock()).getArtifactMetaData(uuid);
+        BaseArtifactType artifact = ArtifactType.ExtendedArtifactType("FooType", false).newArtifactInstance();
+        artifact.setUuid(uuid);
+
+        // called by getMetaData
+        Mockito.when(getClientMock().getArtifactMetaData(Mockito.contains(uuid))).thenReturn(artifact);
+        Mockito.when(getClientMock().getArtifactMetaData(
+                Mockito.any(ArtifactType.class), Mockito.contains(uuid))).thenReturn(artifact);
+
+        // called by query (mock out a feed)
+        ArtifactSummary summary = new ArtifactSummary();
+        summary.setUuid(uuid);
+        summary.setModel("ext");
+        summary.setType("FooType");
+        Feed feed = new Feed();
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(1));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_START_INDEX_QNAME, String.valueOf(1));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(1));
+        Entry entry = ArtificerAtomUtils.wrapArtifactSummary(summary);
+        feed.getEntries().add(entry);
+        QueryResultSet queryResult = new QueryResultSet(feed);
+        Mockito.when(getClientMock().query(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
+                Mockito.anyBoolean())).thenReturn(queryResult);
+
+        return artifact;
     }
 }
