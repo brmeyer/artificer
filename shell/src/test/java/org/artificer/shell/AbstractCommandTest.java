@@ -15,7 +15,12 @@
  */
 package org.artificer.shell;
 
+import org.artificer.atom.ArtificerAtomUtils;
 import org.artificer.client.ArtificerAtomApiClient;
+import org.artificer.client.query.QueryResultSet;
+import org.artificer.common.ArtifactType;
+import org.artificer.common.ArtificerConstants;
+import org.artificer.common.query.ArtifactSummary;
 import org.jboss.aesh.console.AeshConsole;
 import org.jboss.aesh.console.AeshConsoleBuilder;
 import org.jboss.aesh.console.AeshContext;
@@ -26,14 +31,18 @@ import org.jboss.aesh.console.command.registry.CommandRegistry;
 import org.jboss.aesh.console.settings.Settings;
 import org.jboss.aesh.console.settings.SettingsBuilder;
 import org.jboss.aesh.terminal.TestTerminal;
+import org.jboss.resteasy.plugins.providers.atom.Entry;
+import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.junit.After;
 import org.mockito.Mockito;
+import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.util.UUID;
 
 /**
  * Taken and modified from aesh-example's AeshTestCommons.
@@ -46,13 +55,15 @@ public class AbstractCommandTest {
 
     private PipedOutputStream pos;
     private PipedInputStream pis;
-    private ByteArrayOutputStream stream;
+    protected ByteArrayOutputStream stream;
     private Settings settings;
     private AeshConsole aeshConsole;
     private CommandRegistry registry;
 
-    private ArtificerAtomApiClient clientMock;
-    private ArtificerContext aeshContext;
+    protected ArtificerAtomApiClient clientMock;
+    protected ArtificerContext aeshContext;
+    protected BaseArtifactType artifact;
+    protected ArtifactType artifactType;
 
     public AbstractCommandTest() {
         pos = new PipedOutputStream();
@@ -84,11 +95,16 @@ public class AbstractCommandTest {
                 .commandRegistry(registry);
         aeshConsole = consoleBuilder.create();
         aeshConsole.start();
-        stream.flush();
+//        stream.flush();
+
+        setupArtifact();
     }
 
-    // TODO: Added arguments
+    // TODO: Added arguments and the reset
     protected void pushToOutput(String command, Object... args) throws IOException {
+        // First, reset the stream
+        stream.reset();
+
         String literalCommand = String.format(command, args);
         pos.write((literalCommand).getBytes());
         pos.write(Config.getLineSeparator().getBytes());
@@ -102,10 +118,6 @@ public class AbstractCommandTest {
 //        System.out.println("Got out: " + getStream().toString());
         aeshConsole.stop();
         Mockito.reset(clientMock);
-    }
-
-    protected ByteArrayOutputStream getStream() {
-        return stream;
     }
 
     protected void smallPause() {
@@ -126,7 +138,33 @@ public class AbstractCommandTest {
         return aeshContext;
     }
 
-    protected ArtificerAtomApiClient getClientMock() {
-        return clientMock;
+    private BaseArtifactType setupArtifact() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+
+        artifactType = ArtifactType.XmlDocument();
+        artifact = artifactType.newArtifactInstance();
+        artifact.setUuid(uuid);
+
+        // getArtifactMetaData
+        Mockito.when(clientMock.getArtifactMetaData(Mockito.contains(uuid))).thenReturn(artifact);
+        Mockito.when(clientMock.getArtifactMetaData(
+                Mockito.any(ArtifactType.class), Mockito.contains(uuid))).thenReturn(artifact);
+
+        // query
+        ArtifactSummary summary = new ArtifactSummary();
+        summary.setUuid(uuid);
+        summary.setModel("core");
+        summary.setType("XmlDocument");
+        Feed feed = new Feed();
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_ITEMS_PER_PAGE_QNAME, String.valueOf(1));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_START_INDEX_QNAME, String.valueOf(1));
+        feed.getExtensionAttributes().put(ArtificerConstants.SRAMP_TOTAL_RESULTS_QNAME, String.valueOf(1));
+        Entry entry = ArtificerAtomUtils.wrapArtifactSummary(summary);
+        feed.getEntries().add(entry);
+        QueryResultSet queryResult = new QueryResultSet(feed);
+        Mockito.when(clientMock.query(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
+                Mockito.anyBoolean())).thenReturn(queryResult);
+
+        return artifact;
     }
 }
