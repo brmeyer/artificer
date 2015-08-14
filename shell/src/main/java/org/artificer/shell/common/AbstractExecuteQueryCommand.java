@@ -97,7 +97,7 @@ public abstract class AbstractExecuteQueryCommand extends AbstractCommand {
 						displayType, summary.getName());
 			}
 			commandInvocation.getShell().out().println();
-			long endIndex = rset.getStartIndex() + rset.size();
+			long endIndex = rset.getStartIndex() + rset.size() - 1;
 			commandInvocation.getShell().out().println(Messages.i18n.format("Query.AtomFeedSummary",
 					rset.getStartIndex(), endIndex, rset.getTotalResults()));
 			commandInvocation.getShell().out().println();

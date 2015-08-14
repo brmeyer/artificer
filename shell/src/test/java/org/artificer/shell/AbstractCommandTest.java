@@ -23,7 +23,6 @@ import org.artificer.common.ArtificerConstants;
 import org.artificer.common.query.ArtifactSummary;
 import org.jboss.aesh.console.AeshConsole;
 import org.jboss.aesh.console.AeshConsoleBuilder;
-import org.jboss.aesh.console.AeshContext;
 import org.jboss.aesh.console.Config;
 import org.jboss.aesh.console.command.Command;
 import org.jboss.aesh.console.command.registry.AeshCommandRegistryBuilder;
@@ -122,7 +121,7 @@ public class AbstractCommandTest {
 
     protected void smallPause() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -130,7 +129,7 @@ public class AbstractCommandTest {
     }
 
     // TODO: This was not a part of AeshTestCommons, but should be added to it so subclasses can override.  Note the
-    protected AeshContext getAeshContext() {
+    protected ArtificerContext getAeshContext() {
         if (aeshContext == null) {
             aeshContext = new ArtificerContext();
             aeshContext.setClient(clientMock);
@@ -150,7 +149,6 @@ public class AbstractCommandTest {
         Mockito.when(clientMock.getArtifactMetaData(
                 Mockito.any(ArtifactType.class), Mockito.contains(uuid))).thenReturn(artifact);
 
-        // query
         ArtifactSummary summary = new ArtifactSummary();
         summary.setUuid(uuid);
         summary.setModel("core");
@@ -162,8 +160,12 @@ public class AbstractCommandTest {
         Entry entry = ArtificerAtomUtils.wrapArtifactSummary(summary);
         feed.getEntries().add(entry);
         QueryResultSet queryResult = new QueryResultSet(feed);
+        // query
         Mockito.when(clientMock.query(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
-                Mockito.anyBoolean())).thenReturn(queryResult);
+                Mockito.anyBoolean(), Mockito.anyCollection())).thenReturn(queryResult);
+        // stored query
+        Mockito.when(clientMock.queryWithStoredQuery(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
+                Mockito.anyBoolean(), Mockito.anyMap())).thenReturn(queryResult);
 
         return artifact;
     }
