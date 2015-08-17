@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.artificer.shell.core;
+package org.artificer.shell;
 
 import org.artificer.shell.AbstractCommandTest;
+import org.artificer.shell.core.GetMetaDataCommand;
+import org.artificer.shell.core.QueryCommand;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.artificer.shell.storedquery;
+package org.artificer.shell;
 
 import org.artificer.common.error.ArtificerNotFoundException;
 import org.artificer.shell.AbstractCommandTest;
