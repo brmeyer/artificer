@@ -112,13 +112,15 @@ public class MavenGavInfo {
         if (file.getName().endsWith(".tmp")) {
             filename = filename.substring(0, filename.indexOf(".jar") + 4);
         }
-        String type = filename.substring(filename.lastIndexOf('.') + 1);
+        String type = null;
         if (filename.endsWith(".sha1")) {
             type = filename.substring(0, filename.length() - 5);
             type = type.substring(type.lastIndexOf('.') + 1) + ".sha1";
         } else if (filename.endsWith(".md5")) {
             type = filename.substring(0, filename.length() - 4);
             type = type.substring(type.lastIndexOf('.') + 1) + ".md5";
+        } else if (filename.contains(".")) {
+            type = filename.substring(filename.lastIndexOf('.') + 1);
         }
         String classifier = null;
         if (split.length >= 5) {
