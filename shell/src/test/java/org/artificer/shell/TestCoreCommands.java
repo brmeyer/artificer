@@ -16,9 +16,9 @@
 package org.artificer.shell;
 
 import org.artificer.common.ArtifactType;
-import org.artificer.shell.AbstractCommandTest;
 import org.artificer.shell.core.AddCommentCommand;
 import org.artificer.shell.core.GetMetaDataCommand;
+import org.artificer.shell.core.QueryCommand;
 import org.artificer.shell.core.RefreshMetaDataCommand;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +28,30 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Comment;
 /**
  * @author Brett Meyer.
  */
-public class TestAddCommentCommand extends AbstractCommandTest {
+public class TestCoreCommands extends AbstractCommandTest {
+
+    @Test
+    public void testGetMetaDataByUuid() throws Exception {
+        prepare(GetMetaDataCommand.class);
+
+        pushToOutput("getMetaData --uuid %s", artifact.getUuid());
+        Mockito.verify(clientMock).getArtifactMetaData(artifact.getUuid());
+        Assert.assertTrue(stream.toString().contains("Type: FooType"));
+        Assert.assertTrue(stream.toString().contains("Model: ext"));
+        Assert.assertTrue(stream.toString().contains("UUID: " + artifact.getUuid()));
+    }
+
+    @Test
+    public void testGetMetaDataByFeed() throws Exception {
+        prepare(GetMetaDataCommand.class, QueryCommand.class);
+
+        pushToOutput("query /s-ramp");
+        pushToOutput("getMetaData --feed %d", 1);
+        Mockito.verify(clientMock).getArtifactMetaData(artifactType, artifact.getUuid());
+        Assert.assertTrue(stream.toString().contains("Type: " + artifactType.getType()));
+        Assert.assertTrue(stream.toString().contains("Model: " + artifactType.getModel()));
+        Assert.assertTrue(stream.toString().contains("UUID: " + artifact.getUuid()));
+    }
 
     @Test
     public void testAddComment() throws Exception {
