@@ -16,8 +16,6 @@
 package org.artificer.shell;
 
 import org.artificer.common.error.ArtificerNotFoundException;
-import org.artificer.shell.AbstractCommandTest;
-import org.artificer.shell.ArtificerShell;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -74,7 +72,7 @@ public class TestStoredQueryCommands extends AbstractCommandTest {
     }
 
     @Test
-    public void testListStoredQueries() throws Exception {
+    public void testExecuteStoredQuery() throws Exception {
         prepare(ArtificerShell.StoredQueryCommands.class);
 
         // NOTE: QueryResultSet set up by AbstractCommandTest (includes 1 XmlDocument)
