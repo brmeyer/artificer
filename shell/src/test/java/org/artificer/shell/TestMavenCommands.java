@@ -16,6 +16,7 @@
 package org.artificer.shell;
 
 import org.artificer.client.ArtificerClientQuery;
+import org.artificer.client.query.QueryResultSet;
 import org.artificer.common.ArtifactType;
 import org.artificer.common.ArtificerModelUtils;
 import org.artificer.integration.java.model.JavaModel;
@@ -32,22 +33,29 @@ import java.io.InputStream;
  */
 public class TestMavenCommands extends AbstractCommandTest {
 
-    // NOTE: NOT YET TESTED!
-
     @Test
     public void testDeploy() throws Exception {
         prepare(ArtificerShell.MavenCommands.class);
-
-        // called by DeployCommand#findExistingArtifactByGAV
-        Mockito.when(clientMock.buildQuery(Mockito.anyString())).thenReturn(Mockito.mock(ArtificerClientQuery.class));
 
         // failure tests
         pushToOutput("maven deploy --type XmlDocument --gav org.artificer.shell.test:maven-test:1.0.0.Final nope.xml");
         Assert.assertTrue(stream.toString().contains("File not found"));
         pushToOutput("maven deploy --type XmlDocument --gav org.artificer.shell.test:maven-test:1.0.0.Final PO");
         Assert.assertTrue(stream.toString().contains("does not include an extension, the Maven GAV argument must include the type"));
-        pushToOutput("maven deploy --type XmlDocument --gav org.artificer.shell.test:maven-test:1.0.0-SNAPSHOT PO.xml");
-        Assert.assertTrue(stream.toString().contains("SNAPSHOT versions are not allowed"));
+
+        // called by DeployCommand#findExistingArtifactByGAV
+        ArtificerClientQuery clientQuery = Mockito.mock(ArtificerClientQuery.class);
+        Mockito.when(clientQuery.count(Mockito.anyInt())).thenReturn(clientQuery);
+        QueryResultSet resultSet = Mockito.mock(QueryResultSet.class);
+        Mockito.when(resultSet.size()).thenReturn(0l);
+        Mockito.when(clientQuery.query()).thenReturn(resultSet);
+        Mockito.when(clientMock.buildQuery(Mockito.anyString())).thenReturn(clientQuery);
+
+        // the initial upload needs to return an artifact, since the command later modifies its custom properties and updates
+        BaseArtifactType xmlDocument = ArtifactType.XmlDocument().newArtifactInstance();
+        Mockito.when(clientMock.uploadArtifact(
+                Mockito.any(ArtifactType.class), Mockito.any(InputStream.class), Mockito.anyString()))
+                        .thenReturn(xmlDocument);
 
         // success tests
         pushToOutput("maven deploy --type XmlDocument --gav org.artificer.shell.test:maven-test:1.0.0.Final PO.xml");

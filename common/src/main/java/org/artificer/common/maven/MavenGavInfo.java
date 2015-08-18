@@ -228,7 +228,9 @@ public class MavenGavInfo {
 		int idx1 = filename.indexOf(front) + front.length() + 1;
 		int idx2 = filename.indexOf(back);
 
-		if (idx1 > 0 && idx1 < filename.length() && idx2 > 0 && idx2 < filename.length()) {
+        // TODO: Replace the 'idx1 < idx2' check with regex that checks if a snapshot ID actually exists.  We should
+        // handle the case where a user manually enters the GAV through the CLI, but leaves of the snapshot info.
+        if (idx1 > 0 && idx1 < filename.length() && idx2 > 0 && idx2 < filename.length() && idx1 < idx2) {
 			return filename.substring(idx1, idx2);
 		} else {
 			return null;

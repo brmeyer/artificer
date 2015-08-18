@@ -46,7 +46,7 @@ import java.util.UUID;
 /**
  * Taken and modified from aesh-example's AeshTestCommons.
  *
- * TODO: This should be replaced after https://issues.jboss.org/browse/AESH-326!
+ * TODO: This should be replaced after https://issues.jboss.org/browse/AESH-328!
  *
  * @author Brett Meyer.
  */
@@ -121,12 +121,12 @@ public class AbstractCommandTest {
 
     // This seems unnecessary, but without it, commands appear to run in succession "too fast" and periodically fail.
     protected void smallPause() {
-//        try {
-//            Thread.sleep(1000);
-//        }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // TODO: This was not a part of AeshTestCommons, but should be added to it so subclasses can override.  Note the
