@@ -33,6 +33,7 @@ import org.jboss.aesh.terminal.TestTerminal;
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.junit.After;
+import org.junit.Assert;
 import org.mockito.Mockito;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 
@@ -109,6 +110,9 @@ public class AbstractCommandTest {
         pos.write(Config.getLineSeparator().getBytes());
         pos.flush();
         smallPause();
+
+        // A missing i18n value results in "!![key]!!" text, so simply ensure none exist in the stream.
+        Assert.assertFalse("Missing an i18n entry!", stream.toString().contains("!!"));
     }
 
     @After
