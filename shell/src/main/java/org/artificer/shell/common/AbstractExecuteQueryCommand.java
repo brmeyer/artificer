@@ -106,7 +106,7 @@ public abstract class AbstractExecuteQueryCommand extends AbstractCommand {
 
 			return CommandResult.SUCCESS;
 		} catch (Exception e) {
-			commandInvocation.getShell().out().println(Messages.i18n.format("Query.Fail"));
+			commandInvocation.getShell().out().println(Messages.i18n.format("Query.Failure"));
 			commandInvocation.getShell().out().println("\t" + e.getMessage());
 			return CommandResult.FAILURE;
 		}

@@ -112,7 +112,7 @@ public class AbstractCommandTest {
         smallPause();
 
         // A missing i18n value results in "!![key]!!" text, so simply ensure none exist in the stream.
-        Assert.assertFalse("Missing an i18n entry!", stream.toString().contains("!!"));
+        Assert.assertFalse("Missing an i18n entry!  Output: " + stream.toString(), stream.toString().contains("!!"));
     }
 
     @After
@@ -166,6 +166,8 @@ public class AbstractCommandTest {
         feed.getEntries().add(entry);
         QueryResultSet queryResult = new QueryResultSet(feed);
         // query
+        Mockito.when(clientMock.query(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
+                Mockito.anyBoolean())).thenReturn(queryResult);
         Mockito.when(clientMock.query(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(),
                 Mockito.anyBoolean(), Mockito.anyCollection())).thenReturn(queryResult);
         // stored query

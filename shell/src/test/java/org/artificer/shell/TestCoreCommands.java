@@ -46,8 +46,8 @@ public class TestCoreCommands extends AbstractCommandTest {
 
         pushToOutput("getMetaData --uuid %s", artifact.getUuid());
         Mockito.verify(clientMock).getArtifactMetaData(artifact.getUuid());
-        Assert.assertTrue(stream.toString().contains("Type: FooType"));
-        Assert.assertTrue(stream.toString().contains("Model: ext"));
+        Assert.assertTrue(stream.toString().contains("Type: " + artifactType.getType()));
+        Assert.assertTrue(stream.toString().contains("Model: " + artifactType.getModel()));
         Assert.assertTrue(stream.toString().contains("UUID: " + artifact.getUuid()));
     }
 
