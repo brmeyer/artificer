@@ -16,9 +16,11 @@
 package org.artificer.shell;
 
 import org.artificer.common.ArtifactType;
+import org.artificer.common.ArtificerModelUtils;
 import org.artificer.shell.core.AddCommentCommand;
 import org.artificer.shell.core.CreateArtifactCommand;
 import org.artificer.shell.core.GetMetaDataCommand;
+import org.artificer.shell.core.PropertyCommand;
 import org.artificer.shell.core.QueryCommand;
 import org.artificer.shell.core.RefreshMetaDataCommand;
 import org.artificer.shell.core.ShowMetaDataCommand;
@@ -209,5 +211,27 @@ public class TestCoreCommands extends AbstractCommandTest {
         Assert.assertTrue(stream.toString().contains("Type: " + artifactType.getType()));
         Assert.assertTrue(stream.toString().contains("Model: " + artifactType.getModel()));
         Assert.assertTrue(stream.toString().contains("UUID: " + artifact.getUuid()));
+    }
+
+    @Test
+    public void testProperty() throws Exception {
+        prepare(PropertyCommand.class, GetMetaDataCommand.class);
+
+        // failure tests
+        pushToOutput("property set name NewFooName");
+        Assert.assertTrue(stream.toString().contains("No active Artificer artifact exists"));
+
+        // populate the context
+        pushToOutput("getMetaData --uuid %s", artifact.getUuid());
+
+        // success tests
+        pushToOutput("property set name NewFooName");
+        Assert.assertEquals("NewFooName", aeshContext.getCurrentArtifact().getName());
+        pushToOutput("property set fooProperty NewFooValue");
+        Assert.assertEquals("NewFooValue", ArtificerModelUtils.getCustomProperty(aeshContext.getCurrentArtifact(), "fooProperty"));
+        pushToOutput("property unset name NewFooName");
+        Assert.assertNull(aeshContext.getCurrentArtifact().getName());
+        pushToOutput("property unset fooProperty NewFooValue");
+        Assert.assertNull(ArtificerModelUtils.getCustomProperty(aeshContext.getCurrentArtifact(), "fooProperty"));
     }
 }
